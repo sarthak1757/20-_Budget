@@ -9,6 +9,7 @@ import {
   type GameSettings,
   type NewPlayer,
 } from "@budget-draft/shared";
+import { DifficultyPicker } from "../components/DifficultyPicker";
 import { RulesPanel } from "../components/RulesPanel";
 import { Stepper } from "../components/Stepper";
 import { Button, Card, ErrorBox, PageShell, Spinner } from "../components/ui";
@@ -149,7 +150,10 @@ export function SetupPage() {
                 />
               </label>
               <Stepper label="Bots" value={botCount} min={1} max={MAX_BOTS} onChange={setBotCount} />
-              <p className="text-sm text-zinc-500">Bots buy items that are good value for their price.</p>
+              <DifficultyPicker
+                value={rules.botDifficulty}
+                onChange={(botDifficulty) => setRules({ ...rules, botDifficulty })}
+              />
             </Card>
           )}
 
