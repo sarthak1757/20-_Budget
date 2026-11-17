@@ -3,10 +3,10 @@ import { parseMode } from "../lib/modes";
 import { CreateRoomPage } from "./CreateRoomPage";
 import { SetupPage } from "./SetupPage";
 
-// /new/:mode/:categorySlug: each mode has its own setup screen.
+// /new/:mode/:categorySlug: local and bot games share a setup screen; online creates a room.
 export function NewGamePage() {
   const mode = parseMode(useParams().mode);
-  if (mode === "local") {
+  if (mode === "local" || mode === "bot") {
     return <SetupPage />;
   }
   if (mode === "online") {

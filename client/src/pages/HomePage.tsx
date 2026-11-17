@@ -29,7 +29,7 @@ const MODES: ModeOption[] = [
     emoji: "🤖",
     title: "Solo vs Bots",
     description: "Draft against 1–3 bots that hunt for value.",
-    available: false,
+    available: true,
   },
 ];
 
