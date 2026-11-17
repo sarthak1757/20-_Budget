@@ -77,4 +77,10 @@ describe("balanced team bonus", () => {
     expect(createdWith(false)).toEqual([]);
     expect(createdWith(true)).toEqual(ROLES);
   });
+
+  it("createGame switches the setting off when it can't apply", () => {
+    const game = startGame({ settings: { balancedTeam: true, slotCount: 3 }, roles: ROLES });
+    expect(game.requiredRoles).toEqual([]);
+    expect(game.settings.balancedTeam).toBe(false);
+  });
 });

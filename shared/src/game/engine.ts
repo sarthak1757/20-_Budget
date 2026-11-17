@@ -77,10 +77,14 @@ export function createGame(input: CreateGameInput): GameState {
     });
   }
 
+  // If Balanced team can't apply (no roles, or too few slots), switch it off,
+  // so the stored settings say what was really played.
+  const requiredRoles = pickRequiredRoles(settings.balancedTeam, input.roles ?? [], settings.slotCount);
+
   const state: GameState = {
     mode,
     phase: "drafting",
-    settings,
+    settings: { ...settings, balancedTeam: requiredRoles.length > 0 },
     players: playerStates,
     itemPool: shuffle(items, input.random),
     currentItem: null,
@@ -89,7 +93,7 @@ export function createGame(input: CreateGameInput): GameState {
     turnQueue: [],
     cantAffordIds: [],
     auction: null,
-    requiredRoles: pickRequiredRoles(settings.balancedTeam, input.roles ?? [], settings.slotCount),
+    requiredRoles,
     turnDeadline: null,
     votes: {},
     voteDeadline: null,
