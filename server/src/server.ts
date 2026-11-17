@@ -3,7 +3,7 @@ import { Server } from "socket.io";
 import type { Express } from "express";
 import { createApp } from "./app";
 import { RoomStore } from "./rooms/roomStore";
-import { categoryExists, getCategoryItems } from "./services/catalog";
+import { categoryExists, loadCategoryForGame } from "./services/catalog";
 import { saveGameResult } from "./services/gameResults";
 import { PlayerConnections, type SocketContext } from "./sockets/context";
 import { registerGameHandlers } from "./sockets/gameHandlers";
@@ -37,7 +37,7 @@ export function createGameServer(options: GameServerOptions): RunningGameServer 
   });
 
   const runner = new GameRunner(io, {
-    loadItems: getCategoryItems,
+    loadCategory: loadCategoryForGame,
     saveResult: saveGameResult,
     now: () => Date.now(),
   });

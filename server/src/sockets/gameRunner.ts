@@ -17,7 +17,7 @@ import { toRoomSnapshot, type Room } from "../rooms/room";
 import type { GameServer } from "./types";
 
 export interface GameRunnerDeps {
-  loadItems: (categorySlug: string) => Promise<Item[] | null>;
+  loadCategory: (categorySlug: string) => Promise<{ items: Item[]; roles: string[] } | null>;
   saveResult: (state: GameState, results: GameResults, roomCode: string) => Promise<void>;
   now: () => number;
 }
@@ -60,8 +60,8 @@ export class GameRunner {
       return { ok: false, error: "You need at least 2 players to start" };
     }
 
-    const items = await this.deps.loadItems(room.settings.categorySlug);
-    if (items === null || items.length === 0) {
+    const category = await this.deps.loadCategory(room.settings.categorySlug);
+    if (category === null || category.items.length === 0) {
       return { ok: false, error: "That category has no items" };
     }
     // Something else may have started the game while we were loading items.
@@ -74,7 +74,8 @@ export class GameRunner {
       mode: "online",
       settings: room.settings,
       players: seated,
-      items,
+      items: category.items,
+      roles: category.roles,
       now: this.deps.now(),
     });
     this.broadcastRoom(room);
