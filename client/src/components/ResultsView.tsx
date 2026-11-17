@@ -1,4 +1,6 @@
 import { pricePaid, type GameResults, type PublicItem, type PublicPlayerState } from "@budget-draft/shared";
+import { useEffect } from "react";
+import { playSound } from "../store/soundStore";
 import { Avatar } from "./Avatar";
 
 interface ResultsViewProps {
@@ -37,6 +39,10 @@ export function findBestValue(team: (PublicItem | null)[]): PublicItem | null {
 }
 
 export function ResultsView({ players, results }: ResultsViewProps) {
+  // A short fanfare when the results first appear.
+  useEffect(() => {
+    playSound("win");
+  }, []);
   const statsTie = results.statsWinnerIds.length > 1;
   const voteTie = results.voteWinnerIds.length > 1;
 

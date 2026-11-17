@@ -9,6 +9,7 @@ import {
 } from "@budget-draft/shared";
 import { describeEvent } from "../lib/describeEvents";
 import { isPeekVisible, type PeekedItem } from "../lib/peek";
+import { useGameSounds } from "../lib/useGameSounds";
 import { ActionBar } from "./ActionBar";
 import { BidBar } from "./BidBar";
 import { ItemCard } from "./ItemCard";
@@ -49,6 +50,7 @@ export function GameBoard({
   onMove,
   onPeek,
 }: GameBoardProps) {
+  useGameSounds(state);
   const currentId = getCurrentPlayerId(state);
 
   // Whose budget decides if BUY/BID is allowed: the viewer online, the current player locally.

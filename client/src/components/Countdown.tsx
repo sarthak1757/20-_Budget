@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { playSound } from "../store/soundStore";
 
 interface CountdownProps {
   deadline: number | null; // epoch ms from the server
@@ -30,11 +31,22 @@ export function Countdown({ deadline, totalSeconds, label }: CountdownProps) {
     return () => clearInterval(interval);
   }, [localEnd]);
 
-  if (localEnd === null || totalSeconds <= 0) {
+  const running = localEnd !== null && totalSeconds > 0;
+  const msLeft = localEnd === null ? 0 : Math.max(0, localEnd - now);
+  const secondsLeft = Math.ceil(msLeft / 1000);
+
+  // Tick once per second during the last 5 seconds.
+  const lastTick = useRef<number | null>(null);
+  useEffect(() => {
+    if (running && secondsLeft > 0 && secondsLeft <= 5 && lastTick.current !== secondsLeft) {
+      playSound("tick");
+    }
+    lastTick.current = secondsLeft;
+  }, [running, secondsLeft]);
+
+  if (!running) {
     return null;
   }
-  const msLeft = Math.max(0, localEnd - now);
-  const secondsLeft = Math.ceil(msLeft / 1000);
   const percent = Math.min(100, (msLeft / (totalSeconds * 1000)) * 100);
   const urgent = secondsLeft <= 5;
 

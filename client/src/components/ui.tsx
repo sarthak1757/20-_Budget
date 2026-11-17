@@ -1,5 +1,6 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { Link } from "react-router";
+import { MuteButton } from "./MuteButton";
 
 // Small building blocks shared by every page, so buttons and cards look the same everywhere.
 
@@ -33,6 +34,9 @@ export function PageShell({ title, children, backTo }: { title?: string; childre
         <Link to="/" className="text-lg font-black tracking-tight">
           💸 Budget <span className="text-money">Draft</span>
         </Link>
+        <div className="ml-auto">
+          <MuteButton />
+        </div>
       </header>
       {title !== undefined && <h1 className="mb-6 text-3xl font-black tracking-tight sm:text-4xl">{title}</h1>}
       <main className="flex-1">{children}</main>
