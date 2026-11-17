@@ -18,3 +18,4 @@ export * from "./game/auction";
 export * from "./game/roles";
 export * from "./game/powerUps";
 export * from "./game/seededRandom";
+export * from "./game/daily";

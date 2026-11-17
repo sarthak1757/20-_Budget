@@ -12,7 +12,7 @@ import superheroes from "../../../../server/seed/superheroes.json";
 import techCeos from "../../../../server/seed/tech-ceos.json";
 import type { Item } from "../../types/item";
 import type { BotDifficulty, DraftStyle, GameSettings } from "../../types/game";
-import { seedCategorySchema } from "../../schemas";
+import { seedCategorySchema, type SeedCategory } from "../../schemas";
 import { decideBotMoveAt } from "../bot";
 import { DEFAULT_SETTINGS } from "../constants";
 import { applyAction, createGame, getCurrentPlayerId } from "../engine";
@@ -25,11 +25,23 @@ interface SimCategory {
   roles: string[];
 }
 
+// The seed files, validated. Also used by the Daily Challenge tests.
+export const SIM_SEEDS: SeedCategory[] = [
+  animeCharacters,
+  bollywoodActors,
+  cricket,
+  f1Drivers,
+  fastFood,
+  football,
+  nba,
+  rappers,
+  superheroes,
+  techCeos,
+].map((file) => seedCategorySchema.parse(file));
+
 function loadCategories(): SimCategory[] {
-  const raw = [animeCharacters, bollywoodActors, cricket, f1Drivers, fastFood, football, nba, rappers, superheroes, techCeos];
   const categories: SimCategory[] = [];
-  for (const file of raw) {
-    const seed = seedCategorySchema.parse(file);
+  for (const seed of SIM_SEEDS) {
     const items: Item[] = [];
     for (let i = 0; i < seed.items.length; i++) {
       const item = seed.items[i];
