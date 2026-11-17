@@ -63,7 +63,11 @@ export class GameRunner {
       return { ok: false, error: "You need at least 2 players to start" };
     }
 
-    const category = await this.deps.loadCategory(room.settings.categorySlug);
+    // A custom list has no roles, so Balanced team is switched off for it.
+    const category =
+      room.customItems !== null
+        ? { items: room.customItems, roles: [] }
+        : await this.deps.loadCategory(room.settings.categorySlug);
     if (category === null || category.items.length === 0) {
       return { ok: false, error: "That category has no items" };
     }

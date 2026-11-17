@@ -24,6 +24,7 @@ export interface RoomSnapshot {
   settings: GameSettings;
   game: PublicGameState | null;
   results: GameResults | null;
+  customItemCount: number | null; // set when the host pasted their own list
 }
 
 // Every client request gets a reply through a Socket.io acknowledgement callback.

@@ -1,4 +1,5 @@
 import {
+  CUSTOM_CATEGORY_SLUG,
   DEFAULT_SETTINGS,
   MAX_PLAYERS,
   ONLINE_AUCTION_TURN_SECONDS,
@@ -9,6 +10,7 @@ import {
   type GameResults,
   type GameSettings,
   type GameState,
+  type Item,
   type LobbyPlayer,
   type RoomInfo,
   type RoomSnapshot,
@@ -30,6 +32,9 @@ export interface Room {
   players: RoomPlayer[]; // in join order
   settings: GameSettings;
   timing: RoomTiming;
+  // The host's own list (custom category), or null for a normal category.
+  // Kept for this room only, never saved.
+  customItems: Item[] | null;
   game: GameState | null; // null while in the lobby
   results: GameResults | null;
   resultSaved: boolean;
@@ -49,7 +54,13 @@ export const ONLINE_TIMING: RoomTiming = {
   voteSeconds: ONLINE_VOTE_SECONDS,
 };
 
-export function createRoom(code: string, categorySlug: string, now: number, timing: RoomTiming = ONLINE_TIMING): Room {
+export function createRoom(
+  code: string,
+  categorySlug: string,
+  now: number,
+  timing: RoomTiming = ONLINE_TIMING,
+  customItems: Item[] | null = null,
+): Room {
   return {
     code,
     hostId: null, // the first player to join becomes host
@@ -61,6 +72,7 @@ export function createRoom(code: string, categorySlug: string, now: number, timi
       voteSeconds: timing.voteSeconds,
     },
     timing,
+    customItems,
     game: null,
     results: null,
     resultSaved: false,
@@ -75,6 +87,8 @@ export function applyRoomSettings(room: Room, settings: GameSettings): void {
   const isAuction = settings.draftStyle === "auction";
   room.settings = {
     ...settings,
+    // A custom room always plays its own list.
+    categorySlug: room.customItems === null ? settings.categorySlug : CUSTOM_CATEGORY_SLUG,
     turnSeconds: isAuction ? room.timing.auctionTurnSeconds : room.timing.turnSeconds,
     voteSeconds: room.timing.voteSeconds,
   };
@@ -210,6 +224,7 @@ export function toRoomSnapshot(room: Room): RoomSnapshot {
     // Always strip the pool. The RoomSnapshot type wouldn't accept the full state anyway.
     game: room.game === null ? null : toPublicState(room.game),
     results: room.results,
+    customItemCount: room.customItems === null ? null : room.customItems.length,
   };
 }
 

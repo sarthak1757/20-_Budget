@@ -1,4 +1,4 @@
-import { pricePaid, type GameResults, type GameState, type LeaderboardEntry } from "@budget-draft/shared";
+import { CUSTOM_CATEGORY_SLUG, pricePaid, type GameResults, type GameState, type LeaderboardEntry } from "@budget-draft/shared";
 import { GameResultModel, type PlayerResult, type TeamItemSnapshot } from "../models/GameResult";
 
 // Turns a finished game into a GameResult document and saves it.
@@ -44,7 +44,8 @@ export async function saveGameResult(state: GameState, results: GameResults, roo
     voteWinnerIds: results.voteWinnerIds,
     votingHeld: results.votingHeld,
     // Only online games are ranked: in local/bot games one person controls every name.
-    countsForLeaderboard: state.mode === "online",
+    // Custom lists aren't either: the host could paste a list of easy 100s.
+    countsForLeaderboard: state.mode === "online" && state.settings.categorySlug !== CUSTOM_CATEGORY_SLUG,
     playedAt: new Date(),
   });
 }

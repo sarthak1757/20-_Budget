@@ -1,3 +1,4 @@
+import type { Item } from "@budget-draft/shared";
 import { createRoom, ONLINE_TIMING, type Room, type RoomTiming } from "./room";
 import { generateRoomCode } from "./roomCode";
 
@@ -11,9 +12,9 @@ export class RoomStore {
 
   constructor(private readonly timing: RoomTiming = ONLINE_TIMING) {}
 
-  create(categorySlug: string, now: number): Room {
+  create(categorySlug: string, now: number, customItems: Item[] | null = null): Room {
     const code = generateRoomCode((candidate) => this.rooms.has(candidate));
-    const room = createRoom(code, categorySlug, now, this.timing);
+    const room = createRoom(code, categorySlug, now, this.timing, customItems);
     this.rooms.set(code, room);
     return room;
   }

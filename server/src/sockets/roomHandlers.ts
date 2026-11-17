@@ -80,7 +80,8 @@ export function registerRoomHandlers(socket: GameSocket, ctx: SocketContext): vo
       reply({ ok: false, error: parsed.error.issues[0]?.message ?? "Invalid settings" });
       return;
     }
-    if (!(await ctx.categoryExists(parsed.data.categorySlug))) {
+    // A custom room ignores the category (applyRoomSettings keeps it "custom").
+    if (room.customItems === null && !(await ctx.categoryExists(parsed.data.categorySlug))) {
       reply({ ok: false, error: "That category doesn't exist" });
       return;
     }
