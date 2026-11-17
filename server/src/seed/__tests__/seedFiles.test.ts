@@ -69,3 +69,41 @@ describe.each(files)("%s", (filePath) => {
     expect(cheap).toBeGreaterThanOrEqual(8);
   });
 });
+
+// Balanced team only works if every role turns up often enough, and at
+// prices a player with little money left can still afford.
+const MIN_ITEMS_PER_ROLE = 8;
+const MIN_CHEAP_ITEMS_PER_ROLE = 3;
+
+describe("roles", () => {
+  const categories = loadAllSeedFiles();
+
+  it("are defined for football and cricket", () => {
+    const football = categories.find((category) => category.slug === "football");
+    const cricket = categories.find((category) => category.slug === "cricket");
+    expect(football?.roles).toEqual(["Goalkeeper", "Defender", "Midfielder", "Forward"]);
+    expect(cricket?.roles).toEqual(["Batter", "Bowler", "All-rounder", "Wicketkeeper"]);
+  });
+
+  for (const category of categories) {
+    if (category.roles.length === 0) {
+      continue;
+    }
+    it(`are spread fairly in ${category.slug}`, () => {
+      for (const role of category.roles) {
+        let total = 0;
+        let cheap = 0;
+        for (const item of category.items) {
+          if (item.tag === role) {
+            total += 1;
+            if (item.price <= 3) {
+              cheap += 1;
+            }
+          }
+        }
+        expect(total, role).toBeGreaterThanOrEqual(MIN_ITEMS_PER_ROLE);
+        expect(cheap, `${role} at $1–3`).toBeGreaterThanOrEqual(MIN_CHEAP_ITEMS_PER_ROLE);
+      }
+    });
+  }
+});
