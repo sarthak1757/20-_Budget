@@ -1,5 +1,5 @@
-import { peekSchema, turnActionSchema, voteCastSchema, type PublicItem } from "@budget-draft/shared";
-import type { Room } from "../rooms/room";
+import { peekSchema, reactionSchema, turnActionSchema, voteCastSchema, type PublicItem } from "@budget-draft/shared";
+import { findRoomPlayer, recordReaction, type Room } from "../rooms/room";
 import type { SocketContext } from "./context";
 import { safeAck, type GameSocket } from "./types";
 
@@ -15,6 +15,9 @@ function getSeat(socket: GameSocket, ctx: SocketContext): { room: Room; playerId
   }
   return { room, playerId };
 }
+
+// Each reaction gets its own id so the clients can animate them separately.
+let nextReactionId = 1;
 
 export function registerGameHandlers(socket: GameSocket, ctx: SocketContext): void {
   socket.on("game:start", async (ack) => {
@@ -79,6 +82,33 @@ export function registerGameHandlers(socket: GameSocket, ctx: SocketContext): vo
     }
     const result = ctx.runner.handlePeek(seat.room, seat.playerId, parsed.data.roundNumber);
     reply(result.ok ? { ok: true, data: { item: result.item } } : result);
+  });
+
+  socket.on("reaction:send", (payload, ack) => {
+    const reply = safeAck<null>(ack);
+    const parsed = reactionSchema.safeParse(payload);
+    if (!parsed.success) {
+      reply({ ok: false, error: "That reaction isn't available" });
+      return;
+    }
+    const seat = getSeat(socket, ctx);
+    if (typeof seat === "string") {
+      reply({ ok: false, error: seat });
+      return;
+    }
+    const error = recordReaction(seat.room, seat.playerId, ctx.now());
+    if (error !== null) {
+      reply({ ok: false, error });
+      return;
+    }
+    const player = findRoomPlayer(seat.room, seat.playerId);
+    ctx.io.to(seat.room.code).emit("reaction", {
+      id: nextReactionId++,
+      playerId: seat.playerId,
+      playerName: player?.name ?? "Someone",
+      emoji: parsed.data.emoji,
+    });
+    reply({ ok: true, data: null });
   });
 
   socket.on("vote:cast", (payload, ack) => {

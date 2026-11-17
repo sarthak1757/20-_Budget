@@ -4,6 +4,7 @@ import { getCurrentPlayerId, type PublicPlayerState, type RoomSnapshot } from "@
 import { Countdown } from "../components/Countdown";
 import { GameBoard } from "../components/GameBoard";
 import { LobbyView } from "../components/LobbyView";
+import { ReactionBar, ReactionLayer } from "../components/Reactions";
 import { ResultsView } from "../components/ResultsView";
 import { Button, ErrorBox, PageShell, Spinner } from "../components/ui";
 import { VotePanel } from "../components/VotePanel";
@@ -73,6 +74,12 @@ export function RoomPage() {
           {store.actionError}
         </p>
       )}
+      {room.game !== null && (
+        <div className="mt-6">
+          <ReactionBar onReact={store.react} />
+        </div>
+      )}
+      <ReactionLayer reactions={store.reactions} />
     </PageShell>
   );
 }

@@ -46,3 +46,8 @@ export const DEFAULT_SETTINGS: GameSettings = {
 export const CUSTOM_CATEGORY_SLUG = "custom";
 export const CUSTOM_MIN_ITEMS = 20;
 export const CUSTOM_MAX_ITEMS = 150;
+
+// Emoji reactions in online rooms: a fixed set (no free text to moderate),
+// at most one per player per second.
+export const REACTION_EMOJIS = ["👏", "😂", "😱", "🔥", "💸"] as const;
+export const REACTION_COOLDOWN_MS = 1000;

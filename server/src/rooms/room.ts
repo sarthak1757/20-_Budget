@@ -5,6 +5,7 @@ import {
   ONLINE_AUCTION_TURN_SECONDS,
   ONLINE_TURN_SECONDS,
   ONLINE_VOTE_SECONDS,
+  REACTION_COOLDOWN_MS,
   setPlayerConnected,
   toPublicState,
   type GameResults,
@@ -38,6 +39,7 @@ export interface Room {
   game: GameState | null; // null while in the lobby
   results: GameResults | null;
   resultSaved: boolean;
+  lastReactionAt: Record<string, number>; // playerId -> when they last sent an emoji
   createdAt: number;
   emptySince: number | null; // when the last connected player left; used for cleanup
 }
@@ -76,6 +78,7 @@ export function createRoom(
     game: null,
     results: null,
     resultSaved: false,
+    lastReactionAt: {},
     createdAt: now,
     emptySince: now, // nobody is connected yet
   };
@@ -237,4 +240,18 @@ export function toRoomInfo(room: Room): RoomInfo {
     maxPlayers: MAX_PLAYERS,
     joinable: room.game === null && room.players.length < MAX_PLAYERS,
   };
+}
+
+// Emoji reactions: one per player per second, so nobody can flood the screen.
+// Returns an error message, or null if the reaction may be sent (and records it).
+export function recordReaction(room: Room, playerId: string, now: number): string | null {
+  if (!findRoomPlayer(room, playerId)) {
+    return "You're not in this room";
+  }
+  const last = room.lastReactionAt[playerId];
+  if (last !== undefined && now - last < REACTION_COOLDOWN_MS) {
+    return "Slow down! One reaction per second.";
+  }
+  room.lastReactionAt[playerId] = now;
+  return null;
 }

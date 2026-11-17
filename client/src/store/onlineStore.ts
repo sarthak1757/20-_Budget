@@ -1,9 +1,20 @@
 import { create } from "zustand";
-import type { AckResponse, GameSettings, RoomSnapshot, TurnActionPayload, TurnMove } from "@budget-draft/shared";
+import type {
+  AckResponse,
+  GameSettings,
+  Reaction,
+  ReactionPayload,
+  RoomSnapshot,
+  TurnActionPayload,
+  TurnMove,
+} from "@budget-draft/shared";
 import type { PeekedItem } from "../lib/peek";
 import { forgetRoom, getStoredPlayerId, storeName, storePlayerId } from "../lib/playerStorage";
 import { socket } from "../lib/socket";
 import { dismissToast, showToast } from "./toastStore";
+
+// How long a reaction floats on screen before it's removed.
+export const REACTION_SHOW_MS = 2500;
 
 // The "connection lost" toast stays up until we're back, so we remember its id.
 let connectionLostToastId: number | null = null;
@@ -20,6 +31,7 @@ interface OnlineStore {
   actionError: string | null;
   busy: boolean;
   peeked: PeekedItem | null;
+  reactions: Reaction[]; // currently floating on screen
 
   enterRoom: (code: string, name: string) => void;
   leaveRoom: () => Promise<void>;
@@ -29,6 +41,7 @@ interface OnlineStore {
   act: (move: TurnMove) => Promise<void>;
   peek: () => Promise<void>;
   vote: (targetPlayerId: string) => Promise<void>;
+  react: (emoji: ReactionPayload["emoji"]) => void;
   clearActionError: () => void;
 }
 
@@ -116,6 +129,12 @@ export const useOnlineStore = create<OnlineStore>()((set, get) => {
     const room = get().room;
     if (room) set({ room: { ...room, game: state } });
   });
+  socket.on("reaction", (reaction) => {
+    set({ reactions: [...get().reactions, reaction] });
+    setTimeout(() => {
+      set({ reactions: get().reactions.filter((shown) => shown.id !== reaction.id) });
+    }, REACTION_SHOW_MS);
+  });
   socket.on("game:end", ({ state, results }) => {
     const room = get().room;
     if (room) set({ room: { ...room, game: state, results } });
@@ -131,6 +150,7 @@ export const useOnlineStore = create<OnlineStore>()((set, get) => {
     actionError: null,
     busy: false,
     peeked: null,
+    reactions: [],
 
     enterRoom: (code, name) => {
       const upper = code.toUpperCase();
@@ -156,7 +176,7 @@ export const useOnlineStore = create<OnlineStore>()((set, get) => {
         dismissToast(connectionLostToastId);
         connectionLostToastId = null;
       }
-      set({ code: null, playerId: null, room: null, connection: "idle", joinError: null });
+      set({ code: null, playerId: null, room: null, connection: "idle", joinError: null, reactions: [] });
     },
 
     updateSettings: (settings) => run(() => socket.emitWithAck("room:settings", settings)),
@@ -193,6 +213,10 @@ export const useOnlineStore = create<OnlineStore>()((set, get) => {
       }
     },
     vote: (targetPlayerId) => run(() => socket.emitWithAck("vote:cast", { targetPlayerId })),
+    // Fire and forget: a reaction refused by the rate limit isn't worth an error message.
+    react: (emoji) => {
+      socket.emit("reaction:send", { emoji }, () => undefined);
+    },
     clearActionError: () => set({ actionError: null }),
   };
 });

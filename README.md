@@ -163,7 +163,8 @@ A type test (`shared/src/__typetests__`) checks that this protection holds.
 | `game:rematch` (host only, after the game ends: same players, new shuffle) | |
 | `turn:action` (buy/pass/bid/veto/discount + round number) | |
 | `turn:peek` (Peek: the next item comes back in the ack, to you only) | |
-| `vote:cast` | |
+| `vote:cast` | `reaction` (who sent which emoji) |
+| `reaction:send` (one of 👏 😂 😱 🔥 💸, max 1 per second per player) | |
 
 Every request gets an acknowledgement: `{ ok: true, data }` or `{ ok: false, error }`.
 

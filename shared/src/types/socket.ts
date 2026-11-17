@@ -3,6 +3,7 @@ import type { PublicItem } from "./item";
 import type {
   GameSettingsPayload,
   PeekPayload,
+  ReactionPayload,
   RoomJoinPayload,
   TurnActionPayload,
   VoteCastPayload,
@@ -42,6 +43,14 @@ export interface ClientToServerEvents {
   // Peek power-up: the next item comes back in the ack, to this player only.
   "turn:peek": (payload: PeekPayload, ack: Ack<{ item: PublicItem }>) => void;
   "vote:cast": (payload: VoteCastPayload, ack: Ack<null>) => void;
+  "reaction:send": (payload: ReactionPayload, ack: Ack<null>) => void;
+}
+
+export interface Reaction {
+  id: number; // unique per server, so the client can animate each one separately
+  playerId: string;
+  playerName: string;
+  emoji: ReactionPayload["emoji"];
 }
 
 export interface ServerToClientEvents {
@@ -50,4 +59,5 @@ export interface ServerToClientEvents {
   "game:state": (state: PublicGameState) => void;
   "game:end": (payload: { state: PublicGameState; results: GameResults }) => void;
   "server:error": (message: string) => void;
+  "reaction": (reaction: Reaction) => void;
 }

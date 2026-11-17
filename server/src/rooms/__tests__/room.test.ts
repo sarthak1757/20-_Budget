@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { createGame } from "@budget-draft/shared";
-import { addPlayer, createRoom, markPlayerConnected, removePlayer, toRoomInfo, toRoomSnapshot } from "../room";
+import { addPlayer, createRoom, markPlayerConnected, recordReaction, removePlayer, toRoomInfo, toRoomSnapshot } from "../room";
 import { RoomStore } from "../roomStore";
 
 function lobbyWith(names: string[]) {
@@ -106,5 +106,18 @@ describe("RoomStore", () => {
     expect(store.removeAbandoned(9 * 60_000)).toEqual([]);
     expect(store.removeAbandoned(10 * 60_000)).toEqual([empty.code]);
     expect(store.get(busy.code)).toBe(busy);
+  });
+});
+
+describe("recordReaction", () => {
+  it("allows one reaction per player per second", () => {
+    const room = createRoom("ABC123", "nba", 0);
+    addPlayer(room, { id: "player-a1", name: "Asha" }, 0);
+    addPlayer(room, { id: "player-b1", name: "Ben" }, 0);
+    expect(recordReaction(room, "player-a1", 1000)).toBeNull();
+    expect(recordReaction(room, "player-a1", 1500)).toBe("Slow down! One reaction per second.");
+    expect(recordReaction(room, "player-b1", 1500)).toBeNull(); // each player has their own limit
+    expect(recordReaction(room, "player-a1", 2000)).toBeNull();
+    expect(recordReaction(room, "stranger", 5000)).toBe("You're not in this room");
   });
 });
