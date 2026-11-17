@@ -1,0 +1,296 @@
+{
+  "slug": "cricket",
+  "name": "Cricket",
+  "emoji": "🏏",
+  "description": "Batters, bowlers, keepers and all-rounders from every era of the game.",
+  "items": [
+    {
+      "name": "Sachin Tendulkar",
+      "price": 10,
+      "rating": 98,
+      "tag": "Batter"
+    },
+    {
+      "name": "Brian Lara",
+      "price": 10,
+      "rating": 96,
+      "tag": "Batter"
+    },
+    {
+      "name": "Virat Kohli",
+      "price": 10,
+      "rating": 95,
+      "tag": "Batter"
+    },
+    {
+      "name": "Shane Warne",
+      "price": 7,
+      "rating": 95,
+      "tag": "Spinner"
+    },
+    {
+      "name": "Jasprit Bumrah",
+      "price": 9,
+      "rating": 94,
+      "tag": "Fast Bowler"
+    },
+    {
+      "name": "Muttiah Muralitharan",
+      "price": 9,
+      "rating": 94,
+      "tag": "Spinner"
+    },
+    {
+      "name": "MS Dhoni",
+      "price": 9,
+      "rating": 92,
+      "tag": "Wicketkeeper"
+    },
+    {
+      "name": "Joe Root",
+      "price": 9,
+      "rating": 91,
+      "tag": "Batter"
+    },
+    {
+      "name": "Steve Smith",
+      "price": 9,
+      "rating": 90,
+      "tag": "Batter"
+    },
+    {
+      "name": "Kane Williamson",
+      "price": 9,
+      "rating": 90,
+      "tag": "Batter"
+    },
+    {
+      "name": "AB de Villiers",
+      "price": 8,
+      "rating": 89,
+      "tag": "Batter"
+    },
+    {
+      "name": "Rohit Sharma",
+      "price": 8,
+      "rating": 88,
+      "tag": "Batter"
+    },
+    {
+      "name": "Pat Cummins",
+      "price": 8,
+      "rating": 88,
+      "tag": "Fast Bowler"
+    },
+    {
+      "name": "Ben Stokes",
+      "price": 8,
+      "rating": 87,
+      "tag": "All-rounder"
+    },
+    {
+      "name": "Rashid Khan",
+      "price": 8,
+      "rating": 87,
+      "tag": "Spinner"
+    },
+    {
+      "name": "Ravindra Jadeja",
+      "price": 8,
+      "rating": 86,
+      "tag": "All-rounder"
+    },
+    {
+      "name": "Babar Azam",
+      "price": 8,
+      "rating": 85,
+      "tag": "Batter"
+    },
+    {
+      "name": "Mitchell Starc",
+      "price": 8,
+      "rating": 85,
+      "tag": "Fast Bowler"
+    },
+    {
+      "name": "Kagiso Rabada",
+      "price": 8,
+      "rating": 85,
+      "tag": "Fast Bowler"
+    },
+    {
+      "name": "Travis Head",
+      "price": 7,
+      "rating": 84,
+      "tag": "Batter"
+    },
+    {
+      "name": "Shubman Gill",
+      "price": 7,
+      "rating": 83,
+      "tag": "Batter"
+    },
+    {
+      "name": "Rishabh Pant",
+      "price": 7,
+      "rating": 83,
+      "tag": "Wicketkeeper"
+    },
+    {
+      "name": "Shaheen Afridi",
+      "price": 7,
+      "rating": 82,
+      "tag": "Fast Bowler"
+    },
+    {
+      "name": "Jos Buttler",
+      "price": 7,
+      "rating": 82,
+      "tag": "Wicketkeeper"
+    },
+    {
+      "name": "Suryakumar Yadav",
+      "price": 6,
+      "rating": 79,
+      "tag": "Batter"
+    },
+    {
+      "name": "Mohammed Shami",
+      "price": 6,
+      "rating": 79,
+      "tag": "Fast Bowler"
+    },
+    {
+      "name": "Ravichandran Ashwin",
+      "price": 6,
+      "rating": 79,
+      "tag": "Spinner"
+    },
+    {
+      "name": "Hardik Pandya",
+      "price": 6,
+      "rating": 78,
+      "tag": "All-rounder"
+    },
+    {
+      "name": "David Warner",
+      "price": 6,
+      "rating": 78,
+      "tag": "Batter"
+    },
+    {
+      "name": "Trent Boult",
+      "price": 6,
+      "rating": 77,
+      "tag": "Fast Bowler"
+    },
+    {
+      "name": "Yashasvi Jaiswal",
+      "price": 6,
+      "rating": 77,
+      "tag": "Batter"
+    },
+    {
+      "name": "Glenn Maxwell",
+      "price": 9,
+      "rating": 76,
+      "tag": "All-rounder"
+    },
+    {
+      "name": "Quinton de Kock",
+      "price": 6,
+      "rating": 76,
+      "tag": "Wicketkeeper"
+    },
+    {
+      "name": "Kuldeep Yadav",
+      "price": 3,
+      "rating": 75,
+      "tag": "Spinner"
+    },
+    {
+      "name": "Axar Patel",
+      "price": 1,
+      "rating": 68,
+      "tag": "All-rounder"
+    },
+    {
+      "name": "Mitchell Marsh",
+      "price": 4,
+      "rating": 67,
+      "tag": "All-rounder"
+    },
+    {
+      "name": "Shikhar Dhawan",
+      "price": 4,
+      "rating": 66,
+      "tag": "Batter"
+    },
+    {
+      "name": "Mark Wood",
+      "price": 4,
+      "rating": 65,
+      "tag": "Fast Bowler"
+    },
+    {
+      "name": "Moeen Ali",
+      "price": 3,
+      "rating": 64,
+      "tag": "All-rounder"
+    },
+    {
+      "name": "Sanju Samson",
+      "price": 3,
+      "rating": 63,
+      "tag": "Wicketkeeper"
+    },
+    {
+      "name": "Shardul Thakur",
+      "price": 3,
+      "rating": 61,
+      "tag": "All-rounder"
+    },
+    {
+      "name": "Washington Sundar",
+      "price": 2,
+      "rating": 58,
+      "tag": "All-rounder"
+    },
+    {
+      "name": "Ishant Sharma",
+      "price": 2,
+      "rating": 57,
+      "tag": "Fast Bowler"
+    },
+    {
+      "name": "Deepak Chahar",
+      "price": 2,
+      "rating": 56,
+      "tag": "Fast Bowler"
+    },
+    {
+      "name": "Riyan Parag",
+      "price": 6,
+      "rating": 55,
+      "tag": "Batter"
+    },
+    {
+      "name": "Umesh Yadav",
+      "price": 1,
+      "rating": 53,
+      "tag": "Fast Bowler"
+    },
+    {
+      "name": "Piyush Chawla",
+      "price": 1,
+      "rating": 50,
+      "tag": "Spinner"
+    },
+    {
+      "name": "Kedar Jadhav",
+      "price": 4,
+      "rating": 48,
+      "tag": "All-rounder"
+    }
+  ]
+}
