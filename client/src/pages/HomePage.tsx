@@ -22,7 +22,7 @@ const MODES: ModeOption[] = [
     emoji: "🌐",
     title: "Online Room",
     description: "Create a room and share the code. Everyone plays on their own phone.",
-    available: false,
+    available: true,
   },
   {
     to: "/new/bot",
@@ -74,6 +74,12 @@ export function HomePage() {
             </Link>
           );
         })}
+      </div>
+
+      <div className="mt-6 flex flex-wrap gap-3">
+        <Link to="/join" className="rounded-xl bg-zinc-800 px-4 py-3 font-semibold hover:bg-zinc-700">
+          🔑 Join with a code
+        </Link>
       </div>
     </PageShell>
   );
