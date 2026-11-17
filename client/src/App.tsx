@@ -2,6 +2,8 @@ import { Link, Route, Routes } from "react-router";
 import { PageShell } from "./components/ui";
 import { CategoryPickerPage } from "./pages/CategoryPickerPage";
 import { HomePage } from "./pages/HomePage";
+import { LocalGamePage } from "./pages/LocalGamePage";
+import { LocalResultsPage } from "./pages/LocalResultsPage";
 import { SetupPage } from "./pages/SetupPage";
 
 export function App() {
@@ -10,6 +12,8 @@ export function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/new/:mode" element={<CategoryPickerPage />} />
       <Route path="/new/:mode/:categorySlug" element={<SetupPage />} />
+      <Route path="/play" element={<LocalGamePage />} />
+      <Route path="/results" element={<LocalResultsPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
