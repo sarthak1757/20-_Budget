@@ -39,9 +39,9 @@ function playAsHuman(dateKey: string): TurnMove[] {
 describe("daily dates", () => {
   it("uses the UTC date and numbers days from the first daily", () => {
     expect(toDateKey(new Date("2026-11-18T23:30:00Z"))).toBe("2026-11-18");
-    expect(dailyNumber("2026-11-18")).toBe(1);
-    expect(dailyNumber("2026-11-29")).toBe(12);
-    expect(dailyNumber("2027-01-01")).toBe(45);
+    expect(dailyNumber("2026-11-17")).toBe(1);
+    expect(dailyNumber("2026-11-28")).toBe(12);
+    expect(dailyNumber("2027-01-01")).toBe(46);
   });
 });
 
@@ -115,6 +115,6 @@ describe("share text", () => {
 
   it("matches the agreed format", () => {
     const team = [item(90), item(81), item(65), item(88), item(10)];
-    expect(dailyShareText("2026-11-29", 412, team)).toBe("Budget Draft #12 — 412 pts 🟩🟩🟨🟩⬜");
+    expect(dailyShareText("2026-11-28", 412, team)).toBe("Budget Draft #12 — 412 pts 🟩🟩🟨🟩⬜");
   });
 });

@@ -15,7 +15,7 @@ import { createSeededRandom, hashString } from "./seededRandom";
 // That only works because everything here is deterministic: the seeded
 // shuffle, and a bot that never uses randomness.
 
-export const DAILY_FIRST_DATE = "2026-11-18"; // Daily #1
+export const DAILY_FIRST_DATE = "2026-11-17"; // Daily #1
 export const DAILY_PLAYER_ID = "daily-player";
 export const DAILY_BOT_ID = "daily-bot";
 export const DAILY_BOT_NAME = "Daily Bot";

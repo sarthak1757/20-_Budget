@@ -122,6 +122,19 @@ export const localResultSchema = z
     }
   });
 
+// A finished Daily Challenge: just the player's moves. The server replays
+// them to work out the score, so nothing else needs to be trusted.
+export const dailyResultSchema = z.object({
+  dateKey: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date must look like 2026-11-17"),
+  playerName: playerNameSchema,
+  moves: z
+    .array(z.object({ type: z.enum(["buy", "pass"]) }))
+    .min(1)
+    .max(200),
+});
+
+export const dailyDateSchema = dailyResultSchema.shape.dateKey;
+
 // ---- Seed files and admin forms ----
 
 export const seedItemSchema = z.object({
@@ -181,3 +194,4 @@ export type AdminCategoryUpdatePayload = z.infer<typeof adminCategoryUpdateSchem
 export type AdminItemPayload = z.infer<typeof adminItemSchema>;
 export type LocalResultPayload = z.input<typeof localResultSchema>;
 export type SeedCategory = z.infer<typeof seedCategorySchema>;
+export type DailyResultPayload = z.infer<typeof dailyResultSchema>;

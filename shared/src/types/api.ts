@@ -25,3 +25,21 @@ export interface LeaderboardEntry {
   gamesPlayed: number;
   bestScore: number | null; // Classic games with no extras only; null if none played
 }
+
+export interface DailyResultResponse {
+  total: number;
+  rank: number; // 1 = best score so far today
+  players: number; // how many have played this daily
+}
+
+export interface DailyLeaderboardEntry {
+  name: string;
+  total: number;
+  beatBot: boolean;
+}
+
+export interface DailyLeaderboard {
+  dateKey: string;
+  number: number; // "Budget Draft #12"
+  entries: DailyLeaderboardEntry[];
+}
