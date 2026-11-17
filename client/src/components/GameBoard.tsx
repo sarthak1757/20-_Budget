@@ -34,6 +34,14 @@ export function GameBoard({ state, viewerId, canAct, busy = false, turnLabel, ti
     buyBlockReason = getBuyBlockReason(actingPlayer, state.currentItem);
   }
 
+  // Who bought something in the last action (for the column glow).
+  let boughtBy: string | null = null;
+  for (const event of state.lastEvents) {
+    if (event.type === "bought") {
+      boughtBy = event.playerId;
+    }
+  }
+
   // Split players to the left and right of the item card on wide screens.
   const half = Math.ceil(state.players.length / 2);
   const leftPlayers = state.players.slice(0, half);
@@ -47,6 +55,7 @@ export function GameBoard({ state, viewerId, canAct, busy = false, turnLabel, ti
         isCurrentTurn={player.id === currentId}
         cantAfford={state.cantAffordIds.includes(player.id)}
         isViewer={player.id === viewerId}
+        justBought={boughtBy === player.id}
       />
     );
   }

@@ -1,4 +1,5 @@
 import { maxSpendable, type Item, type PlayerState } from "@budget-draft/shared";
+import { useAnimatedNumber } from "../lib/useAnimatedNumber";
 import { Avatar } from "./Avatar";
 
 interface PlayerColumnProps {
@@ -6,15 +7,23 @@ interface PlayerColumnProps {
   isCurrentTurn: boolean;
   cantAfford: boolean;
   isViewer?: boolean; // online: highlights "you"
+  justBought?: boolean; // plays a short glow after this player buys
 }
 
-export function PlayerColumn({ player, isCurrentTurn, cantAfford, isViewer = false }: PlayerColumnProps) {
+export function PlayerColumn({
+  player,
+  isCurrentTurn,
+  cantAfford,
+  isViewer = false,
+  justBought = false,
+}: PlayerColumnProps) {
+  const shownBudget = useAnimatedNumber(player.budget);
   const border = isCurrentTurn ? "border-emerald-400 shadow-lg shadow-emerald-500/20" : "border-zinc-800";
 
   return (
     <section
       aria-label={`${player.name}'s team`}
-      className={`flex min-w-0 flex-col rounded-2xl border-2 bg-zinc-900 p-3 transition-colors lg:w-56 ${border}`}
+      className={`flex min-w-0 flex-col rounded-2xl border-2 bg-zinc-900 p-3 transition-colors lg:w-56 ${border} ${justBought ? "animate-bought" : ""}`}
     >
       <header className="flex items-center gap-2">
         <span className="truncate font-bold">
@@ -26,7 +35,7 @@ export function PlayerColumn({ player, isCurrentTurn, cantAfford, isViewer = fal
       </header>
 
       <p className="text-money text-4xl font-black tabular-nums sm:text-5xl" aria-label={`Budget $${player.budget}`}>
-        ${player.budget}
+        ${shownBudget}
       </p>
       <p className="mb-2 h-5 text-xs text-zinc-500">
         {cantAfford && <span className="text-amber-400">Can't afford this one</span>}
