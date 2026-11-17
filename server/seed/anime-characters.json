@@ -1,0 +1,296 @@
+{
+  "slug": "anime-characters",
+  "name": "Anime Characters",
+  "emoji": "🍥",
+  "description": "Heroes, rivals, mentors and villains from popular anime and manga.",
+  "items": [
+    {
+      "name": "Saitama",
+      "price": 10,
+      "rating": 99,
+      "tag": "Hero"
+    },
+    {
+      "name": "Goku",
+      "price": 10,
+      "rating": 97,
+      "tag": "Fighter"
+    },
+    {
+      "name": "Gojo Satoru",
+      "price": 10,
+      "rating": 95,
+      "tag": "Sorcerer"
+    },
+    {
+      "name": "Monkey D. Luffy",
+      "price": 9,
+      "rating": 94,
+      "tag": "Pirate"
+    },
+    {
+      "name": "Madara Uchiha",
+      "price": 9,
+      "rating": 93,
+      "tag": "Villain"
+    },
+    {
+      "name": "All Might",
+      "price": 9,
+      "rating": 93,
+      "tag": "Hero"
+    },
+    {
+      "name": "Naruto Uzumaki",
+      "price": 9,
+      "rating": 92,
+      "tag": "Ninja"
+    },
+    {
+      "name": "Vegeta",
+      "price": 9,
+      "rating": 92,
+      "tag": "Fighter"
+    },
+    {
+      "name": "Sukuna",
+      "price": 9,
+      "rating": 92,
+      "tag": "Villain"
+    },
+    {
+      "name": "Levi Ackerman",
+      "price": 9,
+      "rating": 91,
+      "tag": "Soldier"
+    },
+    {
+      "name": "Itachi Uchiha",
+      "price": 9,
+      "rating": 91,
+      "tag": "Ninja"
+    },
+    {
+      "name": "Light Yagami",
+      "price": 9,
+      "rating": 90,
+      "tag": "Mastermind"
+    },
+    {
+      "name": "Sasuke Uchiha",
+      "price": 8,
+      "rating": 89,
+      "tag": "Ninja"
+    },
+    {
+      "name": "Roronoa Zoro",
+      "price": 8,
+      "rating": 89,
+      "tag": "Swordsman"
+    },
+    {
+      "name": "Ichigo Kurosaki",
+      "price": 8,
+      "rating": 88,
+      "tag": "Swordsman"
+    },
+    {
+      "name": "Kakashi Hatake",
+      "price": 8,
+      "rating": 87,
+      "tag": "Ninja"
+    },
+    {
+      "name": "Killua Zoldyck",
+      "price": 8,
+      "rating": 86,
+      "tag": "Assassin"
+    },
+    {
+      "name": "L Lawliet",
+      "price": 8,
+      "rating": 86,
+      "tag": "Detective"
+    },
+    {
+      "name": "Eren Yeager",
+      "price": 8,
+      "rating": 85,
+      "tag": "Titan Shifter"
+    },
+    {
+      "name": "Edward Elric",
+      "price": 7,
+      "rating": 84,
+      "tag": "Alchemist"
+    },
+    {
+      "name": "Mikasa Ackerman",
+      "price": 7,
+      "rating": 84,
+      "tag": "Soldier"
+    },
+    {
+      "name": "Spike Spiegel",
+      "price": 4,
+      "rating": 84,
+      "tag": "Bounty Hunter"
+    },
+    {
+      "name": "Tanjiro Kamado",
+      "price": 7,
+      "rating": 83,
+      "tag": "Swordsman"
+    },
+    {
+      "name": "Gon Freecss",
+      "price": 7,
+      "rating": 82,
+      "tag": "Protagonist"
+    },
+    {
+      "name": "Vash the Stampede",
+      "price": 7,
+      "rating": 80,
+      "tag": "Gunslinger"
+    },
+    {
+      "name": "Izuku Midoriya",
+      "price": 6,
+      "rating": 79,
+      "tag": "Hero"
+    },
+    {
+      "name": "Piccolo",
+      "price": 6,
+      "rating": 79,
+      "tag": "Mentor"
+    },
+    {
+      "name": "Sanji",
+      "price": 6,
+      "rating": 78,
+      "tag": "Cook"
+    },
+    {
+      "name": "Nezuko Kamado",
+      "price": 6,
+      "rating": 78,
+      "tag": "Demon"
+    },
+    {
+      "name": "Yusuke Urameshi",
+      "price": 6,
+      "rating": 77,
+      "tag": "Spirit Detective"
+    },
+    {
+      "name": "Katsuki Bakugo",
+      "price": 6,
+      "rating": 77,
+      "tag": "Rival"
+    },
+    {
+      "name": "Sailor Moon",
+      "price": 6,
+      "rating": 76,
+      "tag": "Magical Girl"
+    },
+    {
+      "name": "Rock Lee",
+      "price": 2,
+      "rating": 75,
+      "tag": "Ninja"
+    },
+    {
+      "name": "Inuyasha",
+      "price": 5,
+      "rating": 74,
+      "tag": "Half-Demon"
+    },
+    {
+      "name": "Asta",
+      "price": 5,
+      "rating": 73,
+      "tag": "Knight"
+    },
+    {
+      "name": "Natsu Dragneel",
+      "price": 5,
+      "rating": 72,
+      "tag": "Wizard"
+    },
+    {
+      "name": "Shikamaru Nara",
+      "price": 4,
+      "rating": 68,
+      "tag": "Strategist"
+    },
+    {
+      "name": "Zenitsu Agatsuma",
+      "price": 4,
+      "rating": 66,
+      "tag": "Swordsman"
+    },
+    {
+      "name": "Krillin",
+      "price": 1,
+      "rating": 65,
+      "tag": "Fighter"
+    },
+    {
+      "name": "Hinata Hyuga",
+      "price": 3,
+      "rating": 64,
+      "tag": "Ninja"
+    },
+    {
+      "name": "Usopp",
+      "price": 3,
+      "rating": 62,
+      "tag": "Sniper"
+    },
+    {
+      "name": "Tony Tony Chopper",
+      "price": 2,
+      "rating": 58,
+      "tag": "Doctor"
+    },
+    {
+      "name": "Sakura Haruno",
+      "price": 5,
+      "rating": 55,
+      "tag": "Ninja"
+    },
+    {
+      "name": "Tenten",
+      "price": 1,
+      "rating": 50,
+      "tag": "Ninja"
+    },
+    {
+      "name": "Konohamaru",
+      "price": 1,
+      "rating": 48,
+      "tag": "Ninja"
+    },
+    {
+      "name": "Yamcha",
+      "price": 1,
+      "rating": 45,
+      "tag": "Fighter"
+    },
+    {
+      "name": "Mr. Satan",
+      "price": 6,
+      "rating": 42,
+      "tag": "Champion"
+    },
+    {
+      "name": "Minoru Mineta",
+      "price": 4,
+      "rating": 40,
+      "tag": "Hero Student"
+    }
+  ]
+}
