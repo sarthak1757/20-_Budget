@@ -1,12 +1,12 @@
-import type { GameResults, Item, PlayerState } from "@budget-draft/shared";
+import type { GameResults, PublicItem, PublicPlayerState } from "@budget-draft/shared";
 import { Avatar } from "./Avatar";
 
 interface ResultsViewProps {
-  players: PlayerState[];
+  players: PublicPlayerState[];
   results: GameResults;
 }
 
-function namesFor(ids: string[], players: PlayerState[]): string {
+function namesFor(ids: string[], players: PublicPlayerState[]): string {
   const names: string[] = [];
   for (const id of ids) {
     for (const player of players) {
@@ -19,11 +19,11 @@ function namesFor(ids: string[], players: PlayerState[]): string {
 }
 
 // The item with the most rating per dollar: the smartest buy on a team.
-export function findBestValue(team: (Item | null)[]): Item | null {
-  let best: Item | null = null;
+export function findBestValue(team: (PublicItem | null)[]): PublicItem | null {
+  let best: PublicItem | null = null;
   let bestRatio = 0;
   for (const item of team) {
-    if (item === null || item.isBench || item.price <= 0) {
+    if (item === null || item.isBench || item.price <= 0 || item.rating === null) {
       continue;
     }
     const ratio = item.rating / item.price;
@@ -96,6 +96,11 @@ export function ResultsView({ players, results }: ResultsViewProps) {
                       <span className={`min-w-0 flex-1 truncate ${item.isBench ? "text-zinc-500" : ""}`}>
                         {item.name}
                       </span>
+                      {item.isMystery && (
+                        <span title="Was a mystery item" aria-label="Was a mystery item">
+                          🎁
+                        </span>
+                      )}
                       {/* Outside the truncated name so it's never cut off. */}
                       {item === bestValue && (
                         <span title="Best value: most rating per dollar" aria-label="Best value">
@@ -103,7 +108,7 @@ export function ResultsView({ players, results }: ResultsViewProps) {
                         </span>
                       )}
                       <span className="text-zinc-500 tabular-nums">${item.price}</span>
-                      <span className="w-7 text-right font-semibold tabular-nums">{item.rating}</span>
+                      <span className="w-7 text-right font-semibold tabular-nums">{item.rating ?? "?"}</span>
                     </li>
                   ) : null,
                 )}

@@ -1,4 +1,4 @@
-import { getBidBlockReason, minimumBid, type AuctionState, type PlayerState } from "@budget-draft/shared";
+import { getBidBlockReason, minimumBid, type AuctionState, type PublicPlayerState } from "@budget-draft/shared";
 import { Button } from "./ui";
 
 // Quick-bid steps: one tap raises the high bid by this much.
@@ -8,7 +8,7 @@ interface BidBarProps {
   turnLabel: string;
   auction: AuctionState;
   highBidderName: string | null;
-  bidder: PlayerState | undefined; // whose budget the buttons are checked against
+  bidder: PublicPlayerState | undefined; // whose budget the buttons are checked against
   canAct: boolean;
   busy?: boolean;
   onBid: (amount: number) => void;

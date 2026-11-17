@@ -1,9 +1,9 @@
-import { findMissingRoles, maxSpendable, type Item, type PlayerState } from "@budget-draft/shared";
+import { findMissingRoles, maxSpendable, type PublicItem, type PublicPlayerState } from "@budget-draft/shared";
 import { useAnimatedNumber } from "../lib/useAnimatedNumber";
 import { Avatar } from "./Avatar";
 
 interface PlayerColumnProps {
-  player: PlayerState;
+  player: PublicPlayerState;
   isCurrentTurn: boolean;
   cantAfford: boolean;
   isViewer?: boolean; // online: highlights "you"
@@ -58,7 +58,7 @@ export function PlayerColumn({
   );
 }
 
-function Slot({ index, item }: { index: number; item: Item | null }) {
+function Slot({ index, item }: { index: number; item: PublicItem | null }) {
   if (item === null) {
     return (
       <li className="flex h-11 items-center gap-2 rounded-lg border border-dashed border-zinc-700 px-2 text-zinc-600">
@@ -70,7 +70,7 @@ function Slot({ index, item }: { index: number; item: Item | null }) {
   return (
     <li
       className={`animate-slot-fill flex h-11 items-center gap-2 rounded-lg px-2 ${item.isBench ? "bg-zinc-800/50 text-zinc-400" : "bg-zinc-800"}`}
-      title={`${item.name} · ${item.tag} · $${item.price} · rating ${item.rating}`}
+      title={`${item.name} · ${item.tag} · $${item.price} · rating ${item.rating === null ? "hidden" : item.rating}`}
     >
       <span className="w-4 text-xs font-bold text-zinc-500 tabular-nums">{index + 1}</span>
       {/* On narrow phones with 3-4 columns, the avatar is dropped so the name has room. */}
@@ -83,13 +83,13 @@ function Slot({ index, item }: { index: number; item: Item | null }) {
           {item.tag} · ${item.price}
         </span>
       </span>
-      <span className="text-sm font-bold tabular-nums">{item.rating}</span>
+      <span className="text-sm font-bold tabular-nums">{item.rating === null ? "🎁" : item.rating}</span>
     </li>
   );
 }
 
 // Balanced team: every role, crossed off once the team has one.
-function RoleChips({ team, requiredRoles }: { team: (Item | null)[]; requiredRoles: string[] }) {
+function RoleChips({ team, requiredRoles }: { team: (PublicItem | null)[]; requiredRoles: string[] }) {
   const missing = findMissingRoles(team, requiredRoles);
   return (
     <ul className="mt-2 flex flex-wrap gap-1" aria-label="Roles for the balanced team bonus">

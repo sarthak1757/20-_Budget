@@ -1,4 +1,4 @@
-import type { Item } from "../types/item";
+import type { Item, PublicItem } from "../types/item";
 import type { AuctionState, GameState, PlayerState } from "../types/game";
 import type { EngineResult, PlayerAction } from "./engine";
 import { canSpend, findFirstEmptySlot, getSpendBlockReason } from "./rules";
@@ -20,7 +20,7 @@ export function minimumBid(auction: AuctionState): number {
 
 // Why this player can't bid this amount, or null if they can. Used by the
 // engine to reject bad bids and by the UI to grey out the quick-bid buttons.
-export function getBidBlockReason(player: PlayerState, auction: AuctionState, amount: number): string | null {
+export function getBidBlockReason(player: PlayerState<PublicItem>, auction: AuctionState, amount: number): string | null {
   if (!Number.isInteger(amount)) {
     return "Bids are whole dollars";
   }

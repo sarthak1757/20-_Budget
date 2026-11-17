@@ -1,20 +1,32 @@
-import { scoreTeam, type PlayerState } from "@budget-draft/shared";
+import type { PublicItem, PublicPlayerState } from "@budget-draft/shared";
 import type { ReactNode } from "react";
 import { Avatar } from "./Avatar";
 
 interface VotePanelProps {
   voterId: string;
   voterName: string;
-  players: PlayerState[];
+  players: PublicPlayerState[];
   selectedId?: string | undefined; // online: the vote already cast (can be changed)
   disabled?: boolean;
   timer?: ReactNode;
   onVote: (targetId: string) => void;
 }
 
+// Mystery ratings are revealed when the draft ends, so by voting time
+// every rating is known; a null (never expected here) counts as 0.
+function ratingTotal(team: (PublicItem | null)[]): number {
+  let total = 0;
+  for (const item of team) {
+    if (item !== null && item.rating !== null) {
+      total += item.rating;
+    }
+  }
+  return total;
+}
+
 // Everyone votes for the best team that isn't their own.
 export function VotePanel({ voterId, voterName, players, selectedId, disabled = false, timer, onVote }: VotePanelProps) {
-  const candidates: PlayerState[] = [];
+  const candidates: PublicPlayerState[] = [];
   for (const player of players) {
     if (player.id !== voterId) {
       candidates.push(player);
@@ -41,7 +53,7 @@ export function VotePanel({ voterId, voterName, players, selectedId, disabled = 
               className={`rounded-2xl border-2 bg-zinc-900 p-4 text-left transition hover:border-emerald-500 disabled:opacity-60 ${isSelected ? "border-emerald-400" : "border-zinc-800"}`}
             >
               <p className="text-lg font-bold">{player.name}</p>
-              <p className="mb-2 text-sm text-zinc-500">Rating total {scoreTeam(player).ratingTotal}</p>
+              <p className="mb-2 text-sm text-zinc-500">Rating total {ratingTotal(player.team)}</p>
               <ul className="grid grid-cols-1 gap-1">
                 {player.team.map((item, index) => (
                   <li key={index} className="flex items-center gap-2 text-sm">

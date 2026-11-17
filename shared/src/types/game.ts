@@ -1,4 +1,4 @@
-import type { CategorySlug, Item } from "./item";
+import type { CategorySlug, Item, PublicItem } from "./item";
 
 export type GameMode = "local" | "online" | "bot";
 
@@ -22,23 +22,25 @@ export interface GameSettings {
   powerUps: boolean; // Veto, Discount and Peek, once each per game
 }
 
-export interface PlayerState {
+// `I` is the item type: Item on the server (and in the local engine),
+// PublicItem in anything sent to or shown to players.
+export interface PlayerState<I extends PublicItem = Item> {
   id: string;
   name: string;
   isBot: boolean;
   isConnected: boolean;
   budget: number;
-  team: (Item | null)[]; // always slotCount long; null = empty slot
+  team: (I | null)[]; // always slotCount long; null = empty slot
 }
 
 // What happened during the last action. A single action can cause several
 // events (e.g. a pass that ends the round discards the item), so the
 // UI gets a list and can animate each one.
-export type GameEvent =
-  | { type: "bought"; playerId: string; item: Item; price: number } // price = what they actually paid
-  | { type: "bid"; playerId: string; item: Item; amount: number }
-  | { type: "passed"; playerId: string; item: Item; auto: boolean }
-  | { type: "discarded"; item: Item };
+export type GameEvent<I extends PublicItem = Item> =
+  | { type: "bought"; playerId: string; item: I; price: number } // price = what they actually paid
+  | { type: "bid"; playerId: string; item: I; amount: number }
+  | { type: "passed"; playerId: string; item: I; auto: boolean }
+  | { type: "discarded"; item: I };
 
 // The live auction for the current item (auction draft style only).
 export interface AuctionState {
@@ -65,13 +67,20 @@ export interface GameState {
   lastEvents: GameEvent[];
 }
 
+export type PublicPlayerState = PlayerState<PublicItem>;
+export type PublicGameEvent = GameEvent<PublicItem>;
+
 // The version of GameState that is safe to send to players.
 // `itemPool?: never` is the important part: without it, TypeScript would
 // happily accept a full GameState here (extra properties are allowed when
 // assigning objects), and the hidden pool could leak to clients.
-export type PublicGameState = Omit<GameState, "itemPool"> & {
+// Items are PublicItems, so mystery ratings can be hidden.
+export type PublicGameState = Omit<GameState, "itemPool" | "players" | "currentItem" | "lastEvents"> & {
   itemPool?: never;
   itemsRemaining: number;
+  players: PublicPlayerState[];
+  currentItem: PublicItem | null;
+  lastEvents: PublicGameEvent[];
 };
 
 export interface FinalScore {

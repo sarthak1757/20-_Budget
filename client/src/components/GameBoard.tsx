@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import {
   getBuyBlockReason,
   getCurrentPlayerId,
-  type PlayerState,
+  type PublicPlayerState,
   type PublicGameState,
   type TurnMove,
 } from "@budget-draft/shared";
@@ -24,7 +24,7 @@ interface GameBoardProps {
   onMove: (move: TurnMove) => void;
 }
 
-function findPlayer(players: PlayerState[], id: string | null): PlayerState | undefined {
+function findPlayer(players: PublicPlayerState[], id: string | null): PublicPlayerState | undefined {
   for (const player of players) {
     if (player.id === id) {
       return player;
@@ -56,7 +56,7 @@ export function GameBoard({ state, viewerId, canAct, busy = false, turnLabel, ti
   const leftPlayers = state.players.slice(0, half);
   const rightPlayers = state.players.slice(half);
 
-  function renderColumn(player: PlayerState) {
+  function renderColumn(player: PublicPlayerState) {
     return (
       <PlayerColumn
         key={player.id}

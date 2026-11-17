@@ -1,5 +1,5 @@
 import type { GameResults, GameSettings, PublicGameState } from "./game";
-import type { Item } from "./item";
+import type { PublicItem } from "./item";
 import type {
   GameSettingsPayload,
   RoomJoinPayload,
@@ -40,7 +40,7 @@ export interface ClientToServerEvents {
 
 export interface ServerToClientEvents {
   "room:update": (room: RoomSnapshot) => void;
-  "item:reveal": (payload: { item: Item; state: PublicGameState }) => void;
+  "item:reveal": (payload: { item: PublicItem; state: PublicGameState }) => void;
   "game:state": (state: PublicGameState) => void;
   "game:end": (payload: { state: PublicGameState; results: GameResults }) => void;
   "server:error": (message: string) => void;

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router";
-import { getCurrentPlayerId, type PlayerState, type RoomSnapshot } from "@budget-draft/shared";
+import { getCurrentPlayerId, type PublicPlayerState, type RoomSnapshot } from "@budget-draft/shared";
 import { Countdown } from "../components/Countdown";
 import { GameBoard } from "../components/GameBoard";
 import { LobbyView } from "../components/LobbyView";
@@ -103,7 +103,7 @@ function RoomContent({ room, playerId, categories, busy, onLeave }: RoomContentP
     );
   }
 
-  const me: PlayerState | undefined = game.players.find((player) => player.id === playerId);
+  const me: PublicPlayerState | undefined = game.players.find((player) => player.id === playerId);
 
   if (game.phase === "finished") {
     return (

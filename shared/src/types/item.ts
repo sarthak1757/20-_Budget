@@ -11,7 +11,12 @@ export interface Item {
   tag: string; // short role label, e.g. "Striker"
   emoji?: string; // optional; the UI falls back to an initials avatar
   isBench?: boolean; // true for the $0 filler items added when the pool runs out
+  isMystery?: boolean; // Mystery items: the rating stays hidden until the draft ends
 }
+
+// An item as players see it. A mystery item's rating is null until the
+// draft ends, so the UI is forced (by the compiler) to handle "unknown".
+export type PublicItem = Omit<Item, "rating"> & { rating: number | null };
 
 export interface Category {
   slug: CategorySlug;

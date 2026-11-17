@@ -143,8 +143,9 @@ export class GameRunner {
     }
 
     const publicState = toPublicState(game);
-    if (game.currentItem !== null && game.roundNumber !== previousRound) {
-      this.io.to(room.code).emit("item:reveal", { item: game.currentItem, state: publicState });
+    // Send the public copy of the item, never game.currentItem: a mystery item's rating must stay hidden.
+    if (publicState.currentItem !== null && game.roundNumber !== previousRound) {
+      this.io.to(room.code).emit("item:reveal", { item: publicState.currentItem, state: publicState });
     } else {
       this.io.to(room.code).emit("game:state", publicState);
     }

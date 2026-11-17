@@ -1,8 +1,8 @@
-import type { Item } from "@budget-draft/shared";
+import type { PublicItem } from "@budget-draft/shared";
 import { Avatar } from "./Avatar";
 
 interface ItemCardProps {
-  item: Item;
+  item: PublicItem;
   roundNumber: number;
   itemsRemaining: number;
   isAuction?: boolean; // the listed price is only a guide: bids decide what's paid
@@ -23,6 +23,11 @@ export function ItemCard({ item, roundNumber, itemsRemaining, isAuction = false 
         <Avatar name={item.name} emoji={item.emoji} size="lg" />
       </div>
       <h2 className="mt-3 text-2xl leading-tight font-black">{item.name}</h2>
+      {item.isMystery && (
+        <p className="mx-auto mt-2 w-fit rounded-full bg-violet-900/60 px-3 py-0.5 text-xs font-bold text-violet-200">
+          🎁 Mystery: rating revealed at the end
+        </p>
+      )}
       <p className="mt-1 text-sm text-zinc-400">{item.tag}</p>
 
       <div className="mt-4 grid grid-cols-2 gap-3">
@@ -32,11 +37,13 @@ export function ItemCard({ item, roundNumber, itemsRemaining, isAuction = false 
         </div>
         <div className="rounded-2xl bg-zinc-950/60 p-3">
           <p className="text-xs text-zinc-500 uppercase">Rating</p>
-          <p className="text-3xl font-black tabular-nums">{item.rating}</p>
+          <p className="text-3xl font-black tabular-nums">{item.rating === null ? "?" : item.rating}</p>
         </div>
       </div>
       <div className="mt-3 h-2 overflow-hidden rounded-full bg-zinc-800" aria-hidden>
-        <div className="h-full rounded-full bg-emerald-400" style={{ width: `${item.rating}%` }} />
+        {item.rating !== null && (
+          <div className="h-full rounded-full bg-emerald-400" style={{ width: `${item.rating}%` }} />
+        )}
       </div>
     </article>
   );
