@@ -84,7 +84,8 @@ export function ResultsView({ players, results }: ResultsViewProps) {
                 <div className="bg-amber-400" style={{ width: `${100 - ratingShare}%` }} />
               </div>
               <p className="mt-2 mb-3 text-sm text-zinc-400">
-                {score.ratingTotal} rating + {score.leftoverBonus} leftover bonus
+                {score.ratingTotal} rating + {score.leftoverBonus} leftover
+                {score.roleBonus > 0 && ` + ${score.roleBonus} balanced team`}
                 {results.votingHeld && ` · ${score.votesReceived} vote${score.votesReceived === 1 ? "" : "s"}`}
               </p>
               <ol className="grid grid-cols-1 gap-1.5">

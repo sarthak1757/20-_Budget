@@ -66,6 +66,7 @@ export function GameBoard({ state, viewerId, canAct, busy = false, turnLabel, ti
         isViewer={player.id === viewerId}
         justBought={boughtBy === player.id}
         isHighBidder={state.auction !== null && state.auction.highBidderId === player.id}
+        requiredRoles={state.requiredRoles}
       />
     );
   }

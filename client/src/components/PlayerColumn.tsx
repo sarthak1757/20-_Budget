@@ -1,4 +1,4 @@
-import { maxSpendable, type Item, type PlayerState } from "@budget-draft/shared";
+import { findMissingRoles, maxSpendable, type Item, type PlayerState } from "@budget-draft/shared";
 import { useAnimatedNumber } from "../lib/useAnimatedNumber";
 import { Avatar } from "./Avatar";
 
@@ -9,6 +9,7 @@ interface PlayerColumnProps {
   isViewer?: boolean; // online: highlights "you"
   justBought?: boolean; // plays a short glow after this player buys
   isHighBidder?: boolean; // auction: holds the current high bid
+  requiredRoles?: string[]; // Balanced team: roles to cover. Empty = not playing it.
 }
 
 export function PlayerColumn({
@@ -18,6 +19,7 @@ export function PlayerColumn({
   isViewer = false,
   justBought = false,
   isHighBidder = false,
+  requiredRoles = [],
 }: PlayerColumnProps) {
   const shownBudget = useAnimatedNumber(player.budget);
   const border = isCurrentTurn ? "border-emerald-400 shadow-lg shadow-emerald-500/20" : "border-zinc-800";
@@ -51,6 +53,7 @@ export function PlayerColumn({
           <Slot key={index} index={index} item={item} />
         ))}
       </ol>
+      {requiredRoles.length > 0 && <RoleChips team={player.team} requiredRoles={requiredRoles} />}
     </section>
   );
 }
@@ -82,5 +85,27 @@ function Slot({ index, item }: { index: number; item: Item | null }) {
       </span>
       <span className="text-sm font-bold tabular-nums">{item.rating}</span>
     </li>
+  );
+}
+
+// Balanced team: every role, crossed off once the team has one.
+function RoleChips({ team, requiredRoles }: { team: (Item | null)[]; requiredRoles: string[] }) {
+  const missing = findMissingRoles(team, requiredRoles);
+  return (
+    <ul className="mt-2 flex flex-wrap gap-1" aria-label="Roles for the balanced team bonus">
+      {requiredRoles.map((role) => {
+        const covered = !missing.includes(role);
+        return (
+          <li
+            key={role}
+            className={`rounded-full px-2 py-0.5 text-[11px] ${covered ? "bg-emerald-900/60 text-emerald-300" : "border border-dashed border-zinc-600 text-zinc-400"}`}
+          >
+            {covered ? "✓ " : ""}
+            {role}
+            <span className="sr-only">{covered ? " covered" : " needed"}</span>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
