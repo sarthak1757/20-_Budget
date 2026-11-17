@@ -1,0 +1,278 @@
+{
+  "slug": "f1-drivers",
+  "name": "F1 Drivers",
+  "emoji": "🏎️",
+  "description": "World champions, race winners, rookies and backmarkers from Formula 1 history.",
+  "items": [
+    {
+      "name": "Ayrton Senna",
+      "price": 10,
+      "rating": 98,
+      "tag": "Legend"
+    },
+    {
+      "name": "Michael Schumacher",
+      "price": 10,
+      "rating": 98,
+      "tag": "Legend"
+    },
+    {
+      "name": "Max Verstappen",
+      "price": 10,
+      "rating": 97,
+      "tag": "Champion"
+    },
+    {
+      "name": "Lewis Hamilton",
+      "price": 10,
+      "rating": 96,
+      "tag": "Champion"
+    },
+    {
+      "name": "Alain Prost",
+      "price": 9,
+      "rating": 94,
+      "tag": "Legend"
+    },
+    {
+      "name": "Juan Manuel Fangio",
+      "price": 9,
+      "rating": 93,
+      "tag": "Legend"
+    },
+    {
+      "name": "Fernando Alonso",
+      "price": 9,
+      "rating": 92,
+      "tag": "Champion"
+    },
+    {
+      "name": "Charles Leclerc",
+      "price": 9,
+      "rating": 91,
+      "tag": "Race Winner"
+    },
+    {
+      "name": "Sebastian Vettel",
+      "price": 9,
+      "rating": 90,
+      "tag": "Champion"
+    },
+    {
+      "name": "Lando Norris",
+      "price": 9,
+      "rating": 90,
+      "tag": "Champion"
+    },
+    {
+      "name": "Niki Lauda",
+      "price": 8,
+      "rating": 89,
+      "tag": "Legend"
+    },
+    {
+      "name": "Jim Clark",
+      "price": 8,
+      "rating": 89,
+      "tag": "Legend"
+    },
+    {
+      "name": "Jackie Stewart",
+      "price": 8,
+      "rating": 88,
+      "tag": "Legend"
+    },
+    {
+      "name": "Mika Häkkinen",
+      "price": 8,
+      "rating": 88,
+      "tag": "Champion"
+    },
+    {
+      "name": "Oscar Piastri",
+      "price": 5,
+      "rating": 87,
+      "tag": "Race Winner"
+    },
+    {
+      "name": "Kimi Räikkönen",
+      "price": 8,
+      "rating": 86,
+      "tag": "Champion"
+    },
+    {
+      "name": "Nigel Mansell",
+      "price": 8,
+      "rating": 86,
+      "tag": "Champion"
+    },
+    {
+      "name": "George Russell",
+      "price": 8,
+      "rating": 85,
+      "tag": "Race Winner"
+    },
+    {
+      "name": "Nico Rosberg",
+      "price": 8,
+      "rating": 85,
+      "tag": "Champion"
+    },
+    {
+      "name": "Carlos Sainz",
+      "price": 7,
+      "rating": 84,
+      "tag": "Race Winner"
+    },
+    {
+      "name": "Jenson Button",
+      "price": 7,
+      "rating": 83,
+      "tag": "Champion"
+    },
+    {
+      "name": "Damon Hill",
+      "price": 7,
+      "rating": 80,
+      "tag": "Champion"
+    },
+    {
+      "name": "Daniel Ricciardo",
+      "price": 6,
+      "rating": 78,
+      "tag": "Race Winner"
+    },
+    {
+      "name": "Felipe Massa",
+      "price": 6,
+      "rating": 78,
+      "tag": "Race Winner"
+    },
+    {
+      "name": "Mark Webber",
+      "price": 6,
+      "rating": 77,
+      "tag": "Race Winner"
+    },
+    {
+      "name": "Sergio Pérez",
+      "price": 6,
+      "rating": 76,
+      "tag": "Race Winner"
+    },
+    {
+      "name": "Rubens Barrichello",
+      "price": 6,
+      "rating": 76,
+      "tag": "Race Winner"
+    },
+    {
+      "name": "Valtteri Bottas",
+      "price": 6,
+      "rating": 75,
+      "tag": "Race Winner"
+    },
+    {
+      "name": "Pierre Gasly",
+      "price": 5,
+      "rating": 74,
+      "tag": "Race Winner"
+    },
+    {
+      "name": "Kimi Antonelli",
+      "price": 2,
+      "rating": 73,
+      "tag": "Rookie"
+    },
+    {
+      "name": "Esteban Ocon",
+      "price": 5,
+      "rating": 72,
+      "tag": "Race Winner"
+    },
+    {
+      "name": "Alexander Albon",
+      "price": 4,
+      "rating": 68,
+      "tag": "Midfielder"
+    },
+    {
+      "name": "Nico Hülkenberg",
+      "price": 1,
+      "rating": 67,
+      "tag": "Veteran"
+    },
+    {
+      "name": "Yuki Tsunoda",
+      "price": 4,
+      "rating": 65,
+      "tag": "Midfielder"
+    },
+    {
+      "name": "Oliver Bearman",
+      "price": 3,
+      "rating": 64,
+      "tag": "Rookie"
+    },
+    {
+      "name": "Kevin Magnussen",
+      "price": 3,
+      "rating": 62,
+      "tag": "Veteran"
+    },
+    {
+      "name": "Romain Grosjean",
+      "price": 3,
+      "rating": 61,
+      "tag": "Veteran"
+    },
+    {
+      "name": "Lance Stroll",
+      "price": 7,
+      "rating": 60,
+      "tag": "Midfielder"
+    },
+    {
+      "name": "Kamui Kobayashi",
+      "price": 2,
+      "rating": 58,
+      "tag": "Fan Favourite"
+    },
+    {
+      "name": "Marcus Ericsson",
+      "price": 1,
+      "rating": 52,
+      "tag": "Midfielder"
+    },
+    {
+      "name": "Pastor Maldonado",
+      "price": 1,
+      "rating": 50,
+      "tag": "Race Winner"
+    },
+    {
+      "name": "Jolyon Palmer",
+      "price": 1,
+      "rating": 46,
+      "tag": "Backmarker"
+    },
+    {
+      "name": "Logan Sargeant",
+      "price": 4,
+      "rating": 45,
+      "tag": "Rookie"
+    },
+    {
+      "name": "Max Chilton",
+      "price": 1,
+      "rating": 44,
+      "tag": "Backmarker"
+    },
+    {
+      "name": "Nicholas Latifi",
+      "price": 5,
+      "rating": 42,
+      "tag": "Backmarker"
+    }
+  ]
+}
