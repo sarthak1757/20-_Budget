@@ -5,12 +5,15 @@ import {
   createGame,
   endVoting,
   getCurrentPlayerId,
+  peekNextItem,
+  toPublicItem,
   toPublicState,
   type GameResults,
   type GameState,
   type Item,
   type NewPlayer,
   type PlayerAction,
+  type PublicItem,
   type TurnActionPayload,
 } from "@budget-draft/shared";
 import { toRoomSnapshot, type Room } from "../rooms/room";
@@ -99,6 +102,26 @@ export class GameRunner {
     room.game = result.state;
     this.afterChange(room, game.roundNumber);
     return { ok: true };
+  }
+
+  // Peek power-up: the item goes back to this player only (in the socket ack).
+  // Everyone else just gets a state where the peek is marked as used.
+  handlePeek(room: Room, playerId: string, roundNumber: number): { ok: true; item: PublicItem } | { ok: false; error: string } {
+    const game = room.game;
+    if (game === null) {
+      return { ok: false, error: "The game hasn't started" };
+    }
+    if (roundNumber !== game.roundNumber) {
+      return { ok: false, error: "That item is gone. Too slow!" };
+    }
+    const result = peekNextItem(game, playerId);
+    if (!result.ok) {
+      return result;
+    }
+    room.game = result.state;
+    this.afterChange(room, game.roundNumber);
+    // Still drafting, so a mystery item's rating stays hidden even from the peeker.
+    return { ok: true, item: toPublicItem(result.nextItem, true) };
   }
 
   handleVote(room: Room, voterId: string, targetId: string): RunnerResult {

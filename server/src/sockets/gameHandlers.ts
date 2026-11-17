@@ -1,4 +1,4 @@
-import { turnActionSchema, voteCastSchema } from "@budget-draft/shared";
+import { peekSchema, turnActionSchema, voteCastSchema, type PublicItem } from "@budget-draft/shared";
 import type { Room } from "../rooms/room";
 import type { SocketContext } from "./context";
 import { safeAck, type GameSocket } from "./types";
@@ -48,6 +48,22 @@ export function registerGameHandlers(socket: GameSocket, ctx: SocketContext): vo
     // so nobody can act on someone else's behalf.
     const result = ctx.runner.handleAction(seat.room, seat.playerId, parsed.data);
     reply(result.ok ? { ok: true, data: null } : result);
+  });
+
+  socket.on("turn:peek", (payload, ack) => {
+    const reply = safeAck<{ item: PublicItem }>(ack);
+    const parsed = peekSchema.safeParse(payload);
+    if (!parsed.success) {
+      reply({ ok: false, error: parsed.error.issues[0]?.message ?? "Invalid request" });
+      return;
+    }
+    const seat = getSeat(socket, ctx);
+    if (typeof seat === "string") {
+      reply({ ok: false, error: seat });
+      return;
+    }
+    const result = ctx.runner.handlePeek(seat.room, seat.playerId, parsed.data.roundNumber);
+    reply(result.ok ? { ok: true, data: { item: result.item } } : result);
   });
 
   socket.on("vote:cast", (payload, ack) => {
