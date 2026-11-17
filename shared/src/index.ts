@@ -13,3 +13,4 @@ export * from "./game/scoring";
 export * from "./game/engine";
 export * from "./game/bot";
 export * from "./game/publicState";
+export * from "./game/presets";
