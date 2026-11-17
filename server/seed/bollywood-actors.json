@@ -1,0 +1,278 @@
+{
+  "slug": "bollywood-actors",
+  "name": "Bollywood Actors",
+  "emoji": "🎬",
+  "description": "Superstars, leading ladies, character actors and comedians from Hindi cinema.",
+  "items": [
+    {
+      "name": "Amitabh Bachchan",
+      "price": 10,
+      "rating": 98,
+      "tag": "Legend"
+    },
+    {
+      "name": "Shah Rukh Khan",
+      "price": 10,
+      "rating": 97,
+      "tag": "Superstar"
+    },
+    {
+      "name": "Irrfan Khan",
+      "price": 9,
+      "rating": 94,
+      "tag": "Legend"
+    },
+    {
+      "name": "Aamir Khan",
+      "price": 9,
+      "rating": 93,
+      "tag": "Superstar"
+    },
+    {
+      "name": "Madhuri Dixit",
+      "price": 9,
+      "rating": 93,
+      "tag": "Leading Lady"
+    },
+    {
+      "name": "Deepika Padukone",
+      "price": 9,
+      "rating": 92,
+      "tag": "Leading Lady"
+    },
+    {
+      "name": "Alia Bhatt",
+      "price": 9,
+      "rating": 92,
+      "tag": "Leading Lady"
+    },
+    {
+      "name": "Salman Khan",
+      "price": 9,
+      "rating": 91,
+      "tag": "Superstar"
+    },
+    {
+      "name": "Hrithik Roshan",
+      "price": 9,
+      "rating": 91,
+      "tag": "Action Hero"
+    },
+    {
+      "name": "Ranbir Kapoor",
+      "price": 9,
+      "rating": 90,
+      "tag": "Romantic Lead"
+    },
+    {
+      "name": "Priyanka Chopra",
+      "price": 9,
+      "rating": 90,
+      "tag": "Leading Lady"
+    },
+    {
+      "name": "Ranveer Singh",
+      "price": 8,
+      "rating": 88,
+      "tag": "Superstar"
+    },
+    {
+      "name": "Nawazuddin Siddiqui",
+      "price": 8,
+      "rating": 87,
+      "tag": "Character Actor"
+    },
+    {
+      "name": "Akshay Kumar",
+      "price": 8,
+      "rating": 86,
+      "tag": "Action Hero"
+    },
+    {
+      "name": "Rajkummar Rao",
+      "price": 5,
+      "rating": 86,
+      "tag": "Character Actor"
+    },
+    {
+      "name": "Vidya Balan",
+      "price": 8,
+      "rating": 86,
+      "tag": "Leading Lady"
+    },
+    {
+      "name": "Ajay Devgn",
+      "price": 8,
+      "rating": 85,
+      "tag": "Action Hero"
+    },
+    {
+      "name": "Kareena Kapoor",
+      "price": 8,
+      "rating": 85,
+      "tag": "Leading Lady"
+    },
+    {
+      "name": "Vicky Kaushal",
+      "price": 8,
+      "rating": 85,
+      "tag": "Leading Man"
+    },
+    {
+      "name": "Pankaj Tripathi",
+      "price": 4,
+      "rating": 84,
+      "tag": "Character Actor"
+    },
+    {
+      "name": "Ayushmann Khurrana",
+      "price": 7,
+      "rating": 83,
+      "tag": "Leading Man"
+    },
+    {
+      "name": "Manoj Bajpayee",
+      "price": 7,
+      "rating": 82,
+      "tag": "Character Actor"
+    },
+    {
+      "name": "Katrina Kaif",
+      "price": 7,
+      "rating": 80,
+      "tag": "Leading Lady"
+    },
+    {
+      "name": "Anushka Sharma",
+      "price": 6,
+      "rating": 79,
+      "tag": "Leading Lady"
+    },
+    {
+      "name": "Saif Ali Khan",
+      "price": 6,
+      "rating": 79,
+      "tag": "Leading Man"
+    },
+    {
+      "name": "Shahid Kapoor",
+      "price": 6,
+      "rating": 78,
+      "tag": "Romantic Lead"
+    },
+    {
+      "name": "Paresh Rawal",
+      "price": 6,
+      "rating": 78,
+      "tag": "Comedian"
+    },
+    {
+      "name": "Taapsee Pannu",
+      "price": 6,
+      "rating": 76,
+      "tag": "Leading Lady"
+    },
+    {
+      "name": "Kriti Sanon",
+      "price": 6,
+      "rating": 75,
+      "tag": "Leading Lady"
+    },
+    {
+      "name": "Kartik Aaryan",
+      "price": 5,
+      "rating": 74,
+      "tag": "Romantic Lead"
+    },
+    {
+      "name": "Varun Dhawan",
+      "price": 5,
+      "rating": 73,
+      "tag": "Romantic Lead"
+    },
+    {
+      "name": "Johnny Lever",
+      "price": 2,
+      "rating": 72,
+      "tag": "Comedian"
+    },
+    {
+      "name": "Sunny Deol",
+      "price": 4,
+      "rating": 69,
+      "tag": "Action Hero"
+    },
+    {
+      "name": "Tiger Shroff",
+      "price": 8,
+      "rating": 66,
+      "tag": "Action Hero"
+    },
+    {
+      "name": "Sidharth Malhotra",
+      "price": 4,
+      "rating": 65,
+      "tag": "Romantic Lead"
+    },
+    {
+      "name": "Rajpal Yadav",
+      "price": 3,
+      "rating": 64,
+      "tag": "Comedian"
+    },
+    {
+      "name": "Gulshan Grover",
+      "price": 3,
+      "rating": 63,
+      "tag": "Villain"
+    },
+    {
+      "name": "Sara Ali Khan",
+      "price": 3,
+      "rating": 62,
+      "tag": "Newcomer"
+    },
+    {
+      "name": "Shakti Kapoor",
+      "price": 2,
+      "rating": 58,
+      "tag": "Villain"
+    },
+    {
+      "name": "Ananya Panday",
+      "price": 2,
+      "rating": 55,
+      "tag": "Newcomer"
+    },
+    {
+      "name": "Arjun Kapoor",
+      "price": 6,
+      "rating": 52,
+      "tag": "Leading Man"
+    },
+    {
+      "name": "Tusshar Kapoor",
+      "price": 4,
+      "rating": 46,
+      "tag": "Comedian"
+    },
+    {
+      "name": "Uday Chopra",
+      "price": 1,
+      "rating": 45,
+      "tag": "Leading Man"
+    },
+    {
+      "name": "Jackky Bhagnani",
+      "price": 1,
+      "rating": 44,
+      "tag": "Leading Man"
+    },
+    {
+      "name": "Harman Baweja",
+      "price": 1,
+      "rating": 44,
+      "tag": "Leading Man"
+    }
+  ]
+}
