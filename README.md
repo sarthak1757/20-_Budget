@@ -16,7 +16,7 @@ Mongoose and Socket.io.
 | --- | --- | --- |
 | 📱 Pass & Play | 2–4 players on one device. A "pass the device" screen between turns. | No (uses bundled data) |
 | 🌐 Online Room | Create a room, share the 6-letter code or link. 15s turn timer. | Yes |
-| 🤖 Solo vs Bots | You against 1–3 bots that look for good value. | No |
+| 🤖 Solo vs Bots | You against 1–3 bots (easy, medium or hard). | No |
 
 Every mode can be played in either **draft style**, with any mix of the **extras**:
 
@@ -239,6 +239,24 @@ UI uses the same function to grey out BUY and explain why.
     who could only afford the item with their Discount is still asked.
   - **Peek**: see the next item. Online it comes back only to you; everyone else just sees
     that you peeked. On a shared device it's shown only while it's still your turn.
+
+### Bots
+
+Bots play fair. They never see the full game state, only what a player sees plus the list of
+items not revealed yet, **sorted by rating**. A careful human could work that list out
+from the category; the secret part, the order of the pile, stays hidden. Bots guess a
+mystery item's rating from its price.
+
+| Level | How it plays |
+| --- | --- |
+| Easy | Takes an item when its rating per dollar is at least 11. Never pays for stars. |
+| Medium | Compares the item with the average rating still to come. Below average only as a bargain, above average up to its per-slot budget, and a fair price plus $2 for a star. |
+| Hard | Plans its budget across all its empty slots: is "this item now + the best plan for my other slots" better than "the best plan without it"? The plan is a small knapsack over the items still to come, thinned out for the other players. The same sum gives its highest auction bid. With Balanced team on, it values roles it still needs. |
+
+`shared/src/game/__tests__/botDifficulty.test.ts` plays 200 seeded games per check on the
+real seed categories, swapping seats each game. Hard must beat easy in at least 70% of
+games (it wins about 98% in Classic and Auction), and easy vs easy must stay between 40% and
+60% so neither seat is favoured.
 
 ### Scoring and voting
 
