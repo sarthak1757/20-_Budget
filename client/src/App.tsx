@@ -1,4 +1,5 @@
 import { Link, Route, Routes } from "react-router";
+import { Toaster } from "./components/Toaster";
 import { PageShell } from "./components/ui";
 import { AdminPage } from "./pages/AdminPage";
 import { CategoryPickerPage } from "./pages/CategoryPickerPage";
@@ -12,19 +13,22 @@ import { RoomPage } from "./pages/RoomPage";
 
 export function App() {
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/new/:mode" element={<CategoryPickerPage />} />
-      <Route path="/new/:mode/:categorySlug" element={<NewGamePage />} />
-      <Route path="/play" element={<LocalGamePage />} />
-      <Route path="/results" element={<LocalResultsPage />} />
-      <Route path="/join" element={<JoinPage />} />
-      <Route path="/join/:code" element={<JoinPage />} />
-      <Route path="/room/:code" element={<RoomPage />} />
-      <Route path="/leaderboard" element={<LeaderboardPage />} />
-      <Route path="/admin" element={<AdminPage />} />
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
+    <>
+      <Toaster />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/new/:mode" element={<CategoryPickerPage />} />
+        <Route path="/new/:mode/:categorySlug" element={<NewGamePage />} />
+        <Route path="/play" element={<LocalGamePage />} />
+        <Route path="/results" element={<LocalResultsPage />} />
+        <Route path="/join" element={<JoinPage />} />
+        <Route path="/join/:code" element={<JoinPage />} />
+        <Route path="/room/:code" element={<RoomPage />} />
+        <Route path="/leaderboard" element={<LeaderboardPage />} />
+        <Route path="/admin" element={<AdminPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </>
   );
 }
 
