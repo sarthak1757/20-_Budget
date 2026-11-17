@@ -1,4 +1,4 @@
-import type { GameResults, PublicItem, PublicPlayerState } from "@budget-draft/shared";
+import { pricePaid, type GameResults, type PublicItem, type PublicPlayerState } from "@budget-draft/shared";
 import { Avatar } from "./Avatar";
 
 interface ResultsViewProps {
@@ -18,15 +18,16 @@ function namesFor(ids: string[], players: PublicPlayerState[]): string {
   return names.join(" & ");
 }
 
-// The item with the most rating per dollar: the smartest buy on a team.
+// The item with the most rating per dollar paid: the smartest buy on a team.
 export function findBestValue(team: (PublicItem | null)[]): PublicItem | null {
   let best: PublicItem | null = null;
   let bestRatio = 0;
   for (const item of team) {
-    if (item === null || item.isBench || item.price <= 0 || item.rating === null) {
+    const paid = item === null ? 0 : pricePaid(item);
+    if (item === null || item.isBench || paid <= 0 || item.rating === null) {
       continue;
     }
-    const ratio = item.rating / item.price;
+    const ratio = item.rating / paid;
     if (ratio > bestRatio) {
       bestRatio = ratio;
       best = item;
@@ -107,7 +108,7 @@ export function ResultsView({ players, results }: ResultsViewProps) {
                           💎
                         </span>
                       )}
-                      <span className="text-zinc-500 tabular-nums">${item.price}</span>
+                      <span className="text-zinc-500 tabular-nums">${pricePaid(item)}</span>
                       <span className="w-7 text-right font-semibold tabular-nums">{item.rating ?? "?"}</span>
                     </li>
                   ) : null,

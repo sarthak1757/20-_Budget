@@ -1,4 +1,4 @@
-import { findMissingRoles, maxSpendable, type PublicItem, type PublicPlayerState } from "@budget-draft/shared";
+import { findMissingRoles, maxSpendable, pricePaid, type PublicItem, type PublicPlayerState } from "@budget-draft/shared";
 import { useAnimatedNumber } from "../lib/useAnimatedNumber";
 import { Avatar } from "./Avatar";
 
@@ -70,7 +70,7 @@ function Slot({ index, item }: { index: number; item: PublicItem | null }) {
   return (
     <li
       className={`animate-slot-fill flex h-11 items-center gap-2 rounded-lg px-2 ${item.isBench ? "bg-zinc-800/50 text-zinc-400" : "bg-zinc-800"}`}
-      title={`${item.name} · ${item.tag} · $${item.price} · rating ${item.rating === null ? "hidden" : item.rating}`}
+      title={`${item.name} · ${item.tag} · paid $${pricePaid(item)} (listed $${item.price}) · rating ${item.rating === null ? "hidden" : item.rating}`}
     >
       <span className="w-4 text-xs font-bold text-zinc-500 tabular-nums">{index + 1}</span>
       {/* On narrow phones with 3-4 columns, the avatar is dropped so the name has room. */}
@@ -80,7 +80,7 @@ function Slot({ index, item }: { index: number; item: PublicItem | null }) {
       <span className="min-w-0 flex-1">
         <span className="block truncate text-sm leading-tight font-semibold">{item.name}</span>
         <span className="block truncate text-[11px] leading-tight text-zinc-500">
-          {item.tag} · ${item.price}
+          {item.tag} · ${pricePaid(item)}
         </span>
       </span>
       <span className="text-sm font-bold tabular-nums">{item.rating === null ? "🎁" : item.rating}</span>

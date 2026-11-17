@@ -173,7 +173,7 @@ export function applyAction(state: GameState, action: PlayerAction, now: number)
       return { ok: false, error: blockReason };
     }
     const slotIndex = findFirstEmptySlot(player);
-    player.team[slotIndex] = item;
+    player.team[slotIndex] = { ...item, paidPrice: item.price };
     player.budget -= item.price;
     next.lastEvents.push({ type: "bought", playerId: player.id, item, price: item.price });
     endRound(next, now);
@@ -308,7 +308,7 @@ function applyPowerUp(next: GameState, player: PlayerState, powerUp: "veto" | "d
   }
 
   const price = discountedPrice(item.price);
-  player.team[findFirstEmptySlot(player)] = item;
+  player.team[findFirstEmptySlot(player)] = { ...item, paidPrice: price };
   player.budget -= price;
   next.lastEvents.push({ type: "bought", playerId: player.id, item, price });
   endRound(next, now);

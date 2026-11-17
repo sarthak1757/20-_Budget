@@ -1,4 +1,4 @@
-import type { GameResults, GameState, LeaderboardEntry } from "@budget-draft/shared";
+import { pricePaid, type GameResults, type GameState, type LeaderboardEntry } from "@budget-draft/shared";
 import { GameResultModel, type PlayerResult, type TeamItemSnapshot } from "../models/GameResult";
 
 // Turns a finished game into a GameResult document and saves it.
@@ -10,7 +10,8 @@ export async function saveGameResult(state: GameState, results: GameResults, roo
       if (item !== null) {
         team.push({
           name: item.name,
-          price: item.price,
+          price: pricePaid(item), // what was paid, so price + money left adds up
+
           rating: item.rating,
           tag: item.tag,
           isBench: item.isBench === true,

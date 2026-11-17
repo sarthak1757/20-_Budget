@@ -110,7 +110,7 @@ function awardItem(next: GameState, item: Item, winnerId: string, price: number)
   }
   // The bid was checked against the budget rule when it was placed, and
   // budgets don't change during a round, so the winner can always pay.
-  winner.team[findFirstEmptySlot(winner)] = item;
+  winner.team[findFirstEmptySlot(winner)] = { ...item, paidPrice: price };
   winner.budget -= price;
   next.lastEvents.push({ type: "bought", playerId: winner.id, item, price });
 }

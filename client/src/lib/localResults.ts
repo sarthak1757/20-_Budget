@@ -1,4 +1,4 @@
-import type { GameState, LocalResultPayload } from "@budget-draft/shared";
+import { pricePaid, type GameState, type LocalResultPayload } from "@budget-draft/shared";
 import { apiRequest } from "./api";
 
 // Shapes a finished local/bot game the way POST /api/results expects.
@@ -13,7 +13,8 @@ export function buildLocalResultPayload(game: GameState): LocalResultPayload | n
       if (item !== null) {
         team.push({
           name: item.name,
-          price: item.price,
+          // What was paid: the server checks paid + money left = starting budget.
+          price: pricePaid(item),
           rating: item.rating,
           tag: item.tag,
           isBench: item.isBench === true,

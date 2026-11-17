@@ -84,6 +84,7 @@ describe("auction: winning and discarding", () => {
     const winner = state.players.find((p) => p.id === "p2");
     expect(winner?.budget).toBe(15);
     expect(winner?.team[0]?.id).toBe("i1");
+    expect(winner?.team[0]?.paidPrice).toBe(5); // listed at $2, won for $5
     expect(state.lastEvents).toContainEqual(expect.objectContaining({ type: "bought", playerId: "p2", price: 5 }));
     // Next item, fresh auction, first seat rotated.
     expect(state.currentItem?.id).toBe("i2");

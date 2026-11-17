@@ -12,6 +12,14 @@ export interface Item {
   emoji?: string; // optional; the UI falls back to an initials avatar
   isBench?: boolean; // true for the $0 filler items added when the pool runs out
   isMystery?: boolean; // Mystery items: the rating stays hidden until the draft ends
+  // Set when the item joins a team: what was actually paid. Differs from
+  // `price` after an auction or a Discount.
+  paidPrice?: number;
+}
+
+// What the owner paid for an item on their team (the listed price if unknown).
+export function pricePaid(item: { price: number; paidPrice?: number }): number {
+  return item.paidPrice ?? item.price;
 }
 
 // An item as players see it. A mystery item's rating is null until the
