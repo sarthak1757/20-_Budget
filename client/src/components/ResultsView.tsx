@@ -1,4 +1,4 @@
-import type { GameResults, PlayerState } from "@budget-draft/shared";
+import type { GameResults, Item, PlayerState } from "@budget-draft/shared";
 import { Avatar } from "./Avatar";
 
 interface ResultsViewProps {
@@ -16,6 +16,23 @@ function namesFor(ids: string[], players: PlayerState[]): string {
     }
   }
   return names.join(" & ");
+}
+
+// The item with the most rating per dollar: the smartest buy on a team.
+export function findBestValue(team: (Item | null)[]): Item | null {
+  let best: Item | null = null;
+  let bestRatio = 0;
+  for (const item of team) {
+    if (item === null || item.isBench || item.price <= 0) {
+      continue;
+    }
+    const ratio = item.rating / item.price;
+    if (ratio > bestRatio) {
+      bestRatio = ratio;
+      best = item;
+    }
+  }
+  return best;
 }
 
 export function ResultsView({ players, results }: ResultsViewProps) {
@@ -46,6 +63,9 @@ export function ResultsView({ players, results }: ResultsViewProps) {
             return null;
           }
           const isWinner = results.statsWinnerIds.includes(score.playerId);
+          const bestValue = findBestValue(player.team);
+          // How much of the total came from ratings vs leftover money, for the bar.
+          const ratingShare = score.total > 0 ? (score.ratingTotal / score.total) * 100 : 0;
           return (
             <section
               key={score.playerId}
@@ -58,7 +78,11 @@ export function ResultsView({ players, results }: ResultsViewProps) {
                 </h2>
                 <span className="text-2xl font-black tabular-nums">{score.total}</span>
               </header>
-              <p className="mb-3 text-sm text-zinc-400">
+              <div className="mt-2 flex h-2 overflow-hidden rounded-full bg-zinc-800" aria-hidden>
+                <div className="bg-emerald-400" style={{ width: `${ratingShare}%` }} />
+                <div className="bg-amber-400" style={{ width: `${100 - ratingShare}%` }} />
+              </div>
+              <p className="mt-2 mb-3 text-sm text-zinc-400">
                 {score.ratingTotal} rating + {score.leftoverBonus} leftover bonus
                 {results.votingHeld && ` · ${score.votesReceived} vote${score.votesReceived === 1 ? "" : "s"}`}
               </p>
@@ -67,7 +91,14 @@ export function ResultsView({ players, results }: ResultsViewProps) {
                   item ? (
                     <li key={index} className="flex items-center gap-2 text-sm">
                       <Avatar name={item.name} emoji={item.emoji} size="sm" />
-                      <span className={`min-w-0 flex-1 truncate ${item.isBench ? "text-zinc-500" : ""}`}>{item.name}</span>
+                      <span className={`min-w-0 flex-1 truncate ${item.isBench ? "text-zinc-500" : ""}`}>
+                        {item.name}
+                        {item === bestValue && (
+                          <span className="ml-1.5 rounded bg-emerald-900 px-1 text-[10px] font-bold text-emerald-300 uppercase">
+                            Best value
+                          </span>
+                        )}
+                      </span>
                       <span className="text-zinc-500 tabular-nums">${item.price}</span>
                       <span className="w-7 text-right font-semibold tabular-nums">{item.rating}</span>
                     </li>
