@@ -15,6 +15,7 @@ const CLEANUP_INTERVAL_MS = 60 * 1000;
 
 export interface GameServerOptions {
   clientUrl: string;
+  adminPassword: string;
   rooms?: RoomStore;
 }
 
@@ -29,7 +30,7 @@ export interface RunningGameServer {
 // Wires Express and Socket.io onto one HTTP server. Used by index.ts and the tests.
 export function createGameServer(options: GameServerOptions): RunningGameServer {
   const rooms = options.rooms ?? new RoomStore();
-  const app = createApp({ clientUrl: options.clientUrl, rooms });
+  const app = createApp({ clientUrl: options.clientUrl, adminPassword: options.adminPassword, rooms });
   const httpServer = createServer(app);
   const io: GameServer = new Server(httpServer, {
     cors: { origin: options.clientUrl },

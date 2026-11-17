@@ -11,7 +11,7 @@ import { startMemoryMongo } from "../../test/memoryMongo";
 
 let stopMongo: () => Promise<void>;
 const rooms = new RoomStore();
-const app = createApp({ clientUrl: "http://localhost:5173", rooms });
+const app = createApp({ clientUrl: "http://localhost:5173", adminPassword: "test-admin-password", rooms });
 
 beforeAll(async () => {
   stopMongo = await startMemoryMongo();

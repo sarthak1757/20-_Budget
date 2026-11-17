@@ -2,6 +2,7 @@ import cors from "cors";
 import express, { type Express } from "express";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
 import type { RoomStore } from "./rooms/roomStore";
+import { adminRouter } from "./routes/admin";
 import { categoriesRouter } from "./routes/categories";
 import { leaderboardRouter } from "./routes/leaderboard";
 import { resultsRouter } from "./routes/results";
@@ -9,6 +10,7 @@ import { roomsRouter } from "./routes/rooms";
 
 export interface AppOptions {
   clientUrl: string;
+  adminPassword: string;
   rooms: RoomStore;
 }
 
@@ -27,6 +29,7 @@ export function createApp(options: AppOptions): Express {
   app.use("/api/rooms", roomsRouter(options.rooms));
   app.use("/api/leaderboard", leaderboardRouter());
   app.use("/api/results", resultsRouter());
+  app.use("/api/admin", adminRouter(options.adminPassword));
 
   app.use(notFoundHandler);
   app.use(errorHandler);

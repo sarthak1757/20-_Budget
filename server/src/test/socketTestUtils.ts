@@ -26,6 +26,7 @@ export class SocketTestHarness {
     await seedDatabase(loadAllSeedFiles());
     this.server = createGameServer({
       clientUrl: "http://localhost:5173",
+      adminPassword: "test-admin-password",
       rooms: new RoomStore({ turnSeconds: 1, voteSeconds: 1 }),
     });
     await new Promise<void>((resolve) => this.server.httpServer.listen(0, resolve));

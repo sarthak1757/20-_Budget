@@ -6,7 +6,7 @@ async function main(): Promise<void> {
   const env = loadEnv();
   await connectToDatabase(env.MONGO_URI);
 
-  const server = createGameServer({ clientUrl: env.CLIENT_URL });
+  const server = createGameServer({ clientUrl: env.CLIENT_URL, adminPassword: env.ADMIN_PASSWORD });
   server.httpServer.listen(env.PORT, () => {
     console.log(`Budget Draft server on http://localhost:${env.PORT}`);
   });
