@@ -1,4 +1,5 @@
 import { Link, Route, Routes } from "react-router";
+import { HowToPlay } from "./components/HowToPlay";
 import { Toaster } from "./components/Toaster";
 import { PageShell } from "./components/ui";
 import { AdminPage } from "./pages/AdminPage";
@@ -16,6 +17,7 @@ export function App() {
   return (
     <>
       <Toaster />
+      <HowToPlay />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/new/:mode" element={<CategoryPickerPage />} />

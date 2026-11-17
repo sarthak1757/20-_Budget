@@ -1,5 +1,6 @@
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import type { ButtonHTMLAttributes, ReactNode, Ref } from "react";
 import { Link } from "react-router";
+import { HelpButton } from "./HowToPlay";
 import { MuteButton } from "./MuteButton";
 
 // Small building blocks shared by every page, so buttons and cards look the same everywhere.
@@ -15,6 +16,7 @@ const VARIANT_CLASSES: Record<ButtonVariant, string> = {
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
+  ref?: Ref<HTMLButtonElement>; // React 19 passes ref as a normal prop
 }
 
 export function Button({ variant = "primary", className = "", ...rest }: ButtonProps) {
@@ -34,8 +36,9 @@ export function PageShell({ title, children, backTo }: { title?: string; childre
         <Link to="/" className="text-lg font-black tracking-tight">
           💸 Budget <span className="text-money">Draft</span>
         </Link>
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-1">
           <MuteButton />
+          <HelpButton />
         </div>
       </header>
       {title !== undefined && <h1 className="mb-6 text-3xl font-black tracking-tight sm:text-4xl">{title}</h1>}

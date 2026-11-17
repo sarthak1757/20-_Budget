@@ -34,6 +34,15 @@ Every mode can be played in either **draft style**, with any mix of the **extras
 
 The **Chaos** preset switches every extra on.
 
+Also everywhere:
+
+- **How to play**: 4 short cards on your first visit; the **?** in the header opens them again.
+- **Sound effects** for buy, pass, the last 5 seconds of a timer, and the results. They're
+  generated with the Web Audio API (no audio files). The speaker button mutes them, and
+  that choice is remembered in localStorage.
+- **Emoji reactions** in online rooms: 👏 😂 😱 🔥 💸 float up the board for everyone, one per
+  player per second.
+
 ## Setup
 
 You need **Node.js 22.9+** and a **MongoDB** database (local, Docker or Atlas).
