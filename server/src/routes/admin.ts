@@ -57,7 +57,7 @@ export function adminRouter(adminPassword: string): Router {
   router.put("/categories/:slug", async (req, res) => {
     const slug = parseOrThrow(categorySlugSchema, req.params.slug);
     const body = parseOrThrow(adminCategoryUpdateSchema, req.body);
-    const updated = await CategoryModel.findOneAndUpdate({ slug }, body, { new: true }).lean();
+    const updated = await CategoryModel.findOneAndUpdate({ slug }, body, { returnDocument: "after" }).lean();
     if (!updated) {
       throw new HttpError(404, "Category not found");
     }
@@ -109,7 +109,7 @@ export function adminRouter(adminPassword: string): Router {
     // $unset removes the emoji when the form leaves it empty.
     const update = body.emoji === undefined ? { ...body, $unset: { emoji: 1 } } : body;
     try {
-      const updated = await ItemModel.findByIdAndUpdate(id, update, { new: true, runValidators: true }).lean();
+      const updated = await ItemModel.findByIdAndUpdate(id, update, { returnDocument: "after", runValidators: true }).lean();
       if (!updated) {
         throw new HttpError(404, "Item not found");
       }
