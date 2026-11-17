@@ -1,0 +1,284 @@
+{
+  "slug": "superheroes",
+  "name": "Superheroes",
+  "emoji": "🦸",
+  "description": "Caped heroes, cosmic powerhouses, gadget geniuses and a few very odd sidekicks.",
+  "items": [
+    {
+      "name": "Superman",
+      "price": 10,
+      "rating": 98,
+      "tag": "Flyer"
+    },
+    {
+      "name": "Scarlet Witch",
+      "price": 10,
+      "rating": 95,
+      "tag": "Mage"
+    },
+    {
+      "name": "Thor",
+      "price": 9,
+      "rating": 94,
+      "tag": "God of Thunder"
+    },
+    {
+      "name": "Jean Grey",
+      "price": 9,
+      "rating": 94,
+      "tag": "Psychic"
+    },
+    {
+      "name": "Wonder Woman",
+      "price": 9,
+      "rating": 93,
+      "tag": "Warrior"
+    },
+    {
+      "name": "Silver Surfer",
+      "price": 9,
+      "rating": 93,
+      "tag": "Cosmic"
+    },
+    {
+      "name": "Doctor Strange",
+      "price": 9,
+      "rating": 92,
+      "tag": "Mage"
+    },
+    {
+      "name": "Captain Marvel",
+      "price": 9,
+      "rating": 92,
+      "tag": "Flyer"
+    },
+    {
+      "name": "Hulk",
+      "price": 9,
+      "rating": 92,
+      "tag": "Powerhouse"
+    },
+    {
+      "name": "The Flash",
+      "price": 9,
+      "rating": 91,
+      "tag": "Speedster"
+    },
+    {
+      "name": "Iron Man",
+      "price": 8,
+      "rating": 89,
+      "tag": "Gadgeteer"
+    },
+    {
+      "name": "Batman",
+      "price": 8,
+      "rating": 88,
+      "tag": "Detective"
+    },
+    {
+      "name": "Martian Manhunter",
+      "price": 5,
+      "rating": 88,
+      "tag": "Psychic"
+    },
+    {
+      "name": "Spider-Man",
+      "price": 8,
+      "rating": 87,
+      "tag": "Hero"
+    },
+    {
+      "name": "Green Lantern",
+      "price": 8,
+      "rating": 87,
+      "tag": "Cosmic"
+    },
+    {
+      "name": "Black Panther",
+      "price": 8,
+      "rating": 86,
+      "tag": "Hero"
+    },
+    {
+      "name": "Shazam",
+      "price": 8,
+      "rating": 86,
+      "tag": "Hero"
+    },
+    {
+      "name": "Wolverine",
+      "price": 8,
+      "rating": 85,
+      "tag": "Antihero"
+    },
+    {
+      "name": "Vision",
+      "price": 8,
+      "rating": 85,
+      "tag": "Android"
+    },
+    {
+      "name": "Captain America",
+      "price": 7,
+      "rating": 84,
+      "tag": "Leader"
+    },
+    {
+      "name": "Storm",
+      "price": 7,
+      "rating": 84,
+      "tag": "Mage"
+    },
+    {
+      "name": "Aquaman",
+      "price": 7,
+      "rating": 80,
+      "tag": "Warrior"
+    },
+    {
+      "name": "Cyborg",
+      "price": 3,
+      "rating": 78,
+      "tag": "Gadgeteer"
+    },
+    {
+      "name": "Deadpool",
+      "price": 6,
+      "rating": 77,
+      "tag": "Antihero"
+    },
+    {
+      "name": "Ms. Marvel",
+      "price": 6,
+      "rating": 76,
+      "tag": "Hero"
+    },
+    {
+      "name": "Daredevil",
+      "price": 6,
+      "rating": 75,
+      "tag": "Hero"
+    },
+    {
+      "name": "Black Widow",
+      "price": 5,
+      "rating": 74,
+      "tag": "Spy"
+    },
+    {
+      "name": "Ant-Man",
+      "price": 5,
+      "rating": 73,
+      "tag": "Gadgeteer"
+    },
+    {
+      "name": "Nightwing",
+      "price": 5,
+      "rating": 72,
+      "tag": "Acrobat"
+    },
+    {
+      "name": "Star-Lord",
+      "price": 5,
+      "rating": 71,
+      "tag": "Leader"
+    },
+    {
+      "name": "Hawkeye",
+      "price": 9,
+      "rating": 70,
+      "tag": "Archer"
+    },
+    {
+      "name": "Green Arrow",
+      "price": 5,
+      "rating": 70,
+      "tag": "Archer"
+    },
+    {
+      "name": "Moon Knight",
+      "price": 4,
+      "rating": 69,
+      "tag": "Antihero"
+    },
+    {
+      "name": "Squirrel Girl",
+      "price": 1,
+      "rating": 68,
+      "tag": "Hero"
+    },
+    {
+      "name": "Blue Beetle",
+      "price": 4,
+      "rating": 67,
+      "tag": "Gadgeteer"
+    },
+    {
+      "name": "Falcon",
+      "price": 4,
+      "rating": 66,
+      "tag": "Flyer"
+    },
+    {
+      "name": "Hawkman",
+      "price": 3,
+      "rating": 63,
+      "tag": "Flyer"
+    },
+    {
+      "name": "Booster Gold",
+      "price": 7,
+      "rating": 62,
+      "tag": "Gadgeteer"
+    },
+    {
+      "name": "Robin",
+      "price": 3,
+      "rating": 61,
+      "tag": "Sidekick"
+    },
+    {
+      "name": "Aqualad",
+      "price": 2,
+      "rating": 55,
+      "tag": "Sidekick"
+    },
+    {
+      "name": "Jubilee",
+      "price": 1,
+      "rating": 50,
+      "tag": "Mutant"
+    },
+    {
+      "name": "Zan",
+      "price": 1,
+      "rating": 48,
+      "tag": "Sidekick"
+    },
+    {
+      "name": "Howard the Duck",
+      "price": 5,
+      "rating": 45,
+      "tag": "Novelty"
+    },
+    {
+      "name": "Bouncing Boy",
+      "price": 1,
+      "rating": 44,
+      "tag": "Novelty"
+    },
+    {
+      "name": "Matter-Eater Lad",
+      "price": 1,
+      "rating": 42,
+      "tag": "Novelty"
+    },
+    {
+      "name": "Arm-Fall-Off Boy",
+      "price": 1,
+      "rating": 40,
+      "tag": "Novelty"
+    }
+  ]
+}
