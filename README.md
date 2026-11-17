@@ -18,6 +18,21 @@ Mongoose and Socket.io.
 | 🌐 Online Room | Create a room, share the 6-letter code or link. 15s turn timer. | Yes |
 | 🤖 Solo vs Bots | You against 1–3 bots that look for good value. | No |
 
+Every mode can be played in either **draft style**, with any mix of the **extras**:
+
+| Draft style | |
+| --- | --- |
+| Classic | BUY or PASS at the listed price. The first BUY wins the item. |
+| Auction | Bid against each other, starting at $1. The highest bid wins. Online: 7s per bid. |
+
+| Extra (all off by default) | |
+| --- | --- |
+| Balanced team | +15 points for a team with every role the category defines (football, cricket). |
+| Mystery items | About 1 in 6 items hide their rating until the draft ends. |
+| Power-ups | Veto, Discount (Classic only) and Peek, once each per game. |
+
+The **Chaos** preset switches every extra on.
+
 ## Setup
 
 You need **Node.js 22.9+** and a **MongoDB** database (local, Docker or Atlas).
@@ -32,7 +47,7 @@ cp .env.example .env
 # 3. (Optional) start MongoDB with Docker
 docker compose up -d
 
-# 4. Load the 10 categories (467 items) into MongoDB
+# 4. Load the 10 categories (483 items) into MongoDB
 npm run seed
 
 # 5. Start the API (port 4000) and the web app (port 5173)
@@ -130,7 +145,7 @@ A type test (`shared/src/__typetests__`) checks that this protection holds.
 | `GET /api/categories/:slug/items` | Items in a category |
 | `POST /api/rooms` | Create a room → `{ code }` |
 | `GET /api/rooms/:code` | Room info (phase, player count, joinable) |
-| `GET /api/leaderboard` | Wins, games played, best score (online games only) |
+| `GET /api/leaderboard` | Wins, games played, best score (online games only; best score from Classic games with no extras) |
 | `POST /api/results` | Store a finished local/bot game (never ranked) |
 | `/api/admin/...` | Category and item CRUD, needs the `x-admin-password` header |
 
@@ -142,7 +157,8 @@ A type test (`shared/src/__typetests__`) checks that this protection holds.
 | `room:leave` | `item:reveal` (new item + state) |
 | `room:settings` (host only) | `game:state` (after every action) |
 | `game:start` (host only) | `game:end` (final state + results) |
-| `turn:action` (buy/pass + round number) | |
+| `turn:action` (buy/pass/bid/veto/discount + round number) | |
+| `turn:peek` (Peek: the next item comes back in the ack, to you only) | |
 | `vote:cast` | |
 
 Every request gets an acknowledgement: `{ ok: true, data }` or `{ ok: false, error }`.
@@ -152,9 +168,12 @@ Every request gets an acknowledgement: `{ ok: true, data }` or `{ ok: false, err
 - **Category**: `slug` (unique), `name`, `emoji`, `description`
 - **Item**: `name`, `categorySlug`, `price` (1–10), `rating` (1–100), `tag`, optional `emoji`.
   Unique per (category, name).
-- **GameResult**: mode, category, settings, players with a *snapshot* of their team and
+- **Category** also has `roles` (empty for most categories). In a category with roles, every
+  item's tag must be one of them.
+- **GameResult**: mode, category, settings, `draftStyle`, `preset` (classic / custom /
+  chaos), players with a *snapshot* of their team (with the price actually paid) and
   scores, `statsWinnerIds`, `voteWinnerIds`, and `countsForLeaderboard` (true only for
-  online games).
+  online games). Results saved before `draftStyle`/`preset` existed are read as Classic.
 
 No images or logos anywhere: items are names and text, shown with an emoji or a
 generated initials avatar.
@@ -191,9 +210,40 @@ UI uses the same function to grey out BUY and explain why.
 5. The draft ends when every team is full. If the items run out first, the empty slots get
    **$0 "Bench Player" items rated 10**.
 
+### Auction
+
+1. Each item opens with no bids. The first bid can be $1; every bid after that must be at
+   least $1 more than the high bid, and it must follow the budget rule.
+2. Bidding goes round the table. A bid sends you to the back of the queue so everyone else
+   answers first. **PASS** means you're out for this item.
+3. When everyone except the high bidder has passed, the high bidder gets the item **at their
+   bid**. If everyone passes before anyone bids, the item is discarded.
+4. Players who can't afford the next bid are skipped automatically. The budget rule is what
+   stops a bidding war: nobody can bid more than they can spend.
+5. Quick-bid buttons raise the high bid by +$1, +$2 or +$5 and grey out when the budget
+   rule blocks them.
+
+### Extras
+
+- **Balanced team**: a category can list roles (football: Goalkeeper, Defender, Midfielder,
+  Forward; cricket: Batter, Bowler, All-rounder, Wicketkeeper). An item's tag is its role.
+  A team with at least one of every role gets **+15**. It needs at least as many slots as
+  roles, and bench items don't count. The board shows which roles each team still needs.
+- **Mystery items**: about 1 in 6 items show only price and tag. The rating is revealed
+  when the draft ends. The server never sends a hidden rating: public items have
+  `rating: number | null`, so the compiler points at every place the UI shows one.
+  Bots play fair and guess a mystery item's rating from its price.
+- **Power-ups**, each usable once per game, on your own turn:
+  - **Veto**: discard the current item, as long as nobody has bid on it yet.
+  - **Discount** (Classic only): buy the current item for $2 less (minimum $1). A player
+    who could only afford the item with their Discount is still asked.
+  - **Peek**: see the next item. Online it comes back only to you; everyone else just sees
+    that you peeked. On a shared device it's shown only while it's still your turn.
+
 ### Scoring and voting
 
-- **Team score** = sum of ratings + **1 point per $1 left over** (small on purpose).
+- **Team score** = sum of ratings + **1 point per $1 left over** (small on purpose)
+  + **15** for a balanced team (when that extra is on).
 - **Stats winner** = highest team score. Ties share the win.
 - **Voting** only happens with **3+ human players** (with 2 you'd just vote for each
   other). Nobody can vote for themselves. Online there is a 30-second timer; in
@@ -220,6 +270,8 @@ counts. Ratings are a playful opinion for the game, not a real-world ranking.
   seat. Clearing site data or switching device means joining as a new player. The
   leaderboard groups players by name (case-insensitive), so two people using the same
   name share an entry.
+- **Best score only counts Classic games with no extras.** Auctions, power-ups and the
+  balanced bonus all change what a score means. Wins count in every mode.
 - **Leaderboard = online games only.** In local and bot games one person controls every
   name, so those results are stored (`countsForLeaderboard: false`) but never ranked.
 - **Admin is a single shared password**, sent as a header over HTTPS in production. It's
