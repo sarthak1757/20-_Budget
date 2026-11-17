@@ -3,6 +3,7 @@ import { io as connect, type Socket } from "socket.io-client";
 import {
   getCurrentPlayerId,
   type ClientToServerEvents,
+  type GameSettings,
   type PublicGameState,
   type ServerToClientEvents,
 } from "@budget-draft/shared";
@@ -27,7 +28,7 @@ export class SocketTestHarness {
     this.server = createGameServer({
       clientUrl: "http://localhost:5173",
       adminPassword: "test-admin-password",
-      rooms: new RoomStore({ turnSeconds: 1, voteSeconds: 1 }),
+      rooms: new RoomStore({ turnSeconds: 1, auctionTurnSeconds: 1, voteSeconds: 1 }),
     });
     await new Promise<void>((resolve) => this.server.httpServer.listen(0, resolve));
     const { port } = this.server.httpServer.address() as AddressInfo;
@@ -63,8 +64,9 @@ export class SocketTestHarness {
     return body.code;
   }
 
-  // Creates a room, joins every name, sets the slot count and starts the game.
-  async startGame(names: string[], slotCount = 3) {
+  // Creates a room, joins every name, sets the slot count (and any other
+  // settings) and starts the game.
+  async startGame(names: string[], slotCount = 3, overrides: Partial<GameSettings> = {}) {
     const code = await this.createRoom();
     const clients = new Map<string, Client>();
     const ids: string[] = [];
@@ -78,7 +80,7 @@ export class SocketTestHarness {
     }
     const host = clients.get(ids[0] ?? "");
     if (!host || !settings) throw new Error("No host");
-    const ok = await host.emitWithAck("room:settings", { ...settings, slotCount });
+    const ok = await host.emitWithAck("room:settings", { ...settings, ...overrides, slotCount });
     if (!ok.ok) throw new Error(ok.error);
     const firstReveal = waitForState(host, (state) => state.roundNumber === 1);
     const started = await host.emitWithAck("game:start");

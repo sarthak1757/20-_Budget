@@ -1,6 +1,7 @@
 import {
   DEFAULT_SETTINGS,
   MAX_PLAYERS,
+  ONLINE_AUCTION_TURN_SECONDS,
   ONLINE_TURN_SECONDS,
   ONLINE_VOTE_SECONDS,
   setPlayerConnected,
@@ -28,6 +29,7 @@ export interface Room {
   hostId: string | null;
   players: RoomPlayer[]; // in join order
   settings: GameSettings;
+  timing: RoomTiming;
   game: GameState | null; // null while in the lobby
   results: GameResults | null;
   resultSaved: boolean;
@@ -36,12 +38,14 @@ export interface Room {
 }
 
 export interface RoomTiming {
-  turnSeconds: number;
+  turnSeconds: number; // Classic: one BUY/PASS decision
+  auctionTurnSeconds: number; // Auction: one bid or pass
   voteSeconds: number;
 }
 
 export const ONLINE_TIMING: RoomTiming = {
   turnSeconds: ONLINE_TURN_SECONDS,
+  auctionTurnSeconds: ONLINE_AUCTION_TURN_SECONDS,
   voteSeconds: ONLINE_VOTE_SECONDS,
 };
 
@@ -56,11 +60,23 @@ export function createRoom(code: string, categorySlug: string, now: number, timi
       turnSeconds: timing.turnSeconds,
       voteSeconds: timing.voteSeconds,
     },
+    timing,
     game: null,
     results: null,
     resultSaved: false,
     createdAt: now,
     emptySince: now, // nobody is connected yet
+  };
+}
+
+// Stores the host's settings. Timers are fixed per draft style so every
+// online game plays the same way, whatever the client sent.
+export function applyRoomSettings(room: Room, settings: GameSettings): void {
+  const isAuction = settings.draftStyle === "auction";
+  room.settings = {
+    ...settings,
+    turnSeconds: isAuction ? room.timing.auctionTurnSeconds : room.timing.turnSeconds,
+    voteSeconds: room.timing.voteSeconds,
   };
 }
 

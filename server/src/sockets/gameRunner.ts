@@ -10,6 +10,8 @@ import {
   type GameState,
   type Item,
   type NewPlayer,
+  type PlayerAction,
+  type TurnActionPayload,
 } from "@budget-draft/shared";
 import { toRoomSnapshot, type Room } from "../rooms/room";
 import type { GameServer } from "./types";
@@ -80,16 +82,16 @@ export class GameRunner {
     return { ok: true };
   }
 
-  handleAction(room: Room, playerId: string, action: "buy" | "pass", roundNumber: number): RunnerResult {
+  handleAction(room: Room, playerId: string, payload: TurnActionPayload): RunnerResult {
     const game = room.game;
     if (game === null) {
       return { ok: false, error: "The game hasn't started" };
     }
     // A click from an earlier round (e.g. a slow network) must not act on the new item.
-    if (roundNumber !== game.roundNumber) {
+    if (payload.roundNumber !== game.roundNumber) {
       return { ok: false, error: "That item is gone. Too slow!" };
     }
-    const result = applyAction(game, { type: action, playerId }, this.deps.now());
+    const result = applyAction(game, toPlayerAction(payload, playerId), this.deps.now());
     if (!result.ok) {
       return result;
     }
@@ -205,4 +207,13 @@ export class GameRunner {
     room.game = endVoting(room.game);
     this.afterChange(room, previousRound);
   }
+}
+
+// The socket payload says what the player wants; the player id comes from
+// the socket (never the payload), so it's added here.
+function toPlayerAction(payload: TurnActionPayload, playerId: string): PlayerAction {
+  if (payload.action === "bid") {
+    return { type: "bid", playerId, amount: payload.amount };
+  }
+  return { type: payload.action, playerId };
 }

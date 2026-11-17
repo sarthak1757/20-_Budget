@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { gameSettingsSchema, roomJoinSchema, type RoomSnapshot } from "@budget-draft/shared";
 import {
   addPlayer,
+  applyRoomSettings,
   findRoomPlayer,
   markPlayerConnected,
   removePlayer,
@@ -83,12 +84,7 @@ export function registerRoomHandlers(socket: GameSocket, ctx: SocketContext): vo
       reply({ ok: false, error: "That category doesn't exist" });
       return;
     }
-    room.settings = {
-      ...parsed.data,
-      // Timers are fixed for online rooms so every game plays the same way.
-      turnSeconds: room.settings.turnSeconds,
-      voteSeconds: room.settings.voteSeconds,
-    };
+    applyRoomSettings(room, parsed.data);
     reply({ ok: true, data: null });
     ctx.runner.broadcastRoom(room);
   });

@@ -46,7 +46,7 @@ export function registerGameHandlers(socket: GameSocket, ctx: SocketContext): vo
     }
     // The player id comes from the socket, never from the payload,
     // so nobody can act on someone else's behalf.
-    const result = ctx.runner.handleAction(seat.room, seat.playerId, parsed.data.action, parsed.data.roundNumber);
+    const result = ctx.runner.handleAction(seat.room, seat.playerId, parsed.data);
     reply(result.ok ? { ok: true, data: null } : result);
   });
 

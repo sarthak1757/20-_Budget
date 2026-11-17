@@ -46,12 +46,15 @@ export const roomJoinSchema = z.object({
   playerId: playerIdSchema.optional(), // sent when reconnecting
 });
 
-export const turnActionSchema = z.object({
-  action: z.enum(["buy", "pass"]),
-  // The round the player was looking at. Lets the server ignore a stale click
-  // that arrives after the round already moved on.
-  roundNumber: z.number().int().min(1),
-});
+// The round the player was looking at. Lets the server ignore a stale click
+// that arrives after the round already moved on.
+const roundNumberSchema = z.number().int().min(1);
+
+export const turnActionSchema = z.discriminatedUnion("action", [
+  z.object({ action: z.literal("buy"), roundNumber: roundNumberSchema }),
+  z.object({ action: z.literal("pass"), roundNumber: roundNumberSchema }),
+  z.object({ action: z.literal("bid"), amount: z.number().int().min(1).max(100), roundNumber: roundNumberSchema }),
+]);
 
 // ---- REST payloads ----
 
