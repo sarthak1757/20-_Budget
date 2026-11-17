@@ -1,13 +1,25 @@
+import { useEffect } from "react";
 import { Link, Navigate, useNavigate } from "react-router";
 import { computeResults } from "@budget-draft/shared";
 import { ResultsView } from "../components/ResultsView";
 import { Button, PageShell } from "../components/ui";
+import { submitLocalResult } from "../lib/localResults";
 import { useLocalGameStore } from "../store/localGameStore";
 
 export function LocalResultsPage() {
   const navigate = useNavigate();
   const game = useLocalGameStore((store) => store.game);
   const reset = useLocalGameStore((store) => store.reset);
+  const resultSubmitted = useLocalGameStore((store) => store.resultSubmitted);
+  const markResultSubmitted = useLocalGameStore((store) => store.markResultSubmitted);
+
+  // Store the finished game on the server once (it won't count for the leaderboard).
+  useEffect(() => {
+    if (game !== null && game.phase === "finished" && !resultSubmitted) {
+      markResultSubmitted();
+      void submitLocalResult(game);
+    }
+  }, [game, resultSubmitted, markResultSubmitted]);
 
   if (!game) {
     return <Navigate to="/" replace />;

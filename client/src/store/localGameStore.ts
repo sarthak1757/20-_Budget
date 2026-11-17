@@ -31,6 +31,8 @@ interface LocalGameStore {
   error: string | null;
   // The human who last confirmed "I'm holding the device" (pass-and-play).
   deviceHolderId: string | null;
+  // So a finished game is sent to the server only once, even after a refresh.
+  resultSubmitted: boolean;
 
   start: (input: StartLocalGameInput) => void;
   act: (type: "buy" | "pass") => void;
@@ -39,6 +41,7 @@ interface LocalGameStore {
   finishVoting: () => void;
   confirmHandoff: () => void;
   clearError: () => void;
+  markResultSubmitted: () => void;
   reset: () => void;
 }
 
@@ -48,10 +51,11 @@ export const useLocalGameStore = create<LocalGameStore>()(
       game: null,
       error: null,
       deviceHolderId: null,
+      resultSubmitted: false,
 
       start: (input) => {
         const game = createGame({ ...input, now: Date.now() });
-        set({ game, error: null, deviceHolderId: null });
+        set({ game, error: null, deviceHolderId: null, resultSubmitted: false });
       },
 
       act: (type) => {
@@ -122,13 +126,19 @@ export const useLocalGameStore = create<LocalGameStore>()(
 
       clearError: () => set({ error: null }),
 
+      markResultSubmitted: () => set({ resultSubmitted: true }),
+
       reset: () => set({ game: null, error: null, deviceHolderId: null }),
     }),
     {
       // sessionStorage: a refresh keeps the game, closing the tab ends it.
       name: "budget-draft-local-game",
       storage: createJSONStorage(() => sessionStorage),
-      partialize: (state) => ({ game: state.game, deviceHolderId: state.deviceHolderId }),
+      partialize: (state) => ({
+        game: state.game,
+        deviceHolderId: state.deviceHolderId,
+        resultSubmitted: state.resultSubmitted,
+      }),
     },
   ),
 );
