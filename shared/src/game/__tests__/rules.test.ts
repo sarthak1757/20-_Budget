@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { canBuy, countEmptySlots, findFirstEmptySlot, getBuyBlockReason, maxSpendable } from "../rules";
+import { canBuy, countEmptySlots, findFirstEmptySlot, getBuyBlockReason, getSpendBlockReason, maxSpendable } from "../rules";
 import { makeItem, makePlayer } from "./helpers";
 
 describe("countEmptySlots / findFirstEmptySlot", () => {
@@ -56,5 +56,13 @@ describe("canBuy / getBuyBlockReason", () => {
     const filled = makeItem("a", 1, 50);
     const player = makePlayer({ team: [filled, filled] });
     expect(getBuyBlockReason(player, makeItem("x", 1, 90))).toBe("Your team is already full");
+  });
+});
+
+describe("getSpendBlockReason", () => {
+  it("applies the same budget rule to any amount, such as a bid", () => {
+    const player = makePlayer({ budget: 5, team: [null, null, null] });
+    expect(getSpendBlockReason(player, 3)).toBeNull();
+    expect(getSpendBlockReason(player, 4)).toBe("You must keep $1 for each of your 2 other empty slots");
   });
 });

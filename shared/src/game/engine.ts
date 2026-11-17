@@ -239,7 +239,7 @@ function startRound(state: GameState, now: number): void {
     }
 
     state.roundNumber += 1;
-    const { queue, cantAfford } = buildTurnQueue(state.players, state.firstPlayerIndex, item);
+    const { queue, cantAfford } = buildTurnQueue(state.players, state.firstPlayerIndex, () => item.price);
 
     if (queue.length === 0) {
       const discarded: GameEvent = { type: "discarded", item };

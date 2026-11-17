@@ -36,21 +36,30 @@ export function maxSpendable(player: PlayerState): number {
   return player.budget - moneyToKeep;
 }
 
-// Returns a human-readable reason why the player can't buy, or null if they can.
+// Returns a human-readable reason why the player can't spend this amount on
+// one item, or null if they can. Used for buying (the price) and for bids.
 // The server uses this to reject bad requests; the UI uses it to explain a disabled button.
-export function getBuyBlockReason(player: PlayerState, item: Item): string | null {
+export function getSpendBlockReason(player: PlayerState, amount: number): string | null {
   const emptySlots = countEmptySlots(player);
   if (emptySlots === 0) {
     return "Your team is already full";
   }
-  if (item.price > player.budget) {
+  if (amount > player.budget) {
     return `You only have $${player.budget}`;
   }
-  if (item.price > maxSpendable(player)) {
+  if (amount > maxSpendable(player)) {
     const otherSlots = emptySlots - 1;
     return `You must keep $1 for each of your ${otherSlots} other empty slots`;
   }
   return null;
+}
+
+export function canSpend(player: PlayerState, amount: number): boolean {
+  return getSpendBlockReason(player, amount) === null;
+}
+
+export function getBuyBlockReason(player: PlayerState, item: Item): string | null {
+  return getSpendBlockReason(player, item.price);
 }
 
 export function canBuy(player: PlayerState, item: Item): boolean {
