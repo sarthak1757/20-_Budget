@@ -24,6 +24,8 @@ export function LocalGamePage() {
   const deviceHolderId = useLocalGameStore((store) => store.deviceHolderId);
   const error = useLocalGameStore((store) => store.error);
   const act = useLocalGameStore((store) => store.act);
+  const peek = useLocalGameStore((store) => store.peek);
+  const peeked = useLocalGameStore((store) => store.peeked);
   const vote = useLocalGameStore((store) => store.vote);
   const confirmHandoff = useLocalGameStore((store) => store.confirmHandoff);
   const reset = useLocalGameStore((store) => store.reset);
@@ -101,6 +103,8 @@ export function LocalGamePage() {
         canAct={currentPlayer !== undefined && !currentPlayer.isBot}
         turnLabel={turnLabel}
         onMove={act}
+        peeked={peeked}
+        onPeek={peek}
       />
       {error && <p className="mt-4 text-center text-rose-400">{error}</p>}
       <div className="mt-6 text-center">{quitButton}</div>

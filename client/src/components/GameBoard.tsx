@@ -3,14 +3,17 @@ import {
   getBuyBlockReason,
   getCurrentPlayerId,
   type PublicPlayerState,
+  type PowerUp,
   type PublicGameState,
   type TurnMove,
 } from "@budget-draft/shared";
 import { describeEvent } from "../lib/describeEvents";
+import { isPeekVisible, type PeekedItem } from "../lib/peek";
 import { ActionBar } from "./ActionBar";
 import { BidBar } from "./BidBar";
 import { ItemCard } from "./ItemCard";
 import { PlayerColumn } from "./PlayerColumn";
+import { PowerUpBar } from "./PowerUpBar";
 
 interface GameBoardProps {
   // PublicGameState for both local and online games: the board never needs
@@ -21,7 +24,9 @@ interface GameBoardProps {
   busy?: boolean;
   turnLabel: string;
   timer?: ReactNode;
+  peeked?: PeekedItem | null;
   onMove: (move: TurnMove) => void;
+  onPeek: () => void;
 }
 
 function findPlayer(players: PublicPlayerState[], id: string | null): PublicPlayerState | undefined {
@@ -33,7 +38,17 @@ function findPlayer(players: PublicPlayerState[], id: string | null): PublicPlay
   return undefined;
 }
 
-export function GameBoard({ state, viewerId, canAct, busy = false, turnLabel, timer, onMove }: GameBoardProps) {
+export function GameBoard({
+  state,
+  viewerId,
+  canAct,
+  busy = false,
+  turnLabel,
+  timer,
+  peeked = null,
+  onMove,
+  onPeek,
+}: GameBoardProps) {
   const currentId = getCurrentPlayerId(state);
 
   // Whose budget decides if BUY/BID is allowed: the viewer online, the current player locally.
@@ -69,6 +84,14 @@ export function GameBoard({ state, viewerId, canAct, busy = false, turnLabel, ti
         requiredRoles={state.requiredRoles}
       />
     );
+  }
+
+  function handlePowerUp(powerUp: PowerUp) {
+    if (powerUp === "peek") {
+      onPeek();
+    } else {
+      onMove({ type: powerUp });
+    }
   }
 
   let controls: ReactNode;
@@ -115,6 +138,14 @@ export function GameBoard({ state, viewerId, canAct, busy = false, turnLabel, ti
         )}
         {timer}
         {controls}
+        <PowerUpBar
+          state={state}
+          playerId={actingPlayer ? actingPlayer.id : null}
+          canAct={canAct}
+          busy={busy}
+          onUse={handlePowerUp}
+        />
+        {isPeekVisible(peeked, state.roundNumber, currentId) && <PeekCard peeked={peeked} />}
         <ul className="min-h-10 text-center text-sm text-zinc-400" aria-live="polite">
           {state.lastEvents.map((event, index) => (
             <li key={index}>{describeEvent(event, state.players)}</li>
@@ -123,6 +154,20 @@ export function GameBoard({ state, viewerId, canAct, busy = false, turnLabel, ti
       </div>
 
       {rightPlayers.map(renderColumn)}
+    </div>
+  );
+}
+
+// The next item, as seen with Peek. Only shown to the player who peeked.
+function PeekCard({ peeked }: { peeked: PeekedItem }) {
+  const item = peeked.item;
+  return (
+    <div className="rounded-xl border border-violet-700 bg-violet-950/40 p-3 text-sm" aria-live="polite">
+      <p className="text-xs text-violet-300 uppercase">👀 Next up (only you can see this)</p>
+      <p className="font-bold">{item.name}</p>
+      <p className="text-zinc-400">
+        {item.tag} · ${item.price} · rating {item.rating === null ? "hidden 🎁" : item.rating}
+      </p>
     </div>
   );
 }

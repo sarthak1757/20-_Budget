@@ -7,6 +7,8 @@ import {
   decideBotAction,
   endVoting,
   getCurrentPlayerId,
+  peekNextItem,
+  toPublicItem,
   type GameMode,
   type GameSettings,
   type GameState,
@@ -15,6 +17,7 @@ import {
   type TurnMove,
 } from "@budget-draft/shared";
 import { whoNeedsDevice } from "../lib/handoff";
+import type { PeekedItem } from "../lib/peek";
 
 // State for games that run entirely in the browser (pass-and-play and bot mode).
 // All rules come from the shared engine; this store only keeps the current
@@ -35,9 +38,11 @@ interface LocalGameStore {
   deviceHolderId: string | null;
   // So a finished game is sent to the server only once, even after a refresh.
   resultSubmitted: boolean;
+  peeked: PeekedItem | null;
 
   start: (input: StartLocalGameInput) => void;
   act: (move: TurnMove) => void;
+  peek: () => void;
   playBotTurn: () => void;
   vote: (targetId: string) => void;
   finishVoting: () => void;
@@ -54,10 +59,11 @@ export const useLocalGameStore = create<LocalGameStore>()(
       error: null,
       deviceHolderId: null,
       resultSubmitted: false,
+      peeked: null,
 
       start: (input) => {
         const game = createGame({ ...input, now: Date.now() });
-        set({ game, error: null, deviceHolderId: null, resultSubmitted: false });
+        set({ game, error: null, deviceHolderId: null, resultSubmitted: false, peeked: null });
       },
 
       act: (move) => {
@@ -75,6 +81,25 @@ export const useLocalGameStore = create<LocalGameStore>()(
         } else {
           set({ error: result.error });
         }
+      },
+
+      peek: () => {
+        const game = get().game;
+        if (!game) {
+          return;
+        }
+        const playerId = getCurrentPlayerId(game);
+        if (playerId === null) {
+          return;
+        }
+        const result = peekNextItem(game, playerId);
+        if (!result.ok) {
+          set({ error: result.error });
+          return;
+        }
+        // Still drafting, so a mystery item stays a mystery even when peeked.
+        const item = toPublicItem(result.nextItem, true);
+        set({ game: result.state, error: null, peeked: { item, playerId, roundNumber: game.roundNumber } });
       },
 
       // Lets the bot whose turn it is decide, using the shared bot logic.
@@ -140,6 +165,7 @@ export const useLocalGameStore = create<LocalGameStore>()(
         game: state.game,
         deviceHolderId: state.deviceHolderId,
         resultSubmitted: state.resultSubmitted,
+        peeked: state.peeked,
       }),
     },
   ),

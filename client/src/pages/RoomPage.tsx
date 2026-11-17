@@ -154,6 +154,8 @@ function RoomContent({ room, playerId, categories, busy, onLeave }: RoomContentP
         turnLabel={turnLabel}
         timer={<Countdown deadline={game.turnDeadline} totalSeconds={game.settings.turnSeconds} label="Time left" />}
         onMove={store.act}
+        peeked={store.peeked}
+        onPeek={store.peek}
       />
       <div className="mt-6 text-center">
         <Button variant="ghost" className="text-sm" onClick={onLeave}>

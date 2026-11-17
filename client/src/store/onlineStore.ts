@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import type { AckResponse, GameSettings, RoomSnapshot, TurnActionPayload, TurnMove } from "@budget-draft/shared";
+import type { PeekedItem } from "../lib/peek";
 import { forgetRoom, getStoredPlayerId, storeName, storePlayerId } from "../lib/playerStorage";
 import { socket } from "../lib/socket";
 import { dismissToast, showToast } from "./toastStore";
@@ -18,12 +19,14 @@ interface OnlineStore {
   joinError: string | null;
   actionError: string | null;
   busy: boolean;
+  peeked: PeekedItem | null;
 
   enterRoom: (code: string, name: string) => void;
   leaveRoom: () => Promise<void>;
   updateSettings: (settings: GameSettings) => Promise<void>;
   startGame: () => Promise<void>;
   act: (move: TurnMove) => Promise<void>;
+  peek: () => Promise<void>;
   vote: (targetPlayerId: string) => Promise<void>;
   clearActionError: () => void;
 }
@@ -116,6 +119,7 @@ export const useOnlineStore = create<OnlineStore>()((set, get) => {
     joinError: null,
     actionError: null,
     busy: false,
+    peeked: null,
 
     enterRoom: (code, name) => {
       const upper = code.toUpperCase();
@@ -155,6 +159,26 @@ export const useOnlineStore = create<OnlineStore>()((set, get) => {
         payload = { action: move.type, roundNumber };
       }
       return run(() => socket.emitWithAck("turn:action", payload));
+    },
+    peek: async () => {
+      const { room, playerId } = get();
+      const roundNumber = room?.game?.roundNumber ?? 0;
+      if (playerId === null) {
+        return;
+      }
+      set({ busy: true, actionError: null });
+      try {
+        const response = await socket.emitWithAck("turn:peek", { roundNumber });
+        if (response.ok) {
+          set({ peeked: { item: response.data.item, playerId, roundNumber } });
+        } else {
+          set({ actionError: response.error });
+        }
+      } catch {
+        set({ actionError: "The server didn't answer. Check your connection." });
+      } finally {
+        set({ busy: false });
+      }
     },
     vote: (targetPlayerId) => run(() => socket.emitWithAck("vote:cast", { targetPlayerId })),
     clearActionError: () => set({ actionError: null }),
