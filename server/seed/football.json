@@ -3,6 +3,12 @@
   "name": "Football",
   "emoji": "⚽",
   "description": "Strikers, playmakers, keepers and a few cult heroes from the world's game.",
+  "roles": [
+    "Goalkeeper",
+    "Defender",
+    "Midfielder",
+    "Forward"
+  ],
   "items": [
     {
       "name": "Lionel Messi",
@@ -20,7 +26,7 @@
       "name": "Erling Haaland",
       "price": 9,
       "rating": 94,
-      "tag": "Striker"
+      "tag": "Forward"
     },
     {
       "name": "Cristiano Ronaldo",
@@ -32,7 +38,7 @@
       "name": "Vinícius Júnior",
       "price": 9,
       "rating": 92,
-      "tag": "Winger"
+      "tag": "Forward"
     },
     {
       "name": "Jude Bellingham",
@@ -50,19 +56,19 @@
       "name": "Harry Kane",
       "price": 9,
       "rating": 91,
-      "tag": "Striker"
+      "tag": "Forward"
     },
     {
       "name": "Mohamed Salah",
       "price": 9,
       "rating": 90,
-      "tag": "Winger"
+      "tag": "Forward"
     },
     {
       "name": "Lamine Yamal",
       "price": 6,
       "rating": 90,
-      "tag": "Winger"
+      "tag": "Forward"
     },
     {
       "name": "Kevin De Bruyne",
@@ -86,7 +92,7 @@
       "name": "Bukayo Saka",
       "price": 8,
       "rating": 87,
-      "tag": "Winger"
+      "tag": "Forward"
     },
     {
       "name": "Florian Wirtz",
@@ -116,7 +122,7 @@
       "name": "Lautaro Martínez",
       "price": 8,
       "rating": 85,
-      "tag": "Striker"
+      "tag": "Forward"
     },
     {
       "name": "Federico Valverde",
@@ -128,7 +134,7 @@
       "name": "Robert Lewandowski",
       "price": 7,
       "rating": 84,
-      "tag": "Striker"
+      "tag": "Forward"
     },
     {
       "name": "Alisson Becker",
@@ -170,7 +176,7 @@
       "name": "Khvicha Kvaratskhelia",
       "price": 6,
       "rating": 79,
-      "tag": "Winger"
+      "tag": "Forward"
     },
     {
       "name": "Antoine Griezmann",
@@ -200,7 +206,7 @@
       "name": "Victor Osimhen",
       "price": 6,
       "rating": 76,
-      "tag": "Striker"
+      "tag": "Forward"
     },
     {
       "name": "Rúben Dias",
@@ -224,7 +230,7 @@
       "name": "Romelu Lukaku",
       "price": 4,
       "rating": 67,
-      "tag": "Striker"
+      "tag": "Forward"
     },
     {
       "name": "Marcus Rashford",
@@ -242,7 +248,7 @@
       "name": "Jack Grealish",
       "price": 8,
       "rating": 64,
-      "tag": "Winger"
+      "tag": "Forward"
     },
     {
       "name": "Kyle Walker",
@@ -254,7 +260,7 @@
       "name": "Raheem Sterling",
       "price": 3,
       "rating": 62,
-      "tag": "Winger"
+      "tag": "Forward"
     },
     {
       "name": "Mason Mount",
@@ -284,7 +290,7 @@
       "name": "Christian Benteke",
       "price": 1,
       "rating": 48,
-      "tag": "Striker"
+      "tag": "Forward"
     },
     {
       "name": "Ross Barkley",
@@ -302,7 +308,61 @@
       "name": "Andy Carroll",
       "price": 1,
       "rating": 45,
-      "tag": "Striker"
+      "tag": "Forward"
+    },
+    {
+      "name": "Mike Maignan",
+      "price": 8,
+      "rating": 85,
+      "tag": "Goalkeeper"
+    },
+    {
+      "name": "Ederson",
+      "price": 6,
+      "rating": 78,
+      "tag": "Goalkeeper"
+    },
+    {
+      "name": "Aaron Ramsdale",
+      "price": 3,
+      "rating": 62,
+      "tag": "Goalkeeper"
+    },
+    {
+      "name": "Nick Pope",
+      "price": 3,
+      "rating": 60,
+      "tag": "Goalkeeper"
+    },
+    {
+      "name": "Kepa Arrizabalaga",
+      "price": 2,
+      "rating": 57,
+      "tag": "Goalkeeper"
+    },
+    {
+      "name": "Sam Johnstone",
+      "price": 1,
+      "rating": 52,
+      "tag": "Goalkeeper"
+    },
+    {
+      "name": "Jules Koundé",
+      "price": 6,
+      "rating": 77,
+      "tag": "Defender"
+    },
+    {
+      "name": "Luke Shaw",
+      "price": 3,
+      "rating": 61,
+      "tag": "Defender"
+    },
+    {
+      "name": "Ben White",
+      "price": 2,
+      "rating": 58,
+      "tag": "Defender"
     }
   ]
 }
