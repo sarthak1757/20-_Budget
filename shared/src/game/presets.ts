@@ -4,16 +4,23 @@ import type { GameSettings } from "../types/game";
 // The draft style (classic/auction) is separate and stored on its own.
 export type RulesPreset = "classic" | "custom" | "chaos";
 
-export function getRulesPreset(settings: GameSettings): RulesPreset {
+//
+// Balanced team only exists in categories with roles (and enough slots).
+// When it can't apply, "every extra on" means the other two.
+export function getRulesPreset(settings: GameSettings, balancedTeamPossible = true): RulesPreset {
+  let extrasAvailable = 2;
   let extrasOn = 0;
-  if (settings.balancedTeam) extrasOn += 1;
+  if (balancedTeamPossible) {
+    extrasAvailable += 1;
+    if (settings.balancedTeam) extrasOn += 1;
+  }
   if (settings.mysteryItems) extrasOn += 1;
   if (settings.powerUps) extrasOn += 1;
 
   if (extrasOn === 0) {
     return "classic";
   }
-  if (extrasOn === 3) {
+  if (extrasOn === extrasAvailable) {
     return "chaos";
   }
   return "custom";
