@@ -1,18 +1,16 @@
 import type { GameState } from "../types/game";
 import { minimumBid } from "./auction";
+import type { TurnMove } from "./engine";
 import { canSpend, countEmptySlots } from "./rules";
 
 // Prices roughly follow ratings at about 10 rating points per $1, so a
 // ratio above 11 means the item is better value than average.
 export const BOT_VALUE_THRESHOLD = 11;
 
-// What a bot decided. The caller adds the bot's id to turn it into a PlayerAction.
-export type BotMove = { type: "buy" } | { type: "pass" } | { type: "bid"; amount: number };
-
 // Decides what a bot whose turn it is should do.
 // Classic: BUY or PASS at the listed price.
 // Auction: bid the minimum when that minimum is good value, otherwise pass.
-export function decideBotAction(state: GameState, botId: string): BotMove {
+export function decideBotAction(state: GameState, botId: string): TurnMove {
   const item = state.currentItem;
   const bot = state.players.find((p) => p.id === botId);
   if (item === null || !bot) {

@@ -12,6 +12,7 @@ import {
   type GameState,
   type Item,
   type NewPlayer,
+  type TurnMove,
 } from "@budget-draft/shared";
 import { whoNeedsDevice } from "../lib/handoff";
 
@@ -35,7 +36,7 @@ interface LocalGameStore {
   resultSubmitted: boolean;
 
   start: (input: StartLocalGameInput) => void;
-  act: (type: "buy" | "pass") => void;
+  act: (move: TurnMove) => void;
   playBotTurn: () => void;
   vote: (targetId: string) => void;
   finishVoting: () => void;
@@ -58,7 +59,7 @@ export const useLocalGameStore = create<LocalGameStore>()(
         set({ game, error: null, deviceHolderId: null, resultSubmitted: false });
       },
 
-      act: (type) => {
+      act: (move) => {
         const game = get().game;
         if (!game) {
           return;
@@ -67,7 +68,7 @@ export const useLocalGameStore = create<LocalGameStore>()(
         if (playerId === null) {
           return;
         }
-        const result = applyAction(game, { type, playerId }, Date.now());
+        const result = applyAction(game, { ...move, playerId }, Date.now());
         if (result.ok) {
           set({ game: result.state, error: null });
         } else {

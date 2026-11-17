@@ -88,7 +88,7 @@ export function LocalGamePage() {
   if (currentPlayer && botIsThinking) {
     turnLabel = `🤖 ${currentPlayer.name} is thinking…`;
   } else if (currentPlayer && game.mode === "bot") {
-    turnLabel = "Your turn! Buy or pass?";
+    turnLabel = game.auction === null ? "Your turn! Buy or pass?" : "Your turn! Bid or pass?";
   } else if (currentPlayer) {
     turnLabel = `${currentPlayer.name}'s turn`;
   }
@@ -100,8 +100,7 @@ export function LocalGamePage() {
         viewerId={null}
         canAct={currentPlayer !== undefined && !currentPlayer.isBot}
         turnLabel={turnLabel}
-        onBuy={() => act("buy")}
-        onPass={() => act("pass")}
+        onMove={act}
       />
       {error && <p className="mt-4 text-center text-rose-400">{error}</p>}
       <div className="mt-6 text-center">{quitButton}</div>

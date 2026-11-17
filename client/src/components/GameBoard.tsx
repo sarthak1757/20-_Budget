@@ -1,7 +1,14 @@
 import type { ReactNode } from "react";
-import { getBuyBlockReason, getCurrentPlayerId, type PlayerState, type PublicGameState } from "@budget-draft/shared";
+import {
+  getBuyBlockReason,
+  getCurrentPlayerId,
+  type PlayerState,
+  type PublicGameState,
+  type TurnMove,
+} from "@budget-draft/shared";
 import { describeEvent } from "../lib/describeEvents";
 import { ActionBar } from "./ActionBar";
+import { BidBar } from "./BidBar";
 import { ItemCard } from "./ItemCard";
 import { PlayerColumn } from "./PlayerColumn";
 
@@ -14,21 +21,23 @@ interface GameBoardProps {
   busy?: boolean;
   turnLabel: string;
   timer?: ReactNode;
-  onBuy: () => void;
-  onPass: () => void;
+  onMove: (move: TurnMove) => void;
 }
 
-export function GameBoard({ state, viewerId, canAct, busy = false, turnLabel, timer, onBuy, onPass }: GameBoardProps) {
-  const currentId = getCurrentPlayerId(state);
-
-  // Whose budget decides if BUY is allowed: the viewer online, the current player locally.
-  const actingId = viewerId ?? currentId;
-  let actingPlayer: PlayerState | undefined;
-  for (const player of state.players) {
-    if (player.id === actingId) {
-      actingPlayer = player;
+function findPlayer(players: PlayerState[], id: string | null): PlayerState | undefined {
+  for (const player of players) {
+    if (player.id === id) {
+      return player;
     }
   }
+  return undefined;
+}
+
+export function GameBoard({ state, viewerId, canAct, busy = false, turnLabel, timer, onMove }: GameBoardProps) {
+  const currentId = getCurrentPlayerId(state);
+
+  // Whose budget decides if BUY/BID is allowed: the viewer online, the current player locally.
+  const actingPlayer = findPlayer(state.players, viewerId ?? currentId);
   let buyBlockReason: string | null = null;
   if (state.currentItem && actingPlayer) {
     buyBlockReason = getBuyBlockReason(actingPlayer, state.currentItem);
@@ -56,6 +65,35 @@ export function GameBoard({ state, viewerId, canAct, busy = false, turnLabel, ti
         cantAfford={state.cantAffordIds.includes(player.id)}
         isViewer={player.id === viewerId}
         justBought={boughtBy === player.id}
+        isHighBidder={state.auction !== null && state.auction.highBidderId === player.id}
+      />
+    );
+  }
+
+  let controls: ReactNode;
+  if (state.auction !== null) {
+    const highBidder = findPlayer(state.players, state.auction.highBidderId);
+    controls = (
+      <BidBar
+        turnLabel={turnLabel}
+        auction={state.auction}
+        highBidderName={highBidder ? highBidder.name : null}
+        bidder={actingPlayer}
+        canAct={canAct}
+        busy={busy}
+        onBid={(amount) => onMove({ type: "bid", amount })}
+        onPass={() => onMove({ type: "pass" })}
+      />
+    );
+  } else {
+    controls = (
+      <ActionBar
+        turnLabel={turnLabel}
+        canAct={canAct}
+        busy={busy}
+        buyBlockReason={buyBlockReason}
+        onBuy={() => onMove({ type: "buy" })}
+        onPass={() => onMove({ type: "pass" })}
       />
     );
   }
@@ -71,17 +109,11 @@ export function GameBoard({ state, viewerId, canAct, busy = false, turnLabel, ti
             item={state.currentItem}
             roundNumber={state.roundNumber}
             itemsRemaining={state.itemsRemaining}
+            isAuction={state.auction !== null}
           />
         )}
         {timer}
-        <ActionBar
-          turnLabel={turnLabel}
-          canAct={canAct}
-          busy={busy}
-          buyBlockReason={buyBlockReason}
-          onBuy={onBuy}
-          onPass={onPass}
-        />
+        {controls}
         <ul className="min-h-10 text-center text-sm text-zinc-400" aria-live="polite">
           {state.lastEvents.map((event, index) => (
             <li key={index}>{describeEvent(event, state.players)}</li>

@@ -8,6 +8,7 @@ interface PlayerColumnProps {
   cantAfford: boolean;
   isViewer?: boolean; // online: highlights "you"
   justBought?: boolean; // plays a short glow after this player buys
+  isHighBidder?: boolean; // auction: holds the current high bid
 }
 
 export function PlayerColumn({
@@ -16,6 +17,7 @@ export function PlayerColumn({
   cantAfford,
   isViewer = false,
   justBought = false,
+  isHighBidder = false,
 }: PlayerColumnProps) {
   const shownBudget = useAnimatedNumber(player.budget);
   const border = isCurrentTurn ? "border-emerald-400 shadow-lg shadow-emerald-500/20" : "border-zinc-800";
@@ -31,6 +33,7 @@ export function PlayerColumn({
           {player.name}
           {isViewer && <span className="text-zinc-500"> (you)</span>}
         </span>
+        {isHighBidder && <span className="ml-auto rounded-full bg-amber-400 px-2 text-xs font-bold text-zinc-950">High bid</span>}
         {!player.isConnected && <span className="ml-auto text-xs text-amber-400">offline</span>}
       </header>
 

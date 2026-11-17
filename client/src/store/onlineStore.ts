@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { AckResponse, GameSettings, RoomSnapshot } from "@budget-draft/shared";
+import type { AckResponse, GameSettings, RoomSnapshot, TurnActionPayload, TurnMove } from "@budget-draft/shared";
 import { forgetRoom, getStoredPlayerId, storeName, storePlayerId } from "../lib/playerStorage";
 import { socket } from "../lib/socket";
 import { dismissToast, showToast } from "./toastStore";
@@ -23,7 +23,7 @@ interface OnlineStore {
   leaveRoom: () => Promise<void>;
   updateSettings: (settings: GameSettings) => Promise<void>;
   startGame: () => Promise<void>;
-  act: (action: "buy" | "pass") => Promise<void>;
+  act: (move: TurnMove) => Promise<void>;
   vote: (targetPlayerId: string) => Promise<void>;
   clearActionError: () => void;
 }
@@ -146,9 +146,15 @@ export const useOnlineStore = create<OnlineStore>()((set, get) => {
 
     updateSettings: (settings) => run(() => socket.emitWithAck("room:settings", settings)),
     startGame: () => run(() => socket.emitWithAck("game:start")),
-    act: (action) => {
+    act: (move) => {
       const roundNumber = get().room?.game?.roundNumber ?? 0;
-      return run(() => socket.emitWithAck("turn:action", { action, roundNumber }));
+      let payload: TurnActionPayload;
+      if (move.type === "bid") {
+        payload = { action: "bid", amount: move.amount, roundNumber };
+      } else {
+        payload = { action: move.type, roundNumber };
+      }
+      return run(() => socket.emitWithAck("turn:action", payload));
     },
     vote: (targetPlayerId) => run(() => socket.emitWithAck("vote:cast", { targetPlayerId })),
     clearActionError: () => set({ actionError: null }),

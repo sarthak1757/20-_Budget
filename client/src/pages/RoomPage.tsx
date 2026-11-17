@@ -139,7 +139,7 @@ function RoomContent({ room, playerId, categories, busy, onLeave }: RoomContentP
   const isMyTurn = currentId !== null && currentId === playerId;
   let turnLabel = "";
   if (isMyTurn) {
-    turnLabel = "Your turn! Buy or pass?";
+    turnLabel = game.auction === null ? "Your turn! Buy or pass?" : "Your turn! Bid or pass?";
   } else if (current) {
     turnLabel = `Waiting for ${current.name}…`;
   }
@@ -153,8 +153,7 @@ function RoomContent({ room, playerId, categories, busy, onLeave }: RoomContentP
         busy={busy}
         turnLabel={turnLabel}
         timer={<Countdown deadline={game.turnDeadline} totalSeconds={game.settings.turnSeconds} label="Time left" />}
-        onBuy={() => store.act("buy")}
-        onPass={() => store.act("pass")}
+        onMove={store.act}
       />
       <div className="mt-6 text-center">
         <Button variant="ghost" className="text-sm" onClick={onLeave}>

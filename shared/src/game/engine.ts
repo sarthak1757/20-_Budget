@@ -30,6 +30,9 @@ export interface CreateGameInput {
 }
 
 // What a player can do on their turn. "buy" is Classic only, "bid" is Auction only.
+// The UI and bots produce a TurnMove; the engine also needs to know who made it.
+export type TurnMove = { type: "buy" } | { type: "pass" } | { type: "bid"; amount: number };
+
 export type PlayerAction =
   | { type: "buy"; playerId: string }
   | { type: "bid"; playerId: string; amount: number }

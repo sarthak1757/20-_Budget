@@ -5,9 +5,10 @@ interface ItemCardProps {
   item: Item;
   roundNumber: number;
   itemsRemaining: number;
+  isAuction?: boolean; // the listed price is only a guide: bids decide what's paid
 }
 
-export function ItemCard({ item, roundNumber, itemsRemaining }: ItemCardProps) {
+export function ItemCard({ item, roundNumber, itemsRemaining, isAuction = false }: ItemCardProps) {
   return (
     // The parent renders this with key={item.id}, so each new item mounts a fresh card
     // and the reveal animation plays again.
@@ -26,7 +27,7 @@ export function ItemCard({ item, roundNumber, itemsRemaining }: ItemCardProps) {
 
       <div className="mt-4 grid grid-cols-2 gap-3">
         <div className="rounded-2xl bg-zinc-950/60 p-3">
-          <p className="text-xs text-zinc-500 uppercase">Price</p>
+          <p className="text-xs text-zinc-500 uppercase">{isAuction ? "Guide price" : "Price"}</p>
           <p className="text-money text-3xl font-black tabular-nums">${item.price}</p>
         </div>
         <div className="rounded-2xl bg-zinc-950/60 p-3">
