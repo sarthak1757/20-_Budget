@@ -65,6 +65,13 @@ export function RulesPanel({ settings, categoryRoles, disabled = false, onChange
           disabled={disabled || rolesProblem !== null}
           onChange={(checked) => onChange({ ...settings, balancedTeam: checked })}
         />
+        <Toggle
+          label="Mystery items"
+          description="About 1 in 6 items hide their rating until the draft ends. Only the price and tag are shown."
+          checked={settings.mysteryItems}
+          disabled={disabled}
+          onChange={(checked) => onChange({ ...settings, mysteryItems: checked })}
+        />
       </div>
     </div>
   );
