@@ -26,7 +26,9 @@ export function decideBotAction(state: GameState, botId: string): TurnMove {
     return { type: "pass" };
   }
 
-  const wantsIt = isGoodDeal(state, item.rating, price);
+  // Bots play fair: a mystery item's rating is hidden from them too.
+  const rating = item.isMystery === true ? guessRatingFromPrice(item.price) : item.rating;
+  const wantsIt = isGoodDeal(state, rating, price);
   if (!wantsIt) {
     return { type: "pass" };
   }
@@ -54,4 +56,10 @@ function isGoodDeal(state: GameState, rating: number, price: number): boolean {
     return true;
   }
   return rating / price >= BOT_VALUE_THRESHOLD;
+}
+
+// What a fairly priced item at this price is usually rated (seed prices
+// follow ratings at roughly $1 per 5 points above 45). Used for mystery items.
+export function guessRatingFromPrice(price: number): number {
+  return 45 + 5 * price;
 }

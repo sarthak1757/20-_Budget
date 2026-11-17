@@ -242,3 +242,28 @@ describe("voting", () => {
     expect(castVote(state, "p1", "p2", NOW).ok).toBe(false);
   });
 });
+
+describe("createGame: mystery items", () => {
+  // Alternates "keep order" (for the shuffle) with low/high rolls for the mystery check.
+  function scriptedRandom(values: number[]): () => number {
+    let index = 0;
+    return () => {
+      const value = values[index % values.length] ?? 0.999999;
+      index += 1;
+      return value;
+    };
+  }
+
+  it("marks items whose roll is under 1 in 6, only when the setting is on", () => {
+    const items = makeItems(4);
+    // 3 shuffle swaps, then one roll per item.
+    const rolls = [0.999999, 0.999999, 0.999999, 0.1, 0.9, 0.05, 0.5];
+    const base = { mode: "local" as const, items, players: makePlayers(2), now: NOW };
+    const on = createGame({ ...base, settings: makeSettings({ mysteryItems: true }), random: scriptedRandom(rolls) });
+    const mysteryIds = [on.currentItem, ...on.itemPool].filter((item) => item?.isMystery).map((item) => item?.id);
+    expect(mysteryIds).toEqual(["i1", "i3"]);
+
+    const off = createGame({ ...base, settings: makeSettings(), random: scriptedRandom(rolls) });
+    expect([off.currentItem, ...off.itemPool].some((item) => item?.isMystery)).toBe(false);
+  });
+});

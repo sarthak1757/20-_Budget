@@ -22,6 +22,9 @@ export const LEFTOVER_POINTS_PER_DOLLAR = 1;
 // to make a weak team win.
 export const BALANCED_TEAM_BONUS = 15;
 
+// Mystery items: the chance that any one item hides its rating.
+export const MYSTERY_CHANCE = 1 / 6;
+
 export const DEFAULT_SETTINGS: GameSettings = {
   startingBudget: 20,
   slotCount: 5,

@@ -1,7 +1,7 @@
 import type { Item } from "../types/item";
 import type { GameMode, GameSettings, GameState, PlayerState } from "../types/game";
 import { applyAuctionAction } from "./auction";
-import { MAX_PLAYERS, MIN_PLAYERS } from "./constants";
+import { MAX_PLAYERS, MIN_PLAYERS, MYSTERY_CHANCE } from "./constants";
 import { pickRequiredRoles } from "./roles";
 import { findFirstEmptySlot, getBuyBlockReason } from "./rules";
 import { endRound, finishGame, makeTurnDeadline, startRound } from "./rounds";
@@ -86,7 +86,7 @@ export function createGame(input: CreateGameInput): GameState {
     phase: "drafting",
     settings: { ...settings, balancedTeam: requiredRoles.length > 0 },
     players: playerStates,
-    itemPool: shuffle(items, input.random),
+    itemPool: buildItemPool(items, settings.mysteryItems, input.random ?? Math.random),
     currentItem: null,
     roundNumber: 0,
     firstPlayerIndex: 0,
@@ -227,4 +227,22 @@ function everyHumanHasVoted(state: GameState): boolean {
     }
   }
   return true;
+}
+
+// Shuffles the items and, with Mystery items on, marks about 1 in 6 of them.
+// Each item rolls on its own, so the number of mysteries varies a little per game.
+function buildItemPool(items: Item[], mysteryItems: boolean, random: () => number): Item[] {
+  const shuffled = shuffle(items, random);
+  if (!mysteryItems) {
+    return shuffled;
+  }
+  const pool: Item[] = [];
+  for (const item of shuffled) {
+    if (random() < MYSTERY_CHANCE) {
+      pool.push({ ...item, isMystery: true });
+    } else {
+      pool.push(item);
+    }
+  }
+  return pool;
 }

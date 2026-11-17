@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { decideBotAction } from "../bot";
+import { decideBotAction, guessRatingFromPrice } from "../bot";
 import { makeItem, makeItems, startGame } from "./helpers";
 
 function gameWithFirstItem(price: number, rating: number, extraItems = 30, draftStyle: "classic" | "auction" = "classic") {
@@ -42,5 +42,19 @@ describe("decideBotAction", () => {
       state.auction = { highBid: 7, highBidderId: "p2" }; // next bid $8: ratio 8.75
       expect(decideBotAction(state, "p1")).toEqual({ type: "pass" });
     });
+  });
+});
+
+describe("bots and mystery items", () => {
+  it("judge a mystery item by its price, not its hidden rating", () => {
+    // Rated 99 for $9 would be a great buy, but the bot can't see that.
+    const state = gameWithFirstItem(9, 99);
+    if (state.currentItem) state.currentItem.isMystery = true;
+    expect(decideBotAction(state, "p1")).toEqual({ type: "pass" });
+  });
+
+  it("guess about 50 for a $1 item and 95 for a $10 item", () => {
+    expect(guessRatingFromPrice(1)).toBe(50);
+    expect(guessRatingFromPrice(10)).toBe(95);
   });
 });
