@@ -1,0 +1,308 @@
+{
+  "slug": "football",
+  "name": "Football",
+  "emoji": "⚽",
+  "description": "Strikers, playmakers, keepers and a few cult heroes from the world's game.",
+  "items": [
+    {
+      "name": "Lionel Messi",
+      "price": 10,
+      "rating": 98,
+      "tag": "Forward"
+    },
+    {
+      "name": "Kylian Mbappé",
+      "price": 10,
+      "rating": 95,
+      "tag": "Forward"
+    },
+    {
+      "name": "Erling Haaland",
+      "price": 9,
+      "rating": 94,
+      "tag": "Striker"
+    },
+    {
+      "name": "Cristiano Ronaldo",
+      "price": 9,
+      "rating": 93,
+      "tag": "Forward"
+    },
+    {
+      "name": "Vinícius Júnior",
+      "price": 9,
+      "rating": 92,
+      "tag": "Winger"
+    },
+    {
+      "name": "Jude Bellingham",
+      "price": 9,
+      "rating": 91,
+      "tag": "Midfielder"
+    },
+    {
+      "name": "Rodri",
+      "price": 9,
+      "rating": 91,
+      "tag": "Midfielder"
+    },
+    {
+      "name": "Harry Kane",
+      "price": 9,
+      "rating": 91,
+      "tag": "Striker"
+    },
+    {
+      "name": "Mohamed Salah",
+      "price": 9,
+      "rating": 90,
+      "tag": "Winger"
+    },
+    {
+      "name": "Lamine Yamal",
+      "price": 6,
+      "rating": 90,
+      "tag": "Winger"
+    },
+    {
+      "name": "Kevin De Bruyne",
+      "price": 8,
+      "rating": 88,
+      "tag": "Midfielder"
+    },
+    {
+      "name": "Virgil van Dijk",
+      "price": 8,
+      "rating": 88,
+      "tag": "Defender"
+    },
+    {
+      "name": "Thibaut Courtois",
+      "price": 8,
+      "rating": 88,
+      "tag": "Goalkeeper"
+    },
+    {
+      "name": "Bukayo Saka",
+      "price": 8,
+      "rating": 87,
+      "tag": "Winger"
+    },
+    {
+      "name": "Florian Wirtz",
+      "price": 8,
+      "rating": 87,
+      "tag": "Midfielder"
+    },
+    {
+      "name": "Jamal Musiala",
+      "price": 8,
+      "rating": 87,
+      "tag": "Midfielder"
+    },
+    {
+      "name": "William Saliba",
+      "price": 8,
+      "rating": 86,
+      "tag": "Defender"
+    },
+    {
+      "name": "Pedri",
+      "price": 8,
+      "rating": 86,
+      "tag": "Midfielder"
+    },
+    {
+      "name": "Lautaro Martínez",
+      "price": 8,
+      "rating": 85,
+      "tag": "Striker"
+    },
+    {
+      "name": "Federico Valverde",
+      "price": 8,
+      "rating": 85,
+      "tag": "Midfielder"
+    },
+    {
+      "name": "Robert Lewandowski",
+      "price": 7,
+      "rating": 84,
+      "tag": "Striker"
+    },
+    {
+      "name": "Alisson Becker",
+      "price": 7,
+      "rating": 84,
+      "tag": "Goalkeeper"
+    },
+    {
+      "name": "Martin Ødegaard",
+      "price": 7,
+      "rating": 83,
+      "tag": "Midfielder"
+    },
+    {
+      "name": "Declan Rice",
+      "price": 7,
+      "rating": 83,
+      "tag": "Midfielder"
+    },
+    {
+      "name": "Achraf Hakimi",
+      "price": 7,
+      "rating": 82,
+      "tag": "Defender"
+    },
+    {
+      "name": "Son Heung-min",
+      "price": 4,
+      "rating": 81,
+      "tag": "Forward"
+    },
+    {
+      "name": "Bruno Fernandes",
+      "price": 6,
+      "rating": 79,
+      "tag": "Midfielder"
+    },
+    {
+      "name": "Khvicha Kvaratskhelia",
+      "price": 6,
+      "rating": 79,
+      "tag": "Winger"
+    },
+    {
+      "name": "Antoine Griezmann",
+      "price": 6,
+      "rating": 78,
+      "tag": "Forward"
+    },
+    {
+      "name": "Phil Foden",
+      "price": 6,
+      "rating": 78,
+      "tag": "Midfielder"
+    },
+    {
+      "name": "Luka Modrić",
+      "price": 3,
+      "rating": 77,
+      "tag": "Midfielder"
+    },
+    {
+      "name": "Bernardo Silva",
+      "price": 6,
+      "rating": 77,
+      "tag": "Midfielder"
+    },
+    {
+      "name": "Victor Osimhen",
+      "price": 6,
+      "rating": 76,
+      "tag": "Striker"
+    },
+    {
+      "name": "Rúben Dias",
+      "price": 6,
+      "rating": 76,
+      "tag": "Defender"
+    },
+    {
+      "name": "Trent Alexander-Arnold",
+      "price": 6,
+      "rating": 75,
+      "tag": "Defender"
+    },
+    {
+      "name": "Jordan Pickford",
+      "price": 4,
+      "rating": 68,
+      "tag": "Goalkeeper"
+    },
+    {
+      "name": "Romelu Lukaku",
+      "price": 4,
+      "rating": 67,
+      "tag": "Striker"
+    },
+    {
+      "name": "Marcus Rashford",
+      "price": 4,
+      "rating": 66,
+      "tag": "Forward"
+    },
+    {
+      "name": "Casemiro",
+      "price": 4,
+      "rating": 65,
+      "tag": "Midfielder"
+    },
+    {
+      "name": "Jack Grealish",
+      "price": 8,
+      "rating": 64,
+      "tag": "Winger"
+    },
+    {
+      "name": "Kyle Walker",
+      "price": 3,
+      "rating": 63,
+      "tag": "Defender"
+    },
+    {
+      "name": "Raheem Sterling",
+      "price": 3,
+      "rating": 62,
+      "tag": "Winger"
+    },
+    {
+      "name": "Mason Mount",
+      "price": 2,
+      "rating": 56,
+      "tag": "Midfielder"
+    },
+    {
+      "name": "Harry Maguire",
+      "price": 6,
+      "rating": 55,
+      "tag": "Defender"
+    },
+    {
+      "name": "Jordan Henderson",
+      "price": 1,
+      "rating": 52,
+      "tag": "Midfielder"
+    },
+    {
+      "name": "Timo Werner",
+      "price": 5,
+      "rating": 50,
+      "tag": "Forward"
+    },
+    {
+      "name": "Christian Benteke",
+      "price": 1,
+      "rating": 48,
+      "tag": "Striker"
+    },
+    {
+      "name": "Ross Barkley",
+      "price": 1,
+      "rating": 47,
+      "tag": "Midfielder"
+    },
+    {
+      "name": "Dele Alli",
+      "price": 1,
+      "rating": 46,
+      "tag": "Midfielder"
+    },
+    {
+      "name": "Andy Carroll",
+      "price": 1,
+      "rating": 45,
+      "tag": "Striker"
+    }
+  ]
+}
