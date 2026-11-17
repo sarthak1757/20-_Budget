@@ -39,8 +39,12 @@ interface LocalGameStore {
   // So a finished game is sent to the server only once, even after a refresh.
   resultSubmitted: boolean;
   peeked: PeekedItem | null;
+  // Set while playing the Daily Challenge. `moves` are the human's moves in
+  // order: the server replays them to check the score.
+  daily: { dateKey: string; moves: TurnMove[] } | null;
 
   start: (input: StartLocalGameInput) => void;
+  startDaily: (game: GameState, dateKey: string) => void;
   act: (move: TurnMove) => void;
   peek: () => void;
   playBotTurn: () => void;
@@ -60,10 +64,15 @@ export const useLocalGameStore = create<LocalGameStore>()(
       deviceHolderId: null,
       resultSubmitted: false,
       peeked: null,
+      daily: null,
 
       start: (input) => {
         const game = createGame({ ...input, now: Date.now() });
-        set({ game, error: null, deviceHolderId: null, resultSubmitted: false, peeked: null });
+        set({ game, error: null, deviceHolderId: null, resultSubmitted: false, peeked: null, daily: null });
+      },
+
+      startDaily: (game, dateKey) => {
+        set({ game, error: null, deviceHolderId: null, resultSubmitted: false, peeked: null, daily: { dateKey, moves: [] } });
       },
 
       act: (move) => {
@@ -76,10 +85,17 @@ export const useLocalGameStore = create<LocalGameStore>()(
           return;
         }
         const result = applyAction(game, { ...move, playerId }, Date.now());
-        if (result.ok) {
-          set({ game: result.state, error: null });
-        } else {
+        if (!result.ok) {
           set({ error: result.error });
+          return;
+        }
+        // Only humans call act (bots go through playBotTurn), so in a daily
+        // this log is exactly the player's moves.
+        const daily = get().daily;
+        if (daily !== null) {
+          set({ game: result.state, error: null, daily: { ...daily, moves: [...daily.moves, move] } });
+        } else {
+          set({ game: result.state, error: null });
         }
       },
 
@@ -155,7 +171,7 @@ export const useLocalGameStore = create<LocalGameStore>()(
 
       markResultSubmitted: () => set({ resultSubmitted: true }),
 
-      reset: () => set({ game: null, error: null, deviceHolderId: null }),
+      reset: () => set({ game: null, error: null, deviceHolderId: null, daily: null }),
     }),
     {
       // sessionStorage: a refresh keeps the game, closing the tab ends it.
@@ -166,6 +182,7 @@ export const useLocalGameStore = create<LocalGameStore>()(
         deviceHolderId: state.deviceHolderId,
         resultSubmitted: state.resultSubmitted,
         peeked: state.peeked,
+        daily: state.daily,
       }),
     },
   ),

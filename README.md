@@ -17,6 +17,7 @@ Mongoose and Socket.io.
 | 📱 Pass & Play | 2–4 players on one device. A "pass the device" screen between turns. | No (uses bundled data) |
 | 🌐 Online Room | Create a room, share the 6-letter code or link. 15s turn timer. | Yes |
 | 🤖 Solo vs Bots | You against 1–3 bots (easy, medium or hard). | No |
+| 📅 Daily Challenge | Same category and item order for everyone today (UTC), against one hard bot. One try per day. Share your score as "Budget Draft #12 — 412 pts 🟩🟩🟨🟩⬜". | To post a score |
 
 Every mode can be played in either **draft style**, with any mix of the **extras**:
 
@@ -147,6 +148,8 @@ A type test (`shared/src/__typetests__`) checks that this protection holds.
 | `GET /api/rooms/:code` | Room info (phase, player count, joinable) |
 | `GET /api/leaderboard` | Wins, games played, best score (online games only; best score from Classic games with no extras) |
 | `POST /api/results` | Store a finished local/bot game (never ranked) |
+| `POST /api/daily` | Submit a Daily Challenge: `{ dateKey, playerName, moves }`. The server replays the moves to get the score → `{ total, rank, players }` |
+| `GET /api/daily/leaderboard?date=YYYY-MM-DD` | Top 20 for one day's daily (default today, UTC) |
 | `/api/admin/...` | Category and item CRUD, needs the `x-admin-password` header |
 
 ### Socket events
@@ -174,6 +177,8 @@ Every request gets an acknowledgement: `{ ok: true, data }` or `{ ok: false, err
   chaos), players with a *snapshot* of their team (with the price actually paid) and
   scores, `statsWinnerIds`, `voteWinnerIds`, and `countsForLeaderboard` (true only for
   online games). Results saved before `draftStyle`/`preset` existed are read as Classic.
+- **DailyResult**: `dateKey`, `playerName`, `total` and `botTotal` (both worked out by the
+  server), and the `moves` (so a score can be checked again). Unique per (day, lower-case name).
 
 No images or logos anywhere: items are names and text, shown with an emoji or a
 generated initials avatar.
@@ -288,6 +293,12 @@ counts. Ratings are a playful opinion for the game, not a real-world ranking.
   seat. Clearing site data or switching device means joining as a new player. The
   leaderboard groups players by name (case-insensitive), so two people using the same
   name share an entry.
+- **The daily's items can be found in dev tools.** The day's game is built in the browser
+  from the date (it's the seed), so a curious player can work out the item order before
+  playing. The server replays every submitted move list, so scores can't be faked, but a
+  player who looked ahead can play perfectly. Fine for a casual game.
+- **One daily attempt per device is a localStorage flag.** Clearing site data gives
+  another try. The server allows one score per name per day; a new name gets around that.
 - **Best score only counts Classic games with no extras.** Auctions, power-ups and the
   balanced bonus all change what a score means. Wins count in every mode.
 - **Leaderboard = online games only.** In local and bot games one person controls every

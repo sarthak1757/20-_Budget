@@ -76,6 +76,19 @@ export function HomePage() {
         })}
       </div>
 
+      <Link
+        to="/daily"
+        className="mt-3 flex items-center gap-4 rounded-2xl border border-amber-500/40 bg-amber-500/10 p-5 transition hover:border-amber-400"
+      >
+        <span className="text-4xl" aria-hidden>
+          📅
+        </span>
+        <span>
+          <span className="block text-xl font-bold">Daily Challenge</span>
+          <span className="block text-sm text-zinc-400">Same items for everyone today. One try. Share your score.</span>
+        </span>
+      </Link>
+
       <div className="mt-6 flex flex-wrap gap-3">
         <Link to="/join" className="rounded-xl bg-zinc-800 px-4 py-3 font-semibold hover:bg-zinc-700">
           🔑 Join with a code

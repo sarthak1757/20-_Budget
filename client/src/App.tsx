@@ -3,6 +3,7 @@ import { Toaster } from "./components/Toaster";
 import { PageShell } from "./components/ui";
 import { AdminPage } from "./pages/AdminPage";
 import { CategoryPickerPage } from "./pages/CategoryPickerPage";
+import { DailyPage } from "./pages/DailyPage";
 import { HomePage } from "./pages/HomePage";
 import { LocalGamePage } from "./pages/LocalGamePage";
 import { LocalResultsPage } from "./pages/LocalResultsPage";
@@ -24,6 +25,7 @@ export function App() {
         <Route path="/join" element={<JoinPage />} />
         <Route path="/join/:code" element={<JoinPage />} />
         <Route path="/room/:code" element={<RoomPage />} />
+        <Route path="/daily" element={<DailyPage />} />
         <Route path="/leaderboard" element={<LeaderboardPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="*" element={<NotFoundPage />} />

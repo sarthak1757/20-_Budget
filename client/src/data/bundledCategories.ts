@@ -1,4 +1,4 @@
-import { seedCategorySchema, type Category, type Item } from "@budget-draft/shared";
+import { itemsFromSeed, seedCategorySchema, type Category, type Item, type SeedCategory } from "@budget-draft/shared";
 
 // The seed JSON files are bundled into the app at build time, so
 // pass-and-play and bot games work with no server at all.
@@ -13,8 +13,8 @@ export interface CategoryWithItems {
   items: Item[];
 }
 
-function buildBundledCategories(): CategoryWithItems[] {
-  const result: CategoryWithItems[] = [];
+function loadBundledSeeds(): SeedCategory[] {
+  const seeds: SeedCategory[] = [];
   for (const [path, raw] of Object.entries(seedModules)) {
     // Validate anyway: a broken file should show up as a clear error, not a blank screen.
     const parsed = seedCategorySchema.safeParse(raw);
@@ -22,27 +22,20 @@ function buildBundledCategories(): CategoryWithItems[] {
       console.error(`Skipping invalid bundled seed file ${path}`, parsed.error.issues);
       continue;
     }
-    const seed = parsed.data;
-    const items: Item[] = [];
-    for (let i = 0; i < seed.items.length; i++) {
-      const seedItem = seed.items[i];
-      if (!seedItem) {
-        continue;
-      }
-      const item: Item = {
-        // Bundled items have no database id, so we make a stable one from the position.
-        id: `${seed.slug}-${i}`,
-        name: seedItem.name,
-        category: seed.slug,
-        price: seedItem.price,
-        rating: seedItem.rating,
-        tag: seedItem.tag,
-      };
-      if (seedItem.emoji !== undefined) {
-        item.emoji = seedItem.emoji;
-      }
-      items.push(item);
-    }
+    seeds.push(parsed.data);
+  }
+  return seeds;
+}
+
+// The raw seed files. The Daily Challenge builds its game from these, exactly
+// as the server does when it checks a daily score.
+export const bundledSeeds: SeedCategory[] = loadBundledSeeds();
+
+function buildBundledCategories(): CategoryWithItems[] {
+  const result: CategoryWithItems[] = [];
+  for (const seed of bundledSeeds) {
+    // Bundled items have no database id; itemsFromSeed makes a stable one from the position.
+    const items = itemsFromSeed(seed);
     result.push({
       category: {
         slug: seed.slug,
