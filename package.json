@@ -4,11 +4,13 @@
   "type": "module",
   "workspaces": [
     "shared",
-    "server"
+    "server",
+    "client"
   ],
   "scripts": {
     "test": "npm run test --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
-    "seed": "npm run seed -w server"
+    "seed": "npm run seed -w server",
+    "dev": "npm run dev -w server & npm run dev -w client"
   }
 }

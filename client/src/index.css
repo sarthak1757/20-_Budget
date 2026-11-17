@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --color-money: #4ade80;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  @apply min-h-dvh bg-zinc-950 text-zinc-100 antialiased;
+}
+
+/* Makes keyboard focus easy to see everywhere, without showing it on mouse clicks. */
+:focus-visible {
+  @apply outline-2 outline-offset-2 outline-emerald-400;
+}
