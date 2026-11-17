@@ -42,7 +42,7 @@ export function VotePanel({ voterId, voterName, players, selectedId, disabled = 
             >
               <p className="text-lg font-bold">{player.name}</p>
               <p className="mb-2 text-sm text-zinc-500">Rating total {scoreTeam(player).ratingTotal}</p>
-              <ul className="grid gap-1">
+              <ul className="grid grid-cols-1 gap-1">
                 {player.team.map((item, index) => (
                   <li key={index} className="flex items-center gap-2 text-sm">
                     {item ? (

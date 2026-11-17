@@ -43,7 +43,7 @@ export function PlayerColumn({
         {!cantAfford && maxSpendable(player) === 0 && <>Team complete</>}
       </p>
 
-      <ol className="grid gap-1.5">
+      <ol className="grid grid-cols-1 gap-1.5">
         {player.team.map((item, index) => (
           <Slot key={index} index={index} item={item} />
         ))}
@@ -67,10 +67,13 @@ function Slot({ index, item }: { index: number; item: Item | null }) {
       title={`${item.name} · ${item.tag} · $${item.price} · rating ${item.rating}`}
     >
       <span className="w-4 text-xs font-bold text-zinc-500 tabular-nums">{index + 1}</span>
-      <Avatar name={item.name} emoji={item.emoji} size="sm" />
+      {/* On narrow phones with 3-4 columns, the avatar is dropped so the name has room. */}
+      <span className="hidden sm:contents">
+        <Avatar name={item.name} emoji={item.emoji} size="sm" />
+      </span>
       <span className="min-w-0 flex-1">
         <span className="block truncate text-sm leading-tight font-semibold">{item.name}</span>
-        <span className="block text-[11px] leading-tight text-zinc-500">
+        <span className="block truncate text-[11px] leading-tight text-zinc-500">
           {item.tag} · ${item.price}
         </span>
       </span>

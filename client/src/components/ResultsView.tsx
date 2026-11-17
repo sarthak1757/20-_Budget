@@ -56,6 +56,7 @@ export function ResultsView({ players, results }: ResultsViewProps) {
         )}
       </div>
 
+      <p className="-mb-3 text-sm text-zinc-500">💎 = best value pick (most rating per dollar)</p>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {results.scores.map((score, rank) => {
           const player = players.find((p) => p.id === score.playerId);
@@ -86,19 +87,20 @@ export function ResultsView({ players, results }: ResultsViewProps) {
                 {score.ratingTotal} rating + {score.leftoverBonus} leftover bonus
                 {results.votingHeld && ` · ${score.votesReceived} vote${score.votesReceived === 1 ? "" : "s"}`}
               </p>
-              <ol className="grid gap-1.5">
+              <ol className="grid grid-cols-1 gap-1.5">
                 {player.team.map((item, index) =>
                   item ? (
                     <li key={index} className="flex items-center gap-2 text-sm">
                       <Avatar name={item.name} emoji={item.emoji} size="sm" />
                       <span className={`min-w-0 flex-1 truncate ${item.isBench ? "text-zinc-500" : ""}`}>
                         {item.name}
-                        {item === bestValue && (
-                          <span className="ml-1.5 rounded bg-emerald-900 px-1 text-[10px] font-bold text-emerald-300 uppercase">
-                            Best value
-                          </span>
-                        )}
                       </span>
+                      {/* Outside the truncated name so it's never cut off. */}
+                      {item === bestValue && (
+                        <span title="Best value: most rating per dollar" aria-label="Best value">
+                          💎
+                        </span>
+                      )}
                       <span className="text-zinc-500 tabular-nums">${item.price}</span>
                       <span className="w-7 text-right font-semibold tabular-nums">{item.rating}</span>
                     </li>
