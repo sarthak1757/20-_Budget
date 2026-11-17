@@ -1,0 +1,73 @@
+import { createServer, type Server as HttpServer } from "node:http";
+import { Server } from "socket.io";
+import type { Express } from "express";
+import { createApp } from "./app";
+import { RoomStore } from "./rooms/roomStore";
+import { categoryExists, getCategoryItems } from "./services/catalog";
+import { saveGameResult } from "./services/gameResults";
+import { PlayerConnections, type SocketContext } from "./sockets/context";
+import { registerGameHandlers } from "./sockets/gameHandlers";
+import { GameRunner } from "./sockets/gameRunner";
+import { registerRoomHandlers } from "./sockets/roomHandlers";
+import type { GameServer } from "./sockets/types";
+
+const CLEANUP_INTERVAL_MS = 60 * 1000;
+
+export interface GameServerOptions {
+  clientUrl: string;
+  rooms?: RoomStore;
+}
+
+export interface RunningGameServer {
+  app: Express;
+  httpServer: HttpServer;
+  io: GameServer;
+  rooms: RoomStore;
+  close: () => Promise<void>;
+}
+
+// Wires Express and Socket.io onto one HTTP server. Used by index.ts and the tests.
+export function createGameServer(options: GameServerOptions): RunningGameServer {
+  const rooms = options.rooms ?? new RoomStore();
+  const app = createApp({ clientUrl: options.clientUrl, rooms });
+  const httpServer = createServer(app);
+  const io: GameServer = new Server(httpServer, {
+    cors: { origin: options.clientUrl },
+  });
+
+  const runner = new GameRunner(io, {
+    loadItems: getCategoryItems,
+    saveResult: saveGameResult,
+    now: () => Date.now(),
+  });
+  const ctx: SocketContext = {
+    io,
+    rooms,
+    runner,
+    connections: new PlayerConnections(),
+    now: () => Date.now(),
+    categoryExists,
+  };
+
+  io.on("connection", (socket) => {
+    registerRoomHandlers(socket, ctx);
+    registerGameHandlers(socket, ctx);
+  });
+
+  // Rooms nobody has been connected to for 10 minutes are deleted.
+  const cleanup = setInterval(() => {
+    const removed = rooms.removeAbandoned(Date.now());
+    for (const code of removed) {
+      runner.clearTimers(code);
+    }
+  }, CLEANUP_INTERVAL_MS);
+  cleanup.unref(); // don't keep the process alive just for this
+
+  async function close(): Promise<void> {
+    clearInterval(cleanup);
+    runner.clearAllTimers();
+    await io.close(); // also closes the HTTP server
+  }
+
+  return { app, httpServer, io, rooms, close };
+}
