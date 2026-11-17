@@ -48,7 +48,18 @@ export async function saveGameResult(state: GameState, results: GameResults, roo
   });
 }
 
-// Wins = times a player was the stats winner (a shared win in a tie still counts).
+// Only these games set a "best score": auctions, power-ups and the bonus all
+// change what a score means, so comparing across them wouldn't be fair.
+// Old results have no draftStyle/preset fields, and count as Classic.
+const IS_PLAIN_CLASSIC = {
+  $and: [
+    { $eq: [{ $ifNull: ["$draftStyle", "classic"] }, "classic"] },
+    { $eq: [{ $ifNull: ["$preset", "classic"] }, "classic"] },
+  ],
+};
+
+// Wins = times a player was the stats winner (a shared win in a tie still counts),
+// across every draft style and preset.
 // Players are grouped by name, case-insensitive, since there are no accounts.
 export async function getLeaderboard(limit = 50): Promise<LeaderboardEntry[]> {
   return GameResultModel.aggregate<LeaderboardEntry>([
@@ -61,7 +72,8 @@ export async function getLeaderboard(limit = 50): Promise<LeaderboardEntry[]> {
         name: { $first: "$players.name" },
         gamesPlayed: { $sum: 1 },
         wins: { $sum: { $cond: [{ $in: ["$players.playerId", "$statsWinnerIds"] }, 1, 0] } },
-        bestScore: { $max: "$players.total" },
+        // $max skips nulls, so non-Classic games simply don't take part.
+        bestScore: { $max: { $cond: [IS_PLAIN_CLASSIC, "$players.total", null] } },
       },
     },
     { $sort: { wins: -1, bestScore: -1, gamesPlayed: 1, name: 1 } },

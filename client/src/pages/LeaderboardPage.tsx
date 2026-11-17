@@ -17,7 +17,8 @@ export function LeaderboardPage() {
   return (
     <PageShell title="Leaderboard" backTo="/">
       <p className="mb-4 text-sm text-zinc-400">
-        Online games only. A win means the best stats score in that game (ties share the win).
+        Online games only. A win means the best stats score in that game (ties share the win). Best is
+        the top score in a Classic game with no extras, so scores are compared fairly.
       </p>
       {leaderboard.status === "loading" && <Spinner label="Loading leaderboard…" />}
       {leaderboard.status === "error" && <ErrorBox message={leaderboard.message} onRetry={leaderboard.retry} />}
@@ -56,7 +57,7 @@ export function LeaderboardPage() {
                   </td>
                   <td className="px-3 py-3 text-right font-bold tabular-nums">{entry.wins}</td>
                   <td className="px-3 py-3 text-right tabular-nums">{entry.gamesPlayed}</td>
-                  <td className="px-3 py-3 text-right tabular-nums">{entry.bestScore}</td>
+                  <td className="px-3 py-3 text-right tabular-nums">{entry.bestScore ?? "—"}</td>
                 </tr>
               ))}
             </tbody>

@@ -114,6 +114,43 @@ describe("GET /api/leaderboard", () => {
     // The local game is stored, just not ranked.
     expect(await GameResultModel.countDocuments({ countsForLeaderboard: false })).toBe(1);
   });
+
+  it("counts wins in every mode but best score only in Classic with no extras", async () => {
+    const classic = finishedGame("online", ["Asha", "Ben"], [60]);
+    await saveGameResult(classic, computeResults(classic), "AAAAAA");
+    const auction = finishedGame("online", ["Asha", "Ben"], [99]);
+    auction.settings = { ...auction.settings, draftStyle: "auction" };
+    await saveGameResult(auction, computeResults(auction), "BBBBBB");
+    const chaos = finishedGame("online", ["Asha", "Ben"], [95]);
+    chaos.rulesPreset = "chaos";
+    await saveGameResult(chaos, computeResults(chaos), "CCCCCC");
+
+    const saved = await GameResultModel.findOne({ roomCode: "BBBBBB" }).lean();
+    expect(saved?.draftStyle).toBe("auction");
+    expect(saved?.preset).toBe("classic");
+
+    const res = await request(app).get("/api/leaderboard");
+    const asha = res.body.find((entry: { name: string }) => entry.name === "Asha");
+    expect(asha).toEqual({ name: "Asha", wins: 3, gamesPlayed: 3, bestScore: 63 });
+  });
+
+  it("reads old results without the new fields as Classic", async () => {
+    const game = finishedGame("online", ["Asha", "Ben"], [70]);
+    await saveGameResult(game, computeResults(game), "OLDOLD");
+    // Simulate a result saved before draftStyle and preset existed.
+    await GameResultModel.collection.updateOne({ roomCode: "OLDOLD" }, { $unset: { draftStyle: "", preset: "" } });
+
+    const res = await request(app).get("/api/leaderboard");
+    expect(res.body[0]).toEqual({ name: "Asha", wins: 1, gamesPlayed: 1, bestScore: 73 });
+  });
+
+  it("shows no best score for a player with no plain Classic games", async () => {
+    const auction = finishedGame("online", ["Asha", "Ben"], [80]);
+    auction.settings = { ...auction.settings, draftStyle: "auction" };
+    await saveGameResult(auction, computeResults(auction), "DDDDDD");
+    const res = await request(app).get("/api/leaderboard");
+    expect(res.body[0]).toEqual({ name: "Asha", wins: 1, gamesPlayed: 1, bestScore: null });
+  });
 });
 
 describe("POST /api/results", () => {
