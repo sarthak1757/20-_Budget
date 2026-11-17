@@ -19,6 +19,9 @@ function toPublicPlayer(player: PlayerState, draftRunning: boolean): PublicPlaye
 }
 
 function toPublicEvent(event: GameEvent, draftRunning: boolean): PublicGameEvent {
+  if (event.type === "peeked") {
+    return event;
+  }
   return { ...event, item: toPublicItem(event.item, draftRunning) };
 }
 

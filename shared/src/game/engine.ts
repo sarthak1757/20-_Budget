@@ -2,6 +2,7 @@ import type { Item } from "../types/item";
 import type { GameMode, GameSettings, GameState, PlayerState } from "../types/game";
 import { applyAuctionAction } from "./auction";
 import { MAX_PLAYERS, MIN_PLAYERS, MYSTERY_CHANCE } from "./constants";
+import { discountedPrice, getPowerUpBlockReason } from "./powerUps";
 import { pickRequiredRoles } from "./roles";
 import { findFirstEmptySlot, getBuyBlockReason } from "./rules";
 import { endRound, finishGame, makeTurnDeadline, startRound } from "./rounds";
@@ -33,11 +34,19 @@ export interface CreateGameInput {
 
 // What a player can do on their turn. "buy" is Classic only, "bid" is Auction only.
 // The UI and bots produce a TurnMove; the engine also needs to know who made it.
-export type TurnMove = { type: "buy" } | { type: "pass" } | { type: "bid"; amount: number };
+// Veto and Discount are power-ups that act on the current item.
+export type TurnMove =
+  | { type: "buy" }
+  | { type: "pass" }
+  | { type: "bid"; amount: number }
+  | { type: "veto" }
+  | { type: "discount" };
 
 export type PlayerAction =
   | { type: "buy"; playerId: string }
   | { type: "bid"; playerId: string; amount: number }
+  | { type: "veto"; playerId: string }
+  | { type: "discount"; playerId: string }
   // auto = true when the server passes for a player whose timer ran out
   | { type: "pass"; playerId: string; auto?: boolean };
 
@@ -74,6 +83,7 @@ export function createGame(input: CreateGameInput): GameState {
       isConnected: true,
       budget: settings.startingBudget,
       team: emptyTeam,
+      usedPowerUps: [],
     });
   }
 
@@ -133,6 +143,15 @@ export function applyAction(state: GameState, action: PlayerAction, now: number)
     return { ok: false, error: "Unknown player" };
   }
 
+  if (action.type === "veto" || action.type === "discount") {
+    const blockReason = getPowerUpBlockReason(state, action.playerId, action.type, state.itemPool.length);
+    if (blockReason !== null) {
+      return { ok: false, error: blockReason };
+    }
+    applyPowerUp(next, player, action.type, now);
+    return { ok: true, state: next };
+  }
+
   if (next.settings.draftStyle === "auction") {
     return applyAuctionAction(next, player, item, action, now);
   }
@@ -168,6 +187,27 @@ export function applyAction(state: GameState, action: PlayerAction, now: number)
     next.turnDeadline = makeTurnDeadline(next, now);
   }
   return { ok: true, state: next };
+}
+
+export type PeekResult = { ok: true; state: GameState; nextItem: Item } | { ok: false; error: string };
+
+// The Peek power-up. Returns the next item in the pile to the caller only:
+// the new state just records that it was used (and a "peeked" event), so
+// broadcasting the state never reveals what was seen. The turn doesn't move on.
+export function peekNextItem(state: GameState, playerId: string): PeekResult {
+  const blockReason = getPowerUpBlockReason(state, playerId, "peek", state.itemPool.length);
+  if (blockReason !== null) {
+    return { ok: false, error: blockReason };
+  }
+  const nextItem = state.itemPool[0];
+  const next = structuredClone(state);
+  const player = next.players.find((p) => p.id === playerId);
+  if (nextItem === undefined || !player) {
+    return { ok: false, error: "There are no more items to peek at" };
+  }
+  player.usedPowerUps.push("peek");
+  next.lastEvents = [{ type: "peeked", playerId }];
+  return { ok: true, state: next, nextItem };
 }
 
 export function castVote(state: GameState, voterId: string, targetId: string, now: number): EngineResult {
@@ -245,4 +285,26 @@ function buildItemPool(items: Item[], mysteryItems: boolean, random: () => numbe
     }
   }
   return pool;
+}
+
+// Applies Veto or Discount on the private copy made in applyAction.
+// The caller has already checked getPowerUpBlockReason.
+function applyPowerUp(next: GameState, player: PlayerState, powerUp: "veto" | "discount", now: number): void {
+  const item = next.currentItem;
+  if (item === null) {
+    return;
+  }
+  player.usedPowerUps.push(powerUp);
+
+  if (powerUp === "veto") {
+    next.lastEvents.push({ type: "vetoed", playerId: player.id, item });
+    endRound(next, now);
+    return;
+  }
+
+  const price = discountedPrice(item.price);
+  player.team[findFirstEmptySlot(player)] = item;
+  player.budget -= price;
+  next.lastEvents.push({ type: "bought", playerId: player.id, item, price });
+  endRound(next, now);
 }

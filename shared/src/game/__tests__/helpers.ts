@@ -21,6 +21,7 @@ export function makePlayer(overrides: Partial<PlayerState> = {}): PlayerState {
     isConnected: true,
     budget: 20,
     team: [null, null, null, null, null],
+    usedPowerUps: [],
     ...overrides,
   };
 }

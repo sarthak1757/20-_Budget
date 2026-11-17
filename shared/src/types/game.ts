@@ -9,6 +9,9 @@ export type Phase = "drafting" | "voting" | "finished";
 // Classic: BUY or PASS at the listed price. Auction: players bid, highest bid wins.
 export type DraftStyle = "classic" | "auction";
 
+// Once-per-game abilities (when the Power-ups extra is on).
+export type PowerUp = "veto" | "discount" | "peek";
+
 export interface GameSettings {
   startingBudget: number; // default 20
   slotCount: number; // 3–7, default 5
@@ -31,6 +34,7 @@ export interface PlayerState<I extends PublicItem = Item> {
   isConnected: boolean;
   budget: number;
   team: (I | null)[]; // always slotCount long; null = empty slot
+  usedPowerUps: PowerUp[]; // each power-up can be used once per game
 }
 
 // What happened during the last action. A single action can cause several
@@ -40,7 +44,10 @@ export type GameEvent<I extends PublicItem = Item> =
   | { type: "bought"; playerId: string; item: I; price: number } // price = what they actually paid
   | { type: "bid"; playerId: string; item: I; amount: number }
   | { type: "passed"; playerId: string; item: I; auto: boolean }
-  | { type: "discarded"; item: I };
+  | { type: "discarded"; item: I }
+  | { type: "vetoed"; playerId: string; item: I }
+  // Everyone learns that a player peeked, but not what they saw.
+  | { type: "peeked"; playerId: string };
 
 // The live auction for the current item (auction draft style only).
 export interface AuctionState {

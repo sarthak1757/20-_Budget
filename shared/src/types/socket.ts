@@ -2,6 +2,7 @@ import type { GameResults, GameSettings, PublicGameState } from "./game";
 import type { PublicItem } from "./item";
 import type {
   GameSettingsPayload,
+  PeekPayload,
   RoomJoinPayload,
   TurnActionPayload,
   VoteCastPayload,
@@ -35,6 +36,8 @@ export interface ClientToServerEvents {
   "room:settings": (payload: GameSettingsPayload, ack: Ack<null>) => void;
   "game:start": (ack: Ack<null>) => void;
   "turn:action": (payload: TurnActionPayload, ack: Ack<null>) => void;
+  // Peek power-up: the next item comes back in the ack, to this player only.
+  "turn:peek": (payload: PeekPayload, ack: Ack<{ item: PublicItem }>) => void;
   "vote:cast": (payload: VoteCastPayload, ack: Ack<null>) => void;
 }
 

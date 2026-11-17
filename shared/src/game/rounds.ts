@@ -1,5 +1,6 @@
 import type { GameEvent, GameState, PlayerState } from "../types/game";
 import { fillEmptySlotsWithBench } from "./bench";
+import { discountedPrice, hasPowerUp } from "./powerUps";
 import { isTeamFull } from "./rules";
 import { shouldHoldVote } from "./scoring";
 import { buildTurnQueue, nextFirstPlayerIndex } from "./turns";
@@ -42,10 +43,18 @@ export function startRound(state: GameState, now: number): void {
 
     state.roundNumber += 1;
     const isAuction = state.settings.draftStyle === "auction";
-    // In an auction the least anyone can pay is the $1 opening bid.
-    const { queue, cantAfford } = buildTurnQueue(state.players, state.firstPlayerIndex, () =>
-      isAuction ? 1 : item.price,
-    );
+    const powerUpsOn = state.settings.powerUps;
+    const { queue, cantAfford } = buildTurnQueue(state.players, state.firstPlayerIndex, (player) => {
+      // In an auction the least anyone can pay is the $1 opening bid.
+      if (isAuction) {
+        return 1;
+      }
+      // A player with an unused Discount could still afford a slightly pricier item.
+      if (powerUpsOn && hasPowerUp(player, "discount")) {
+        return discountedPrice(item.price);
+      }
+      return item.price;
+    });
 
     if (queue.length === 0) {
       const discarded: GameEvent = { type: "discarded", item };

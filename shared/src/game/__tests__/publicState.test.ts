@@ -25,7 +25,8 @@ describe("toPublicState", () => {
     if (!bought.ok) throw new Error(bought.error);
     const afterBuy = toPublicState(bought.state);
     expect(afterBuy.players[0]?.team[0]?.rating).toBeNull();
-    expect(afterBuy.lastEvents[0]?.item.rating).toBeNull();
+    const event = afterBuy.lastEvents[0];
+    expect(event?.type === "bought" ? event.item.rating : "wrong event").toBeNull();
     expect(JSON.stringify(afterBuy)).not.toContain("77");
   });
 

@@ -34,6 +34,7 @@ export function localResultToState(result: LocalResult): GameState {
       isConnected: true,
       budget: submitted.budgetLeft,
       team,
+      usedPowerUps: [],
     });
     playerIds.add(submitted.id);
   }

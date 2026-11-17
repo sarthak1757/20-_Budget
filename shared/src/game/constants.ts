@@ -25,6 +25,9 @@ export const BALANCED_TEAM_BONUS = 15;
 // Mystery items: the chance that any one item hides its rating.
 export const MYSTERY_CHANCE = 1 / 6;
 
+// Discount power-up: dollars off the listed price (never below $1).
+export const DISCOUNT_AMOUNT = 2;
+
 export const DEFAULT_SETTINGS: GameSettings = {
   startingBudget: 20,
   slotCount: 5,

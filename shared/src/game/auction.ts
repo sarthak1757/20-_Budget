@@ -47,6 +47,9 @@ export function applyAuctionAction(
   if (action.type === "buy") {
     return { ok: false, error: "This is an auction: place a bid instead" };
   }
+  if (action.type === "veto" || action.type === "discount") {
+    return { ok: false, error: "Power-ups are handled before the auction" };
+  }
 
   if (action.type === "bid") {
     const blockReason = getBidBlockReason(player, auction, action.amount);

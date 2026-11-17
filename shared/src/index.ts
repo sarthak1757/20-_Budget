@@ -16,3 +16,4 @@ export * from "./game/publicState";
 export * from "./game/presets";
 export * from "./game/auction";
 export * from "./game/roles";
+export * from "./game/powerUps";

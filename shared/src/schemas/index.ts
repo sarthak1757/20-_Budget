@@ -54,7 +54,11 @@ export const turnActionSchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("buy"), roundNumber: roundNumberSchema }),
   z.object({ action: z.literal("pass"), roundNumber: roundNumberSchema }),
   z.object({ action: z.literal("bid"), amount: z.number().int().min(1).max(100), roundNumber: roundNumberSchema }),
+  z.object({ action: z.literal("veto"), roundNumber: roundNumberSchema }),
+  z.object({ action: z.literal("discount"), roundNumber: roundNumberSchema }),
 ]);
+
+export const peekSchema = z.object({ roundNumber: roundNumberSchema });
 
 // ---- REST payloads ----
 
@@ -162,6 +166,7 @@ export const adminItemSchema = seedItemSchema;
 
 export type RoomJoinPayload = z.infer<typeof roomJoinSchema>;
 export type TurnActionPayload = z.infer<typeof turnActionSchema>;
+export type PeekPayload = z.infer<typeof peekSchema>;
 export type CreateRoomPayload = z.infer<typeof createRoomSchema>;
 export type VoteCastPayload = z.infer<typeof voteCastSchema>;
 export type GameSettingsPayload = z.input<typeof gameSettingsSchema>;
