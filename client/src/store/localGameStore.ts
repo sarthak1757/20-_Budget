@@ -86,8 +86,8 @@ export const useLocalGameStore = create<LocalGameStore>()(
         if (playerId === null || !bot || !bot.isBot) {
           return;
         }
-        const decision = decideBotAction(game, playerId);
-        const result = applyAction(game, { type: decision, playerId }, Date.now());
+        const move = decideBotAction(game, playerId);
+        const result = applyAction(game, { ...move, playerId }, Date.now());
         if (result.ok) {
           set({ game: result.state });
         }
