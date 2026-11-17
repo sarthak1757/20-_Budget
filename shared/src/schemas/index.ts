@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { MAX_PRICE, MAX_SLOTS, MIN_PRICE, MIN_SLOTS } from "../game/constants";
+import { MAX_PLAYERS, MAX_PRICE, MAX_SLOTS, MIN_PLAYERS, MIN_PRICE, MIN_SLOTS } from "../game/constants";
 
 // Every payload that arrives from the outside world (sockets, admin forms,
 // seed files) is checked with one of these schemas before we trust it.
@@ -58,6 +58,53 @@ export const voteCastSchema = z.object({
   targetPlayerId: playerIdSchema,
 });
 
+// A finished local or bot game sent to the server to be stored.
+// It is NOT trusted for the leaderboard (those games don't count); the server
+// still checks it is consistent and recalculates the scores itself.
+const resultItemSchema = z.object({
+  name: z.string().trim().min(1).max(60),
+  price: z.number().int().min(0).max(MAX_PRICE), // 0 = bench item
+  rating: z.number().int().min(1).max(100),
+  tag: z.string().trim().min(1).max(30),
+  isBench: z.boolean(),
+});
+
+export const localResultSchema = z
+  .object({
+    mode: z.enum(["local", "bot"]),
+    categorySlug: categorySlugSchema,
+    startingBudget: z.number().int().min(5).max(100),
+    slotCount: z.number().int().min(MIN_SLOTS).max(MAX_SLOTS),
+    players: z
+      .array(
+        z.object({
+          id: playerIdSchema,
+          name: playerNameSchema,
+          isBot: z.boolean(),
+          budgetLeft: z.number().int().min(0).max(100),
+          team: z.array(resultItemSchema).max(MAX_SLOTS),
+        }),
+      )
+      .min(MIN_PLAYERS)
+      .max(MAX_PLAYERS),
+    votes: z.record(z.string(), z.string()).default({}),
+  })
+  .superRefine((result, ctx) => {
+    for (const player of result.players) {
+      if (player.team.length !== result.slotCount) {
+        ctx.addIssue({ code: "custom", message: `${player.name}'s team has the wrong number of slots` });
+      }
+      let spent = 0;
+      for (const item of player.team) {
+        spent += item.price;
+      }
+      // Money can't appear or vanish: what was spent plus what's left is the starting budget.
+      if (spent + player.budgetLeft !== result.startingBudget) {
+        ctx.addIssue({ code: "custom", message: `${player.name}'s budget doesn't add up` });
+      }
+    }
+  });
+
 // ---- Seed files and admin forms ----
 
 export const seedItemSchema = z.object({
@@ -82,4 +129,5 @@ export type CreateRoomPayload = z.infer<typeof createRoomSchema>;
 export type VoteCastPayload = z.infer<typeof voteCastSchema>;
 export type GameSettingsPayload = z.infer<typeof gameSettingsSchema>;
 export type SeedItem = z.infer<typeof seedItemSchema>;
+export type LocalResultPayload = z.input<typeof localResultSchema>;
 export type SeedCategory = z.infer<typeof seedCategorySchema>;
