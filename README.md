@@ -158,3 +158,71 @@ Every request gets an acknowledgement: `{ ok: true, data }` or `{ ok: false, err
 
 No images or logos anywhere: items are names and text, shown with an emoji or a
 generated initials avatar.
+
+## How the game works
+
+### The budget rule
+
+Every empty slot will need an item eventually, and the cheapest real item costs $1.
+So when you buy something, **you must keep at least $1 for each of your other empty slots**.
+
+> Most you can spend right now = budget − (empty slots − 1)
+
+| Situation | Can spend up to |
+| --- | --- |
+| $20, 5 empty slots | $20 − 4 = **$16** |
+| $5, 3 empty slots | $5 − 2 = **$3** (a $4 item is blocked) |
+| $3, 1 empty slot (the last one) | **$3**: spend it all |
+
+The server enforces this (`getBuyBlockReason` in `shared/src/game/rules.ts`), and the
+UI uses the same function to grey out BUY and explain why.
+
+### Turn order
+
+1. An item is revealed. Players act in seat order, **starting from a different player
+   each round** (the first seat moves one place to the right every item).
+2. Players with a full team are skipped. Players who can't afford the item under the
+   budget rule are skipped too, and get a "can't afford" note. Budgets only change when
+   someone buys, and a buy ends the round, so asking them would be pointless.
+3. Each player chooses **BUY** or **PASS**. The first BUY takes the item and ends the round.
+   Online, each player gets 15 seconds; running out of time counts as a pass.
+4. If everyone passes, the item is discarded. If nobody can afford an item at all, it is
+   discarded straight away and the next one comes up.
+5. The draft ends when every team is full. If the items run out first, the empty slots get
+   **$0 "Bench Player" items rated 10**.
+
+### Scoring and voting
+
+- **Team score** = sum of ratings + **1 point per $1 left over** (small on purpose).
+- **Stats winner** = highest team score. Ties share the win.
+- **Voting** only happens with **3+ human players** (with 2 you'd just vote for each
+  other). Nobody can vote for themselves. Online there is a 30-second timer; in
+  pass-and-play people vote one at a time with no timer. The results show the stats
+  winner and the vote winner separately (or "tie").
+
+### Seed data
+
+Prices roughly follow ratings (90+ costs $8–10, under 55 costs $1), but every category has
+**2–3 bargains** (much cheaper than their rating suggests) and **2–3 overpriced** items.
+Spotting them is the skill. A test (`server/src/seed/__tests__/seedFiles.test.ts`) checks
+every file: 40+ items, valid prices and ratings, tags, unique names and the bargain/overpriced
+counts. Ratings are a playful opinion for the game, not a real-world ranking.
+
+## Known limits
+
+- **Live rooms are in memory.** Online rooms live in the server process (`RoomStore`).
+  **If the server restarts, every room in progress is lost**, and players see "No room
+  with that code. It may have expired." Finished games are already saved in MongoDB.
+  Running several server instances would need shared room storage (for example Redis)
+  and the Socket.io Redis adapter.
+- **Empty rooms are deleted** after 10 minutes with nobody connected.
+- **No accounts.** A player id stored in the browser is what lets you reconnect to your
+  seat. Clearing site data or switching device means joining as a new player. The
+  leaderboard groups players by name (case-insensitive), so two people using the same
+  name share an entry.
+- **Leaderboard = online games only.** In local and bot games one person controls every
+  name, so those results are stored (`countsForLeaderboard: false`) but never ranked.
+- **Admin is a single shared password**, sent as a header over HTTPS in production. It's
+  compared in constant time, but there are no user accounts, roles or rate limiting.
+- **Timers use the server's clock.** The countdown on each phone is approximate (it
+  never shows more than the full turn length). The server decides when time is up.
