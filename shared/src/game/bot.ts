@@ -1,5 +1,6 @@
 import type { BotDifficulty, GameState } from "../types/game";
 import { decideEasy } from "./bots/easy";
+import { decideHard } from "./bots/hard";
 import { decideMedium } from "./bots/medium";
 import { makeBotView } from "./bots/view";
 import type { TurnMove } from "./engine";
@@ -18,7 +19,9 @@ export function decideBotAction(state: GameState, botId: string): TurnMove {
 // and a hard bot in the same game.
 export function decideBotMoveAt(state: GameState, botId: string, difficulty: BotDifficulty): TurnMove {
   const view = makeBotView(state, botId);
-  // Hard is added in the next commit.
+  if (difficulty === "hard") {
+    return decideHard(view);
+  }
   if (difficulty === "medium") {
     return decideMedium(view);
   }
