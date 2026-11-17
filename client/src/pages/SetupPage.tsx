@@ -9,6 +9,7 @@ import {
   type GameSettings,
   type NewPlayer,
 } from "@budget-draft/shared";
+import { RulesPanel } from "../components/RulesPanel";
 import { Stepper } from "../components/Stepper";
 import { Button, Card, ErrorBox, PageShell, Spinner } from "../components/ui";
 import { fetchCategories, fetchCategoryItems } from "../lib/categories";
@@ -37,6 +38,8 @@ export function SetupPage() {
   const [botCount, setBotCount] = useState(1);
   const [budget, setBudget] = useState(DEFAULT_SETTINGS.startingBudget);
   const [slots, setSlots] = useState(DEFAULT_SETTINGS.slotCount);
+  // Draft style and extras. Budget and slots have their own steppers above.
+  const [rules, setRules] = useState<GameSettings>(DEFAULT_SETTINGS);
   const [problems, setProblems] = useState<string[]>([]);
   const [starting, setStarting] = useState(false);
 
@@ -85,7 +88,7 @@ export function SetupPage() {
 
   async function handleStart() {
     const settings: GameSettings = {
-      ...DEFAULT_SETTINGS,
+      ...rules,
       startingBudget: budget,
       slotCount: slots,
       turnSeconds: 0, // no timer: people are passing one phone around
@@ -189,6 +192,7 @@ export function SetupPage() {
             <p className="text-sm text-zinc-500">
               You must always keep at least $1 for each empty slot, so you can't blow it all on one pick.
             </p>
+            <RulesPanel settings={rules} onChange={setRules} />
           </Card>
 
           {problems.length > 0 && (

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MAX_PLAYERS, MAX_SLOTS, MIN_SLOTS, type Category, type RoomSnapshot } from "@budget-draft/shared";
 import { Avatar } from "./Avatar";
+import { RulesPanel } from "./RulesPanel";
 import { Stepper } from "./Stepper";
 import { Button, Card } from "./ui";
 
@@ -106,7 +107,10 @@ export function LobbyView({ room, playerId, categories, busy, onChangeSettings, 
           disabled={!isHost || busy}
           onChange={(value) => onChangeSettings({ ...settings, slotCount: value })}
         />
-        <p className="text-sm text-zinc-500">{settings.turnSeconds}s per turn. If time runs out, you pass.</p>
+        <RulesPanel settings={settings} disabled={!isHost || busy} onChange={onChangeSettings} />
+        <p className="text-sm text-zinc-500">
+          {settings.turnSeconds}s per {settings.draftStyle === "auction" ? "bid" : "turn"}. If time runs out, you pass.
+        </p>
       </Card>
 
       {isHost ? (
