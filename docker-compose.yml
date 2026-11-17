@@ -1,0 +1,12 @@
+# Optional: a local MongoDB for development.
+#   docker compose up -d
+# Then use MONGO_URI=mongodb://localhost:27017/budget-draft in .env
+services:
+  mongo:
+    image: mongo:8
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+volumes:
+  mongo-data:
