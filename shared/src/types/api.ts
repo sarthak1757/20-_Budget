@@ -23,5 +23,5 @@ export interface LeaderboardEntry {
   name: string;
   wins: number;
   gamesPlayed: number;
-  bestScore: number;
+  bestScore: number | null; // Classic games with no extras only; null if none played
 }

@@ -36,6 +36,8 @@ export async function saveGameResult(state: GameState, results: GameResults, roo
     categorySlug: state.settings.categorySlug,
     roomCode,
     settings: { startingBudget: state.settings.startingBudget, slotCount: state.settings.slotCount },
+    draftStyle: state.settings.draftStyle,
+    preset: state.rulesPreset,
     players,
     statsWinnerIds: results.statsWinnerIds,
     voteWinnerIds: results.voteWinnerIds,

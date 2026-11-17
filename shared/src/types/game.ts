@@ -1,3 +1,4 @@
+import type { RulesPreset } from "../game/presets";
 import type { CategorySlug, Item, PublicItem } from "./item";
 
 export type GameMode = "local" | "online" | "bot";
@@ -68,6 +69,7 @@ export interface GameState {
   cantAffordIds: string[]; // players skipped this round because of the budget rule
   auction: AuctionState | null; // null in Classic
   requiredRoles: string[]; // Balanced team: roles to cover for the bonus. Empty = off.
+  rulesPreset: RulesPreset; // which extras were on, worked out once at the start
   turnDeadline: number | null; // epoch ms; null when there is no timer
   votes: Record<string, string>; // voterId -> votedForId
   voteDeadline: number | null; // epoch ms

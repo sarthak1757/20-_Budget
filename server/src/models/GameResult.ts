@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import type { GameMode } from "@budget-draft/shared";
+import type { DraftStyle, GameMode, RulesPreset } from "@budget-draft/shared";
 
 // A copy of each item as it was during the game. We store a snapshot instead of
 // a reference so editing or deleting an item later doesn't rewrite history.
@@ -28,6 +28,9 @@ export interface GameResultDoc {
   categorySlug: string;
   roomCode?: string;
   settings: { startingBudget: number; slotCount: number };
+  // Results saved before these fields existed have neither; read them as Classic.
+  draftStyle?: DraftStyle;
+  preset?: RulesPreset;
   players: PlayerResult[];
   statsWinnerIds: string[]; // several ids = a tie
   voteWinnerIds: string[];
@@ -72,6 +75,8 @@ const gameResultSchema = new Schema<GameResultDoc>({
     startingBudget: { type: Number, required: true },
     slotCount: { type: Number, required: true },
   },
+  draftStyle: { type: String, enum: ["classic", "auction"], default: "classic" },
+  preset: { type: String, enum: ["classic", "custom", "chaos"], default: "classic" },
   players: { type: [playerResultSchema], required: true },
   statsWinnerIds: { type: [String], default: [] },
   voteWinnerIds: { type: [String], default: [] },

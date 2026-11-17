@@ -3,6 +3,7 @@ import type { GameMode, GameSettings, GameState, PlayerState } from "../types/ga
 import { applyAuctionAction } from "./auction";
 import { MAX_PLAYERS, MIN_PLAYERS, MYSTERY_CHANCE } from "./constants";
 import { discountedPrice, getPowerUpBlockReason } from "./powerUps";
+import { getRulesPreset } from "./presets";
 import { pickRequiredRoles } from "./roles";
 import { findFirstEmptySlot, getBuyBlockReason } from "./rules";
 import { endRound, finishGame, makeTurnDeadline, startRound } from "./rounds";
@@ -104,6 +105,10 @@ export function createGame(input: CreateGameInput): GameState {
     cantAffordIds: [],
     auction: null,
     requiredRoles,
+    rulesPreset: getRulesPreset(
+      settings,
+      pickRequiredRoles(true, input.roles ?? [], settings.slotCount).length > 0,
+    ),
     turnDeadline: null,
     votes: {},
     voteDeadline: null,

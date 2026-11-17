@@ -52,6 +52,8 @@ export function localResultToState(result: LocalResult): GameState {
     phase: "finished",
     settings: {
       ...DEFAULT_SETTINGS,
+      draftStyle: result.draftStyle,
+      balancedTeam: result.requiredRoles.length > 0,
       startingBudget: result.startingBudget,
       slotCount: result.slotCount,
       turnSeconds: 0,
@@ -66,7 +68,8 @@ export function localResultToState(result: LocalResult): GameState {
     turnQueue: [],
     cantAffordIds: [],
     auction: null,
-    requiredRoles: [],
+    requiredRoles: result.requiredRoles,
+    rulesPreset: result.rulesPreset,
     turnDeadline: null,
     votes,
     voteDeadline: null,

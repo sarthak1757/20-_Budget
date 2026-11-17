@@ -25,6 +25,9 @@ export function buildLocalResultPayload(game: GameState): LocalResultPayload | n
   return {
     mode: game.mode,
     categorySlug: game.settings.categorySlug,
+    draftStyle: game.settings.draftStyle,
+    rulesPreset: game.rulesPreset,
+    requiredRoles: game.requiredRoles,
     startingBudget: game.settings.startingBudget,
     slotCount: game.settings.slotCount,
     players,

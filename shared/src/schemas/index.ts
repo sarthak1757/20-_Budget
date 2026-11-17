@@ -85,6 +85,10 @@ export const localResultSchema = z
   .object({
     mode: z.enum(["local", "bot"]),
     categorySlug: categorySlugSchema,
+    draftStyle: z.enum(["classic", "auction"]).default("classic"),
+    rulesPreset: z.enum(["classic", "custom", "chaos"]).default("classic"),
+    // The roles for the Balanced team bonus, so the server scores it the same way.
+    requiredRoles: z.array(z.string().trim().min(1).max(30)).max(6).default([]),
     startingBudget: z.number().int().min(5).max(100),
     slotCount: z.number().int().min(MIN_SLOTS).max(MAX_SLOTS),
     players: z
