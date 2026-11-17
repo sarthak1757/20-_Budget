@@ -1,4 +1,5 @@
 import { Link, Navigate, useParams } from "react-router";
+import { CUSTOM_CATEGORY_SLUG } from "@budget-draft/shared";
 import { ErrorBox, PageShell, Spinner } from "../components/ui";
 import { fetchCategories } from "../lib/categories";
 import { parseMode } from "../lib/modes";
@@ -37,6 +38,22 @@ export function CategoryPickerPage() {
               </span>
             </Link>
           ))}
+          {mode === "online" && (
+            <Link
+              to={`/new/online/${CUSTOM_CATEGORY_SLUG}`}
+              className="flex items-start gap-4 rounded-2xl border border-dashed border-zinc-700 bg-zinc-900/50 p-4 transition hover:border-emerald-500 hover:bg-zinc-800"
+            >
+              <span className="text-4xl" aria-hidden>
+                ✏️
+              </span>
+              <span>
+                <span className="block text-lg font-bold">Your own list</span>
+                <span className="mt-1 block text-sm text-zinc-400">
+                  Paste 20–150 items. Used for this room only, never saved.
+                </span>
+              </span>
+            </Link>
+          )}
         </div>
       )}
     </PageShell>

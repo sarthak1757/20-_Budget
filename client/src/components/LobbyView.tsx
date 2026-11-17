@@ -68,7 +68,12 @@ export function LobbyView({ room, playerId, categories, busy, onChangeSettings, 
 
       <Card className="grid gap-3">
         <h2 className="font-bold">Settings {!isHost && <span className="font-normal text-zinc-500">(host decides)</span>}</h2>
-        {isHost ? (
+        {room.customItemCount !== null ? (
+          <p className="flex justify-between">
+            <span className="text-zinc-300">Category</span>
+            <span>✏️ Custom list ({room.customItemCount} items)</span>
+          </p>
+        ) : isHost ? (
           <label className="flex items-center justify-between gap-4">
             <span className="text-zinc-300">Category</span>
             <select

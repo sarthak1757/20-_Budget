@@ -15,7 +15,7 @@ Mongoose and Socket.io.
 | Mode | How it works | Needs the server? |
 | --- | --- | --- |
 | 📱 Pass & Play | 2–4 players on one device. A "pass the device" screen between turns. | No (uses bundled data) |
-| 🌐 Online Room | Create a room, share the 6-letter code or link. 15s turn timer. | Yes |
+| 🌐 Online Room | Create a room, share the 6-letter code or link. 15s turn timer. The host can **Rematch** from the results (same players, new shuffle), or create the room with **their own list** of 20–150 items (`name, price, rating, tag` per line, pasted from anywhere, kept for that room only). | Yes |
 | 🤖 Solo vs Bots | You against 1–3 bots (easy, medium or hard). | No |
 | 📅 Daily Challenge | Same category and item order for everyone today (UTC), against one hard bot. One try per day. Share your score as "Budget Draft #12 — 412 pts 🟩🟩🟨🟩⬜". | To post a score |
 
@@ -144,7 +144,7 @@ A type test (`shared/src/__typetests__`) checks that this protection holds.
 | --- | --- |
 | `GET /api/categories` | All categories with item counts |
 | `GET /api/categories/:slug/items` | Items in a category |
-| `POST /api/rooms` | Create a room → `{ code }` |
+| `POST /api/rooms` | Create a room → `{ code }`. Optional `customItems` (20–150 `{ name, price, rating, tag }`) plays the host's own list |
 | `GET /api/rooms/:code` | Room info (phase, player count, joinable) |
 | `GET /api/leaderboard` | Wins, games played, best score (online games only; best score from Classic games with no extras) |
 | `POST /api/results` | Store a finished local/bot game (never ranked) |
@@ -302,6 +302,9 @@ counts. Ratings are a playful opinion for the game, not a real-world ranking.
   another try. The server allows one score per name per day; a new name gets around that.
 - **Best score only counts Classic games with no extras.** Auctions, power-ups and the
   balanced bonus all change what a score means. Wins count in every mode.
+- **Custom lists aren't ranked.** A host could paste a list of cheap 100-rated items, so
+  those games are saved with `countsForLeaderboard: false`. The list itself lives only in
+  the room's memory.
 - **Leaderboard = online games only.** In local and bot games one person controls every
   name, so those results are stored (`countsForLeaderboard: false`) but never ranked.
 - **Admin is a single shared password**, sent as a header over HTTPS in production. It's
