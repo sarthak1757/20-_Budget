@@ -25,6 +25,7 @@ export async function listCategories(): Promise<Category[]> {
       emoji: category.emoji,
       description: category.description,
       itemCount: countBySlug.get(category.slug) ?? 0,
+      roles: category.roles ?? [], // older databases may not have the field
     });
   }
   return result;
@@ -33,6 +34,25 @@ export async function listCategories(): Promise<Category[]> {
 export async function categoryExists(slug: string): Promise<boolean> {
   const found = await CategoryModel.exists({ slug });
   return found !== null;
+}
+
+// A category's Balanced team roles, or null if the category doesn't exist.
+export async function getCategoryRoles(slug: string): Promise<string[] | null> {
+  const category = await CategoryModel.findOne({ slug }, { roles: 1 }).lean();
+  if (!category) {
+    return null;
+  }
+  return category.roles ?? [];
+}
+
+// Everything needed to start a game in this category, or null if it doesn't exist.
+export async function loadCategoryForGame(slug: string): Promise<{ items: Item[]; roles: string[] } | null> {
+  const roles = await getCategoryRoles(slug);
+  const items = await getCategoryItems(slug);
+  if (roles === null || items === null) {
+    return null;
+  }
+  return { items, roles };
 }
 
 // Returns null when the category doesn't exist (so routes can send a 404).

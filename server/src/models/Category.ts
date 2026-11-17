@@ -5,6 +5,7 @@ export interface CategoryDoc {
   name: string;
   emoji: string;
   description: string;
+  roles: string[]; // Balanced team roles; empty = none
   createdAt: Date;
   updatedAt: Date;
 }
@@ -16,6 +17,7 @@ const categorySchema = new Schema<CategoryDoc>(
     name: { type: String, required: true, trim: true },
     emoji: { type: String, required: true },
     description: { type: String, required: true, trim: true },
+    roles: { type: [String], default: [] },
   },
   { timestamps: true },
 );

@@ -123,18 +123,40 @@ export const seedItemSchema = z.object({
   emoji: z.string().min(1).max(16).optional(),
 });
 
-export const seedCategorySchema = z.object({
-  slug: categorySlugSchema,
-  name: z.string().trim().min(1).max(40),
-  emoji: z.string().min(1).max(16),
-  description: z.string().trim().min(1).max(200),
-  items: z.array(seedItemSchema).min(40),
-});
+const roleListSchema = z.array(z.string().trim().min(1).max(30)).max(6);
+
+export const seedCategorySchema = z
+  .object({
+    slug: categorySlugSchema,
+    name: z.string().trim().min(1).max(40),
+    emoji: z.string().min(1).max(16),
+    description: z.string().trim().min(1).max(200),
+    // Optional roles for "Balanced team". When present, every item's tag must be one of them.
+    roles: roleListSchema.default([]),
+    items: z.array(seedItemSchema).min(40),
+  })
+  .superRefine((category, ctx) => {
+    if (category.roles.length === 0) {
+      return;
+    }
+    for (const item of category.items) {
+      if (!category.roles.includes(item.tag)) {
+        ctx.addIssue({ code: "custom", message: `${item.name}'s tag "${item.tag}" is not one of the category's roles` });
+      }
+    }
+  });
 
 // ---- Admin forms ----
 // The same rules as seed files, so anything the admin page saves would also be a valid seed item.
 
-export const adminCategorySchema = seedCategorySchema.omit({ items: true });
+// Roles aren't edited from the admin page (they come from the seed files),
+// so they're left out here and an update never wipes them.
+export const adminCategorySchema = z.object({
+  slug: categorySlugSchema,
+  name: z.string().trim().min(1).max(40),
+  emoji: z.string().min(1).max(16),
+  description: z.string().trim().min(1).max(200),
+});
 export const adminCategoryUpdateSchema = adminCategorySchema.omit({ slug: true });
 export const adminItemSchema = seedItemSchema;
 

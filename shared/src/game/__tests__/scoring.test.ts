@@ -9,7 +9,7 @@ describe("scoreTeam", () => {
       budget: 3,
       team: [makeItem("a", 5, 80), makeItem("b", 4, 60), null],
     });
-    expect(scoreTeam(player)).toEqual({ ratingTotal: 140, leftoverBonus: 3, total: 143 });
+    expect(scoreTeam(player)).toEqual({ ratingTotal: 140, leftoverBonus: 3, roleBonus: 0, total: 143 });
   });
 });
 

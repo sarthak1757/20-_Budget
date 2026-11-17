@@ -2,6 +2,7 @@ import type { Item } from "../types/item";
 import type { GameMode, GameSettings, GameState, PlayerState } from "../types/game";
 import { applyAuctionAction } from "./auction";
 import { MAX_PLAYERS, MIN_PLAYERS } from "./constants";
+import { pickRequiredRoles } from "./roles";
 import { findFirstEmptySlot, getBuyBlockReason } from "./rules";
 import { endRound, finishGame, makeTurnDeadline, startRound } from "./rounds";
 import { shuffle } from "./shuffle";
@@ -25,6 +26,7 @@ export interface CreateGameInput {
   settings: GameSettings;
   players: NewPlayer[];
   items: Item[];
+  roles?: string[]; // the category's roles, for Balanced team
   now: number;
   random?: () => number;
 }
@@ -87,6 +89,7 @@ export function createGame(input: CreateGameInput): GameState {
     turnQueue: [],
     cantAffordIds: [],
     auction: null,
+    requiredRoles: pickRequiredRoles(settings.balancedTeam, input.roles ?? [], settings.slotCount),
     turnDeadline: null,
     votes: {},
     voteDeadline: null,

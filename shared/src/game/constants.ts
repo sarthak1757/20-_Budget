@@ -18,6 +18,9 @@ export const MIN_HUMANS_FOR_VOTE = 3;
 
 export const BENCH_RATING = 10;
 export const LEFTOVER_POINTS_PER_DOLLAR = 1;
+// Worth about one decent pick: enough to change a close game, not enough
+// to make a weak team win.
+export const BALANCED_TEAM_BONUS = 15;
 
 export const DEFAULT_SETTINGS: GameSettings = {
   startingBudget: 20,

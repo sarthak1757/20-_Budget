@@ -19,4 +19,5 @@ export interface Category {
   emoji: string;
   description: string;
   itemCount: number;
+  roles: string[]; // for "Balanced team"; empty = this category has no roles
 }

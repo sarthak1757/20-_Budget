@@ -65,6 +65,7 @@ export function localResultToState(result: LocalResult): GameState {
     turnQueue: [],
     cantAffordIds: [],
     auction: null,
+    requiredRoles: [],
     turnDeadline: null,
     votes,
     voteDeadline: null,

@@ -15,3 +15,4 @@ export * from "./game/bot";
 export * from "./game/publicState";
 export * from "./game/presets";
 export * from "./game/auction";
+export * from "./game/roles";

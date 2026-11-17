@@ -28,6 +28,7 @@ export async function seedDatabase(categories: SeedCategory[]): Promise<SeedSumm
       name: category.name,
       emoji: category.emoji,
       description: category.description,
+      roles: category.roles,
     });
     for (const item of category.items) {
       itemDocs.push({ ...item, categorySlug: category.slug });

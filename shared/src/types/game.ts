@@ -58,6 +58,7 @@ export interface GameState {
   turnQueue: string[]; // player ids still to decide on the current item, in order
   cantAffordIds: string[]; // players skipped this round because of the budget rule
   auction: AuctionState | null; // null in Classic
+  requiredRoles: string[]; // Balanced team: roles to cover for the bonus. Empty = off.
   turnDeadline: number | null; // epoch ms; null when there is no timer
   votes: Record<string, string>; // voterId -> votedForId
   voteDeadline: number | null; // epoch ms
@@ -78,6 +79,7 @@ export interface FinalScore {
   name: string;
   ratingTotal: number;
   leftoverBonus: number;
+  roleBonus: number; // Balanced team bonus, 0 if not earned or not played
   total: number;
   votesReceived: number;
 }

@@ -50,6 +50,7 @@ function buildBundledCategories(): CategoryWithItems[] {
         emoji: seed.emoji,
         description: seed.description,
         itemCount: items.length,
+        roles: seed.roles,
       },
       items,
     });

@@ -64,12 +64,14 @@ export function startGame(options: {
   settings?: Partial<GameSettings>;
   mode?: GameMode;
   botIds?: string[];
+  roles?: string[];
 } = {}) {
   return createGame({
     mode: options.mode ?? "local",
     settings: makeSettings(options.settings),
     players: makePlayers(options.playerCount ?? 2, options.botIds),
     items: options.items ?? makeItems(30),
+    roles: options.roles ?? [],
     now: NOW,
     random: noShuffle,
   });

@@ -1,13 +1,16 @@
 import type { FinalScore, GameResults, GameState, PlayerState } from "../types/game";
-import { LEFTOVER_POINTS_PER_DOLLAR, MIN_HUMANS_FOR_VOTE } from "./constants";
+import { BALANCED_TEAM_BONUS, LEFTOVER_POINTS_PER_DOLLAR, MIN_HUMANS_FOR_VOTE } from "./constants";
+import { coversAllRoles } from "./roles";
 
 export interface TeamScore {
   ratingTotal: number;
   leftoverBonus: number;
+  roleBonus: number;
   total: number;
 }
 
-export function scoreTeam(player: PlayerState): TeamScore {
+// requiredRoles is empty unless the game uses Balanced team.
+export function scoreTeam(player: PlayerState, requiredRoles: readonly string[] = []): TeamScore {
   let ratingTotal = 0;
   for (const item of player.team) {
     if (item !== null) {
@@ -17,7 +20,8 @@ export function scoreTeam(player: PlayerState): TeamScore {
   // A small reward for spending wisely. Small on purpose: ratings should
   // matter far more than hoarding cash.
   const leftoverBonus = player.budget * LEFTOVER_POINTS_PER_DOLLAR;
-  return { ratingTotal, leftoverBonus, total: ratingTotal + leftoverBonus };
+  const roleBonus = coversAllRoles(player.team, requiredRoles) ? BALANCED_TEAM_BONUS : 0;
+  return { ratingTotal, leftoverBonus, roleBonus, total: ratingTotal + leftoverBonus + roleBonus };
 }
 
 export function countHumans(players: PlayerState[]): number {
@@ -65,12 +69,13 @@ export function computeResults(state: GameState): GameResults {
   const scores: FinalScore[] = [];
 
   for (const player of state.players) {
-    const teamScore = scoreTeam(player);
+    const teamScore = scoreTeam(player, state.requiredRoles);
     scores.push({
       playerId: player.id,
       name: player.name,
       ratingTotal: teamScore.ratingTotal,
       leftoverBonus: teamScore.leftoverBonus,
+      roleBonus: teamScore.roleBonus,
       total: teamScore.total,
       votesReceived: voteCounts[player.id] ?? 0,
     });
