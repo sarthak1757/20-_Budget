@@ -1,11 +1,13 @@
 import { Link, Route, Routes } from "react-router";
 import { PageShell } from "./components/ui";
+import { CategoryPickerPage } from "./pages/CategoryPickerPage";
 import { HomePage } from "./pages/HomePage";
 
 export function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/new/:mode" element={<CategoryPickerPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
