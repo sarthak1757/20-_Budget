@@ -37,6 +37,7 @@ export function makeSettings(overrides: Partial<GameSettings> = {}): GameSetting
     balancedTeam: false,
     mysteryItems: false,
     powerUps: false,
+    botDifficulty: "easy",
     ...overrides,
   };
 }

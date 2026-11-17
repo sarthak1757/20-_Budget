@@ -38,4 +38,5 @@ export const DEFAULT_SETTINGS: GameSettings = {
   balancedTeam: false,
   mysteryItems: false,
   powerUps: false,
+  botDifficulty: "easy",
 };

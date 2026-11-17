@@ -10,6 +10,9 @@ export type Phase = "drafting" | "voting" | "finished";
 // Classic: BUY or PASS at the listed price. Auction: players bid, highest bid wins.
 export type DraftStyle = "classic" | "auction";
 
+// How well bots play (bot mode and the Daily Challenge).
+export type BotDifficulty = "easy" | "medium" | "hard";
+
 // Once-per-game abilities (when the Power-ups extra is on).
 export type PowerUp = "veto" | "discount" | "peek";
 
@@ -24,6 +27,7 @@ export interface GameSettings {
   balancedTeam: boolean; // +bonus for covering every role the category defines
   mysteryItems: boolean; // ~1 in 6 items hide their rating until the draft ends
   powerUps: boolean; // Veto, Discount and Peek, once each per game
+  botDifficulty: BotDifficulty; // ignored when there are no bots
 }
 
 // `I` is the item type: Item on the server (and in the local engine),

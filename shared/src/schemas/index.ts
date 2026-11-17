@@ -31,6 +31,7 @@ export const gameSettingsSchema = z
     balancedTeam: z.boolean().default(false),
     mysteryItems: z.boolean().default(false),
     powerUps: z.boolean().default(false),
+    botDifficulty: z.enum(["easy", "medium", "hard"]).default("easy"),
   })
   // The budget rule needs at least $1 per slot, otherwise nobody could fill their team.
   .refine((settings) => settings.startingBudget >= settings.slotCount, {
