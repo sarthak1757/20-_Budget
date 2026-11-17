@@ -106,13 +106,22 @@ function RoomContent({ room, playerId, categories, busy, onLeave }: RoomContentP
   const me: PublicPlayerState | undefined = game.players.find((player) => player.id === playerId);
 
   if (game.phase === "finished") {
+    const isHost = room.hostId === playerId;
     return (
       <>
         <h1 className="mb-6 text-3xl font-black">Results</h1>
         {room.results ? <ResultsView players={game.players} results={room.results} /> : <Spinner />}
-        <div className="mt-8 text-center">
-          <Button onClick={onLeave}>Back to home</Button>
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          {isHost && (
+            <Button onClick={store.rematch} disabled={busy}>
+              🔁 Rematch
+            </Button>
+          )}
+          <Button variant={isHost ? "secondary" : "primary"} onClick={onLeave}>
+            Back to home
+          </Button>
         </div>
+        {!isHost && <p className="mt-3 text-center text-sm text-zinc-400">The host can start a rematch with everyone here.</p>}
       </>
     );
   }

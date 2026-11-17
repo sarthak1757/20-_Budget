@@ -35,6 +35,8 @@ export interface ClientToServerEvents {
   "room:leave": (ack: Ack<null>) => void;
   "room:settings": (payload: GameSettingsPayload, ack: Ack<null>) => void;
   "game:start": (ack: Ack<null>) => void;
+  // Host only, after the game ended: same room and players, new shuffle.
+  "game:rematch": (ack: Ack<null>) => void;
   "turn:action": (payload: TurnActionPayload, ack: Ack<null>) => void;
   // Peek power-up: the next item comes back in the ack, to this player only.
   "turn:peek": (payload: PeekPayload, ack: Ack<{ item: PublicItem }>) => void;

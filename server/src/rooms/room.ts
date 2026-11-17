@@ -154,11 +154,11 @@ export function removePlayer(room: Room, playerId: string, now: number): void {
   passHostIfNeeded(room);
 }
 
-// In the lobby the host must be someone who is actually here, otherwise
-// nobody could press Start. Mid-game the server runs everything, so the host
-// doesn't matter and we leave it alone.
+// In the lobby (and on the results screen) the host must be someone who is
+// actually here, otherwise nobody could press Start or Rematch. Mid-game the
+// server runs everything, so the host doesn't matter and we leave it alone.
 export function passHostIfNeeded(room: Room): void {
-  if (room.game !== null) {
+  if (room.game !== null && room.game.phase !== "finished") {
     return;
   }
   const host = room.hostId === null ? undefined : findRoomPlayer(room, room.hostId);

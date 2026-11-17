@@ -32,6 +32,21 @@ export function registerGameHandlers(socket: GameSocket, ctx: SocketContext): vo
     reply(result.ok ? { ok: true, data: null } : result);
   });
 
+  socket.on("game:rematch", async (ack) => {
+    const reply = safeAck<null>(ack);
+    const seat = getSeat(socket, ctx);
+    if (typeof seat === "string") {
+      reply({ ok: false, error: seat });
+      return;
+    }
+    if (seat.room.hostId !== seat.playerId) {
+      reply({ ok: false, error: "Only the host can start a rematch" });
+      return;
+    }
+    const result = await ctx.runner.rematch(seat.room);
+    reply(result.ok ? { ok: true, data: null } : result);
+  });
+
   socket.on("turn:action", (payload, ack) => {
     const reply = safeAck<null>(ack);
     const parsed = turnActionSchema.safeParse(payload);

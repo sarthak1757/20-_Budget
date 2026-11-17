@@ -160,6 +160,7 @@ A type test (`shared/src/__typetests__`) checks that this protection holds.
 | `room:leave` | `item:reveal` (new item + state) |
 | `room:settings` (host only) | `game:state` (after every action) |
 | `game:start` (host only) | `game:end` (final state + results) |
+| `game:rematch` (host only, after the game ends: same players, new shuffle) | |
 | `turn:action` (buy/pass/bid/veto/discount + round number) | |
 | `turn:peek` (Peek: the next item comes back in the ack, to you only) | |
 | `vote:cast` | |

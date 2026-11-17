@@ -25,6 +25,7 @@ interface OnlineStore {
   leaveRoom: () => Promise<void>;
   updateSettings: (settings: GameSettings) => Promise<void>;
   startGame: () => Promise<void>;
+  rematch: () => Promise<void>;
   act: (move: TurnMove) => Promise<void>;
   peek: () => Promise<void>;
   vote: (targetPlayerId: string) => Promise<void>;
@@ -96,7 +97,17 @@ export const useOnlineStore = create<OnlineStore>()((set, get) => {
       set({ joinError: "Can't reach the game server. Check your connection and try again." });
     }
   });
-  socket.on("room:update", (room) => set({ room }));
+  socket.on("room:update", (room) => {
+    // A new game (start or rematch) begins at round 1 again, so a Peek from
+    // the last game could match a round number. Forget it.
+    const oldGame = get().room?.game ?? null;
+    const newGameStarted = room.game !== null && (oldGame === null || oldGame.phase === "finished");
+    if (newGameStarted && room.game?.phase === "drafting") {
+      set({ room, peeked: null });
+    } else {
+      set({ room });
+    }
+  });
   socket.on("game:state", (game) => {
     const room = get().room;
     if (room) set({ room: { ...room, game } });
@@ -150,6 +161,7 @@ export const useOnlineStore = create<OnlineStore>()((set, get) => {
 
     updateSettings: (settings) => run(() => socket.emitWithAck("room:settings", settings)),
     startGame: () => run(() => socket.emitWithAck("game:start")),
+    rematch: () => run(() => socket.emitWithAck("game:rematch")),
     act: (move) => {
       const roundNumber = get().room?.game?.roundNumber ?? 0;
       let payload: TurnActionPayload;

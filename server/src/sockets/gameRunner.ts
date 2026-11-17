@@ -86,6 +86,27 @@ export class GameRunner {
     return { ok: true };
   }
 
+  // Same room, same (connected) players, same settings, new shuffle.
+  // If the new game can't start, the old results stay on screen.
+  async rematch(room: Room): Promise<RunnerResult> {
+    const oldGame = room.game;
+    if (oldGame === null || oldGame.phase !== "finished") {
+      return { ok: false, error: "You can only rematch after the game ends" };
+    }
+    const oldResults = room.results;
+    const oldResultSaved = room.resultSaved;
+    room.game = null;
+    room.results = null;
+    room.resultSaved = false;
+    const result = await this.startGame(room);
+    if (!result.ok) {
+      room.game = oldGame;
+      room.results = oldResults;
+      room.resultSaved = oldResultSaved;
+    }
+    return result;
+  }
+
   handleAction(room: Room, playerId: string, payload: TurnActionPayload): RunnerResult {
     const game = room.game;
     if (game === null) {
