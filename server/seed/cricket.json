@@ -3,6 +3,12 @@
   "name": "Cricket",
   "emoji": "🏏",
   "description": "Batters, bowlers, keepers and all-rounders from every era of the game.",
+  "roles": [
+    "Batter",
+    "Bowler",
+    "All-rounder",
+    "Wicketkeeper"
+  ],
   "items": [
     {
       "name": "Sachin Tendulkar",
@@ -26,19 +32,19 @@
       "name": "Shane Warne",
       "price": 7,
       "rating": 95,
-      "tag": "Spinner"
+      "tag": "Bowler"
     },
     {
       "name": "Jasprit Bumrah",
       "price": 9,
       "rating": 94,
-      "tag": "Fast Bowler"
+      "tag": "Bowler"
     },
     {
       "name": "Muttiah Muralitharan",
       "price": 9,
       "rating": 94,
-      "tag": "Spinner"
+      "tag": "Bowler"
     },
     {
       "name": "MS Dhoni",
@@ -80,7 +86,7 @@
       "name": "Pat Cummins",
       "price": 8,
       "rating": 88,
-      "tag": "Fast Bowler"
+      "tag": "Bowler"
     },
     {
       "name": "Ben Stokes",
@@ -92,7 +98,7 @@
       "name": "Rashid Khan",
       "price": 8,
       "rating": 87,
-      "tag": "Spinner"
+      "tag": "Bowler"
     },
     {
       "name": "Ravindra Jadeja",
@@ -110,13 +116,13 @@
       "name": "Mitchell Starc",
       "price": 8,
       "rating": 85,
-      "tag": "Fast Bowler"
+      "tag": "Bowler"
     },
     {
       "name": "Kagiso Rabada",
       "price": 8,
       "rating": 85,
-      "tag": "Fast Bowler"
+      "tag": "Bowler"
     },
     {
       "name": "Travis Head",
@@ -140,7 +146,7 @@
       "name": "Shaheen Afridi",
       "price": 7,
       "rating": 82,
-      "tag": "Fast Bowler"
+      "tag": "Bowler"
     },
     {
       "name": "Jos Buttler",
@@ -158,13 +164,13 @@
       "name": "Mohammed Shami",
       "price": 6,
       "rating": 79,
-      "tag": "Fast Bowler"
+      "tag": "Bowler"
     },
     {
       "name": "Ravichandran Ashwin",
       "price": 6,
       "rating": 79,
-      "tag": "Spinner"
+      "tag": "Bowler"
     },
     {
       "name": "Hardik Pandya",
@@ -182,7 +188,7 @@
       "name": "Trent Boult",
       "price": 6,
       "rating": 77,
-      "tag": "Fast Bowler"
+      "tag": "Bowler"
     },
     {
       "name": "Yashasvi Jaiswal",
@@ -206,7 +212,7 @@
       "name": "Kuldeep Yadav",
       "price": 3,
       "rating": 75,
-      "tag": "Spinner"
+      "tag": "Bowler"
     },
     {
       "name": "Axar Patel",
@@ -230,7 +236,7 @@
       "name": "Mark Wood",
       "price": 4,
       "rating": 65,
-      "tag": "Fast Bowler"
+      "tag": "Bowler"
     },
     {
       "name": "Moeen Ali",
@@ -260,13 +266,13 @@
       "name": "Ishant Sharma",
       "price": 2,
       "rating": 57,
-      "tag": "Fast Bowler"
+      "tag": "Bowler"
     },
     {
       "name": "Deepak Chahar",
       "price": 2,
       "rating": 56,
-      "tag": "Fast Bowler"
+      "tag": "Bowler"
     },
     {
       "name": "Riyan Parag",
@@ -278,19 +284,61 @@
       "name": "Umesh Yadav",
       "price": 1,
       "rating": 53,
-      "tag": "Fast Bowler"
+      "tag": "Bowler"
     },
     {
       "name": "Piyush Chawla",
       "price": 1,
       "rating": 50,
-      "tag": "Spinner"
+      "tag": "Bowler"
     },
     {
       "name": "Kedar Jadhav",
       "price": 4,
       "rating": 48,
       "tag": "All-rounder"
+    },
+    {
+      "name": "Kumar Sangakkara",
+      "price": 8,
+      "rating": 89,
+      "tag": "Wicketkeeper"
+    },
+    {
+      "name": "Mohammad Rizwan",
+      "price": 5,
+      "rating": 72,
+      "tag": "Wicketkeeper"
+    },
+    {
+      "name": "Alex Carey",
+      "price": 3,
+      "rating": 62,
+      "tag": "Wicketkeeper"
+    },
+    {
+      "name": "Dinesh Karthik",
+      "price": 2,
+      "rating": 58,
+      "tag": "Wicketkeeper"
+    },
+    {
+      "name": "Cheteshwar Pujara",
+      "price": 3,
+      "rating": 64,
+      "tag": "Batter"
+    },
+    {
+      "name": "Ajinkya Rahane",
+      "price": 3,
+      "rating": 62,
+      "tag": "Batter"
+    },
+    {
+      "name": "Martin Guptill",
+      "price": 3,
+      "rating": 60,
+      "tag": "Batter"
     }
   ]
 }
