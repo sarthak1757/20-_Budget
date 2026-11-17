@@ -1,11 +1,10 @@
 import type { Item } from "../types/item";
-import type { GameEvent, GameMode, GameSettings, GameState, PlayerState } from "../types/game";
+import type { GameMode, GameSettings, GameState, PlayerState } from "../types/game";
+import { applyAuctionAction } from "./auction";
 import { MAX_PLAYERS, MIN_PLAYERS } from "./constants";
-import { fillEmptySlotsWithBench } from "./bench";
-import { findFirstEmptySlot, getBuyBlockReason, isTeamFull } from "./rules";
-import { shouldHoldVote } from "./scoring";
+import { findFirstEmptySlot, getBuyBlockReason } from "./rules";
+import { endRound, finishGame, makeTurnDeadline, startRound } from "./rounds";
 import { shuffle } from "./shuffle";
-import { buildTurnQueue, nextFirstPlayerIndex } from "./turns";
 
 // Every function here is pure: it takes a state and returns a NEW state.
 // It never touches the network, the database, timers or the input object.
@@ -30,11 +29,12 @@ export interface CreateGameInput {
   random?: () => number;
 }
 
-export interface PlayerAction {
-  type: "buy" | "pass";
-  playerId: string;
-  auto?: boolean; // true when the server passes for a player whose timer ran out
-}
+// What a player can do on their turn. "buy" is Classic only, "bid" is Auction only.
+export type PlayerAction =
+  | { type: "buy"; playerId: string }
+  | { type: "bid"; playerId: string; amount: number }
+  // auto = true when the server passes for a player whose timer ran out
+  | { type: "pass"; playerId: string; auto?: boolean };
 
 export type EngineResult = { ok: true; state: GameState } | { ok: false; error: string };
 
@@ -83,6 +83,7 @@ export function createGame(input: CreateGameInput): GameState {
     firstPlayerIndex: 0,
     turnQueue: [],
     cantAffordIds: [],
+    auction: null,
     turnDeadline: null,
     votes: {},
     voteDeadline: null,
@@ -101,7 +102,7 @@ export function getCurrentPlayerId(state: Pick<GameState, "phase" | "turnQueue">
   return state.turnQueue[0] ?? null;
 }
 
-// Handles one BUY or PASS from the player whose turn it is.
+// Handles one action from the player whose turn it is.
 export function applyAction(state: GameState, action: PlayerAction, now: number): EngineResult {
   if (state.phase !== "drafting") {
     return { ok: false, error: "The draft is over" };
@@ -122,6 +123,14 @@ export function applyAction(state: GameState, action: PlayerAction, now: number)
     return { ok: false, error: "Unknown player" };
   }
 
+  if (next.settings.draftStyle === "auction") {
+    return applyAuctionAction(next, player, item, action, now);
+  }
+
+  if (action.type === "bid") {
+    return { ok: false, error: "Bidding is only for auction games" };
+  }
+
   if (action.type === "buy") {
     // Checked again here even though the turn queue only holds players who
     // could afford the item: the server must never trust that assumption blindly.
@@ -132,7 +141,7 @@ export function applyAction(state: GameState, action: PlayerAction, now: number)
     const slotIndex = findFirstEmptySlot(player);
     player.team[slotIndex] = item;
     player.budget -= item.price;
-    next.lastEvents.push({ type: "bought", playerId: player.id, item });
+    next.lastEvents.push({ type: "bought", playerId: player.id, item, price: item.price });
     endRound(next, now);
     return { ok: true, state: next };
   }
@@ -199,90 +208,6 @@ export function setPlayerConnected(state: GameState, playerId: string, isConnect
     player.isConnected = isConnected;
   }
   return next;
-}
-
-// ---------------------------------------------------------------------------
-// Internal helpers. These MUTATE the state they're given, and are only ever
-// called on the private copy made inside the public functions above.
-// ---------------------------------------------------------------------------
-
-function makeTurnDeadline(state: GameState, now: number): number | null {
-  if (state.settings.turnSeconds <= 0) {
-    return null;
-  }
-  return now + state.settings.turnSeconds * 1000;
-}
-
-function endRound(state: GameState, now: number): void {
-  state.firstPlayerIndex = nextFirstPlayerIndex(state.firstPlayerIndex, state.players.length);
-  startRound(state, now);
-}
-
-// Reveals the next item. Loops because an item that NOBODY can afford is
-// discarded straight away and the next one revealed.
-function startRound(state: GameState, now: number): void {
-  while (true) {
-    if (allTeamsFull(state.players)) {
-      finishDraft(state, now);
-      return;
-    }
-
-    const item = state.itemPool.shift();
-    if (item === undefined) {
-      // Pool ran out before everyone filled their team.
-      for (let i = 0; i < state.players.length; i++) {
-        const player = state.players[i] as PlayerState;
-        state.players[i] = fillEmptySlotsWithBench(player, state.settings.categorySlug);
-      }
-      finishDraft(state, now);
-      return;
-    }
-
-    state.roundNumber += 1;
-    const { queue, cantAfford } = buildTurnQueue(state.players, state.firstPlayerIndex, () => item.price);
-
-    if (queue.length === 0) {
-      const discarded: GameEvent = { type: "discarded", item };
-      state.lastEvents.push(discarded);
-      state.firstPlayerIndex = nextFirstPlayerIndex(state.firstPlayerIndex, state.players.length);
-      continue;
-    }
-
-    state.currentItem = item;
-    state.turnQueue = queue;
-    state.cantAffordIds = cantAfford;
-    state.turnDeadline = makeTurnDeadline(state, now);
-    return;
-  }
-}
-
-function finishDraft(state: GameState, now: number): void {
-  state.currentItem = null;
-  state.turnQueue = [];
-  state.cantAffordIds = [];
-  state.turnDeadline = null;
-
-  if (shouldHoldVote(state.players)) {
-    state.phase = "voting";
-    // No deadline when voteSeconds is 0 (pass-and-play): the vote ends once everyone has voted.
-    state.voteDeadline = state.settings.voteSeconds > 0 ? now + state.settings.voteSeconds * 1000 : null;
-  } else {
-    finishGame(state);
-  }
-}
-
-function finishGame(state: GameState): void {
-  state.phase = "finished";
-  state.voteDeadline = null;
-}
-
-function allTeamsFull(players: PlayerState[]): boolean {
-  for (const player of players) {
-    if (!isTeamFull(player)) {
-      return false;
-    }
-  }
-  return true;
 }
 
 function everyHumanHasVoted(state: GameState): boolean {

@@ -9,8 +9,11 @@ const players: PlayerState[] = [
 ];
 
 describe("describeEvent", () => {
-  it("describes buys, passes, timeouts and discards", () => {
-    expect(describeEvent({ type: "bought", playerId: "a", item }, players)).toBe("Asha bought Hot Dog for $6");
+  it("describes buys, bids, passes, timeouts and discards", () => {
+    expect(describeEvent({ type: "bought", playerId: "a", item, price: 6 }, players)).toBe("Asha bought Hot Dog for $6");
+    // An auction win shows what was paid, not the listed price.
+    expect(describeEvent({ type: "bought", playerId: "a", item, price: 3 }, players)).toBe("Asha bought Hot Dog for $3");
+    expect(describeEvent({ type: "bid", playerId: "a", item, amount: 4 }, players)).toBe("Asha bid $4");
     expect(describeEvent({ type: "passed", playerId: "a", item, auto: false }, players)).toBe("Asha passed on Hot Dog");
     expect(describeEvent({ type: "passed", playerId: "a", item, auto: true }, players)).toBe(
       "Asha ran out of time and passed",

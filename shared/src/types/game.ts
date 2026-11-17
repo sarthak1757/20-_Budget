@@ -35,9 +35,16 @@ export interface PlayerState {
 // events (e.g. a pass that ends the round discards the item), so the
 // UI gets a list and can animate each one.
 export type GameEvent =
-  | { type: "bought"; playerId: string; item: Item }
+  | { type: "bought"; playerId: string; item: Item; price: number } // price = what they actually paid
+  | { type: "bid"; playerId: string; item: Item; amount: number }
   | { type: "passed"; playerId: string; item: Item; auto: boolean }
   | { type: "discarded"; item: Item };
+
+// The live auction for the current item (auction draft style only).
+export interface AuctionState {
+  highBid: number; // 0 until someone bids
+  highBidderId: string | null;
+}
 
 export interface GameState {
   mode: GameMode;
@@ -50,6 +57,7 @@ export interface GameState {
   firstPlayerIndex: number; // who acts first this round; rotates each round
   turnQueue: string[]; // player ids still to decide on the current item, in order
   cantAffordIds: string[]; // players skipped this round because of the budget rule
+  auction: AuctionState | null; // null in Classic
   turnDeadline: number | null; // epoch ms; null when there is no timer
   votes: Record<string, string>; // voterId -> votedForId
   voteDeadline: number | null; // epoch ms

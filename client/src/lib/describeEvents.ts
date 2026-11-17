@@ -12,7 +12,11 @@ function nameOf(players: PlayerState[], playerId: string): string {
 // Turns engine events into short sentences for the activity line on the board.
 export function describeEvent(event: GameEvent, players: PlayerState[]): string {
   if (event.type === "bought") {
-    return `${nameOf(players, event.playerId)} bought ${event.item.name} for $${event.item.price}`;
+    // event.price, not item.price: auctions and discounts change what was paid.
+    return `${nameOf(players, event.playerId)} bought ${event.item.name} for $${event.price}`;
+  }
+  if (event.type === "bid") {
+    return `${nameOf(players, event.playerId)} bid $${event.amount}`;
   }
   if (event.type === "passed") {
     const who = nameOf(players, event.playerId);
