@@ -72,3 +72,89 @@ Run these from the repo root.
 
 Tests that need a database start a throwaway in-memory MongoDB, so `npm test` doesn't
 need your real database.
+
+## Architecture
+
+```
+budget-draft/
+├── shared/   Types, zod schemas and the pure game engine. Used by BOTH client and server.
+├── server/   Express REST API, Socket.io rooms, Mongoose models, seed data (server/seed/*.json)
+└── client/   React + Vite + Tailwind web app, Zustand stores
+```
+
+```mermaid
+flowchart LR
+  subgraph Browser
+    UI[React pages] --> LS[localGameStore<br/>pass-and-play + bots]
+    UI --> OS[onlineStore]
+    LS --> ENG1[shared game engine]
+    LS -. no server? .-> BUNDLE[(bundled seed JSON)]
+  end
+
+  subgraph Server["Node server"]
+    API[Express REST<br/>/api/...] --> CAT[catalog service]
+    IO[Socket.io handlers<br/>zod-validated] --> RUN[GameRunner<br/>timers + broadcasts]
+    RUN --> ENG2[shared game engine]
+    RUN --> ROOMS[(RoomStore<br/>in memory)]
+    RUN --> SAVE[save GameResult]
+  end
+
+  OS <-- "room:join, turn:action, vote:cast<br/>game:state, item:reveal, game:end" --> IO
+  UI -- "fetch" --> API
+  CAT --> DB[(MongoDB)]
+  SAVE --> DB
+```
+
+**One game engine, three modes.** All the rules (budget check, turn order, scoring, the
+bot) are pure functions in `shared/src/game/`. They take a state and return a new state,
+with no network, database or timers. The browser runs them for pass-and-play and bot
+games, and the server runs exactly the same code for online rooms.
+
+**The server is in charge online.** For online games the real `GameState` only exists
+on the server. Clients send intentions ("BUY", "PASS", a vote), the server checks them
+with zod and the engine, then sends everyone the new state. Clients can't skip the
+budget rule or act out of turn: the acting player's id comes from their socket, never
+from the message.
+
+**The item pool stays secret.** The full state includes `itemPool` (the shuffled items
+still to come). Clients only ever get `PublicGameState`, which has
+`itemPool?: never` and just an `itemsRemaining` count. Because every server→client
+socket event is typed with `PublicGameState`, sending the full state is a compile error.
+A type test (`shared/src/__typetests__`) checks that this protection holds.
+
+### REST API
+
+| Method & path | Description |
+| --- | --- |
+| `GET /api/categories` | All categories with item counts |
+| `GET /api/categories/:slug/items` | Items in a category |
+| `POST /api/rooms` | Create a room → `{ code }` |
+| `GET /api/rooms/:code` | Room info (phase, player count, joinable) |
+| `GET /api/leaderboard` | Wins, games played, best score (online games only) |
+| `POST /api/results` | Store a finished local/bot game (never ranked) |
+| `/api/admin/...` | Category and item CRUD, needs the `x-admin-password` header |
+
+### Socket events
+
+| Client → server | Server → client |
+| --- | --- |
+| `room:join` (code, name, stored playerId) | `room:update` (lobby + game snapshot) |
+| `room:leave` | `item:reveal` (new item + state) |
+| `room:settings` (host only) | `game:state` (after every action) |
+| `game:start` (host only) | `game:end` (final state + results) |
+| `turn:action` (buy/pass + round number) | |
+| `vote:cast` | |
+
+Every request gets an acknowledgement: `{ ok: true, data }` or `{ ok: false, error }`.
+
+### Data models
+
+- **Category**: `slug` (unique), `name`, `emoji`, `description`
+- **Item**: `name`, `categorySlug`, `price` (1–10), `rating` (1–100), `tag`, optional `emoji`.
+  Unique per (category, name).
+- **GameResult**: mode, category, settings, players with a *snapshot* of their team and
+  scores, `statsWinnerIds`, `voteWinnerIds`, and `countsForLeaderboard` (true only for
+  online games).
+
+No images or logos anywhere: items are names and text, shown with an emoji or a
+generated initials avatar.
