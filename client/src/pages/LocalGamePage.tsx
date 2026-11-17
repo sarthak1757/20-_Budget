@@ -6,6 +6,7 @@ import { Button, PageShell } from "../components/ui";
 import { VotePanel } from "../components/VotePanel";
 import { describeEvent } from "../lib/describeEvents";
 import { needsHandoff, whoNeedsDevice } from "../lib/handoff";
+import { useBotTurns } from "../lib/useBotTurns";
 import { useLocalGameStore } from "../store/localGameStore";
 
 function findPlayer(players: PlayerState[], id: string | null): PlayerState | undefined {
@@ -26,6 +27,9 @@ export function LocalGamePage() {
   const vote = useLocalGameStore((store) => store.vote);
   const confirmHandoff = useLocalGameStore((store) => store.confirmHandoff);
   const reset = useLocalGameStore((store) => store.reset);
+  const playBotTurn = useLocalGameStore((store) => store.playBotTurn);
+  // Must run before any early return (React hooks always run in the same order).
+  const botIsThinking = useBotTurns(game, playBotTurn);
 
   if (!game) {
     return <Navigate to="/" replace />;
@@ -80,7 +84,14 @@ export function LocalGamePage() {
   }
 
   const currentPlayer = findPlayer(game.players, getCurrentPlayerId(game));
-  const turnLabel = currentPlayer ? `${currentPlayer.name}'s turn` : "";
+  let turnLabel = "";
+  if (currentPlayer && botIsThinking) {
+    turnLabel = `🤖 ${currentPlayer.name} is thinking…`;
+  } else if (currentPlayer && game.mode === "bot") {
+    turnLabel = "Your turn! Buy or pass?";
+  } else if (currentPlayer) {
+    turnLabel = `${currentPlayer.name}'s turn`;
+  }
 
   return (
     <PageShell>
