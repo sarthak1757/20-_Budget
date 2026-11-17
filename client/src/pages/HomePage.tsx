@@ -80,6 +80,9 @@ export function HomePage() {
         <Link to="/join" className="rounded-xl bg-zinc-800 px-4 py-3 font-semibold hover:bg-zinc-700">
           🔑 Join with a code
         </Link>
+        <Link to="/leaderboard" className="rounded-xl bg-zinc-800 px-4 py-3 font-semibold hover:bg-zinc-700">
+          🏆 Leaderboard
+        </Link>
       </div>
     </PageShell>
   );
