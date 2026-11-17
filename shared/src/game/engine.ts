@@ -1,6 +1,6 @@
 import type { Item } from "../types/item";
 import type { GameEvent, GameMode, GameSettings, GameState, PlayerState } from "../types/game";
-import { MAX_PLAYERS, MIN_PLAYERS, VOTE_SECONDS } from "./constants";
+import { MAX_PLAYERS, MIN_PLAYERS } from "./constants";
 import { fillEmptySlotsWithBench } from "./bench";
 import { findFirstEmptySlot, getBuyBlockReason, isTeamFull } from "./rules";
 import { shouldHoldVote } from "./scoring";
@@ -264,7 +264,8 @@ function finishDraft(state: GameState, now: number): void {
 
   if (shouldHoldVote(state.players)) {
     state.phase = "voting";
-    state.voteDeadline = now + VOTE_SECONDS * 1000;
+    // No deadline when voteSeconds is 0 (pass-and-play): the vote ends once everyone has voted.
+    state.voteDeadline = state.settings.voteSeconds > 0 ? now + state.settings.voteSeconds * 1000 : null;
   } else {
     finishGame(state);
   }

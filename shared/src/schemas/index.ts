@@ -24,6 +24,7 @@ export const gameSettingsSchema = z
     startingBudget: z.number().int().min(5).max(100),
     slotCount: z.number().int().min(MIN_SLOTS).max(MAX_SLOTS),
     turnSeconds: z.number().int().min(0).max(60),
+    voteSeconds: z.number().int().min(0).max(120),
     categorySlug: categorySlugSchema,
   })
   // The budget rule needs at least $1 per slot, otherwise nobody could fill their team.

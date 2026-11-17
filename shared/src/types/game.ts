@@ -10,6 +10,7 @@ export interface GameSettings {
   startingBudget: number; // default 20
   slotCount: number; // 3–7, default 5
   turnSeconds: number; // 0 means "no timer" (used for pass-and-play)
+  voteSeconds: number; // 0 means "no timer": on one shared device people vote one after another
   categorySlug: CategorySlug;
 }
 

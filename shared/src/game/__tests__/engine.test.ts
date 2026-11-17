@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { GameState } from "../../types/game";
-import { VOTE_SECONDS } from "../constants";
+import { ONLINE_VOTE_SECONDS } from "../constants";
 import { applyAction, castVote, createGame, endVoting, getCurrentPlayerId, type EngineResult } from "../engine";
 import { makeItem, makeItems, makePlayers, makeSettings, noShuffle, NOW, startGame } from "./helpers";
 
@@ -164,7 +164,15 @@ describe("end of the draft", () => {
   it("opens a 30s vote with 3+ human players", () => {
     const state = fillAllSlots(startGame({ playerCount: 3 }));
     expect(state.phase).toBe("voting");
-    expect(state.voteDeadline).toBe(NOW + VOTE_SECONDS * 1000);
+    expect(state.voteDeadline).toBe(NOW + ONLINE_VOTE_SECONDS * 1000);
+  });
+
+  it("has no vote deadline when voteSeconds is 0 (pass-and-play)", () => {
+    const state = fillAllSlots(startGame({ playerCount: 3, settings: { voteSeconds: 0 } }));
+    expect(state.phase).toBe("voting");
+    expect(state.voteDeadline).toBeNull();
+    // A vote much later is still accepted.
+    expect(castVote(state, "p1", "p2", NOW + 10 * 60_000).ok).toBe(true);
   });
 
   it("does not hold a vote with 2 humans and 1 bot", () => {

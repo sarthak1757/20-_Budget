@@ -8,7 +8,7 @@ export const MIN_PRICE = 1;
 export const MAX_PRICE = 10;
 
 export const ONLINE_TURN_SECONDS = 15;
-export const VOTE_SECONDS = 30;
+export const ONLINE_VOTE_SECONDS = 30;
 
 // Voting with 2 players is pointless (each would just vote for the other),
 // so we only hold a vote with at least this many humans.
@@ -21,5 +21,6 @@ export const DEFAULT_SETTINGS: GameSettings = {
   startingBudget: 20,
   slotCount: 5,
   turnSeconds: 0,
+  voteSeconds: 0,
   categorySlug: "football",
 };
