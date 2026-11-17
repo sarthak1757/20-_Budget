@@ -1,0 +1,337 @@
+{
+  "slug": "fast-food",
+  "name": "Fast Food Items",
+  "emoji": "🍔",
+  "description": "Burgers, fried chicken, street food and sides. Not every side is worth the money.",
+  "items": [
+    {
+      "name": "Pepperoni Pizza",
+      "price": 10,
+      "rating": 95,
+      "tag": "Pizza",
+      "emoji": "🍕"
+    },
+    {
+      "name": "Double Smash Burger",
+      "price": 9,
+      "rating": 94,
+      "tag": "Burger",
+      "emoji": "🍔"
+    },
+    {
+      "name": "Chicken Shawarma",
+      "price": 9,
+      "rating": 94,
+      "tag": "Wrap",
+      "emoji": "🥙"
+    },
+    {
+      "name": "Fried Chicken Bucket",
+      "price": 9,
+      "rating": 93,
+      "tag": "Chicken",
+      "emoji": "🍗"
+    },
+    {
+      "name": "Spicy Chicken Sandwich",
+      "price": 9,
+      "rating": 93,
+      "tag": "Chicken",
+      "emoji": "🥪"
+    },
+    {
+      "name": "Butter Chicken Wrap",
+      "price": 9,
+      "rating": 92,
+      "tag": "Wrap",
+      "emoji": "🌯"
+    },
+    {
+      "name": "Birria Tacos",
+      "price": 9,
+      "rating": 92,
+      "tag": "Taco",
+      "emoji": "🌮"
+    },
+    {
+      "name": "Loaded Cheese Fries",
+      "price": 9,
+      "rating": 91,
+      "tag": "Sides",
+      "emoji": "🍟"
+    },
+    {
+      "name": "Vada Pav",
+      "price": 4,
+      "rating": 91,
+      "tag": "Street Food",
+      "emoji": "🥔"
+    },
+    {
+      "name": "Hot Glazed Doughnut",
+      "price": 9,
+      "rating": 90,
+      "tag": "Dessert",
+      "emoji": "🍩"
+    },
+    {
+      "name": "Hot Wings",
+      "price": 8,
+      "rating": 88,
+      "tag": "Chicken",
+      "emoji": "🍗"
+    },
+    {
+      "name": "Oreo Milkshake",
+      "price": 8,
+      "rating": 87,
+      "tag": "Drink",
+      "emoji": "🥤"
+    },
+    {
+      "name": "Pav Bhaji",
+      "price": 8,
+      "rating": 87,
+      "tag": "Street Food",
+      "emoji": "🍛"
+    },
+    {
+      "name": "Classic Cheeseburger",
+      "price": 8,
+      "rating": 86,
+      "tag": "Burger",
+      "emoji": "🍔"
+    },
+    {
+      "name": "Momos",
+      "price": 4,
+      "rating": 86,
+      "tag": "Street Food",
+      "emoji": "🥟"
+    },
+    {
+      "name": "Curly Fries",
+      "price": 8,
+      "rating": 85,
+      "tag": "Sides",
+      "emoji": "🍟"
+    },
+    {
+      "name": "Margherita Pizza",
+      "price": 8,
+      "rating": 85,
+      "tag": "Pizza",
+      "emoji": "🍕"
+    },
+    {
+      "name": "Cinnamon Roll",
+      "price": 8,
+      "rating": 85,
+      "tag": "Dessert",
+      "emoji": "🥐"
+    },
+    {
+      "name": "Chicken Nuggets",
+      "price": 7,
+      "rating": 84,
+      "tag": "Chicken",
+      "emoji": "🍗"
+    },
+    {
+      "name": "Paneer Tikka Roll",
+      "price": 7,
+      "rating": 84,
+      "tag": "Wrap",
+      "emoji": "🌯"
+    },
+    {
+      "name": "Soft-Serve Sundae",
+      "price": 7,
+      "rating": 83,
+      "tag": "Dessert",
+      "emoji": "🍦"
+    },
+    {
+      "name": "Onion Rings",
+      "price": 7,
+      "rating": 82,
+      "tag": "Sides",
+      "emoji": "🧅"
+    },
+    {
+      "name": "Crunchy Taco",
+      "price": 7,
+      "rating": 81,
+      "tag": "Taco",
+      "emoji": "🌮"
+    },
+    {
+      "name": "Burrito Bowl",
+      "price": 6,
+      "rating": 79,
+      "tag": "Bowl",
+      "emoji": "🥗"
+    },
+    {
+      "name": "Hash Brown",
+      "price": 2,
+      "rating": 78,
+      "tag": "Breakfast",
+      "emoji": "🥔"
+    },
+    {
+      "name": "Popcorn Chicken",
+      "price": 6,
+      "rating": 78,
+      "tag": "Chicken",
+      "emoji": "🍿"
+    },
+    {
+      "name": "Mozzarella Sticks",
+      "price": 6,
+      "rating": 77,
+      "tag": "Sides",
+      "emoji": "🧀"
+    },
+    {
+      "name": "Hot Dog",
+      "price": 6,
+      "rating": 76,
+      "tag": "Classic",
+      "emoji": "🌭"
+    },
+    {
+      "name": "Breakfast Muffin Sandwich",
+      "price": 6,
+      "rating": 75,
+      "tag": "Breakfast",
+      "emoji": "🍳"
+    },
+    {
+      "name": "Apple Pie",
+      "price": 5,
+      "rating": 74,
+      "tag": "Dessert",
+      "emoji": "🥧"
+    },
+    {
+      "name": "Iced Coffee",
+      "price": 5,
+      "rating": 73,
+      "tag": "Drink",
+      "emoji": "☕"
+    },
+    {
+      "name": "Fish Sandwich",
+      "price": 5,
+      "rating": 72,
+      "tag": "Sandwich",
+      "emoji": "🐟"
+    },
+    {
+      "name": "Plain Fries",
+      "price": 4,
+      "rating": 69,
+      "tag": "Sides",
+      "emoji": "🍟"
+    },
+    {
+      "name": "Corn Dog",
+      "price": 4,
+      "rating": 68,
+      "tag": "Classic",
+      "emoji": "🌭"
+    },
+    {
+      "name": "Nachos",
+      "price": 4,
+      "rating": 67,
+      "tag": "Sides",
+      "emoji": "🌽"
+    },
+    {
+      "name": "Veggie Burger",
+      "price": 4,
+      "rating": 66,
+      "tag": "Burger",
+      "emoji": "🍔"
+    },
+    {
+      "name": "Cola",
+      "price": 4,
+      "rating": 65,
+      "tag": "Drink",
+      "emoji": "🥤"
+    },
+    {
+      "name": "Chicken Salad Wrap",
+      "price": 3,
+      "rating": 63,
+      "tag": "Wrap",
+      "emoji": "🌯"
+    },
+    {
+      "name": "Garden Side Salad",
+      "price": 7,
+      "rating": 60,
+      "tag": "Healthy",
+      "emoji": "🥗"
+    },
+    {
+      "name": "Bottled Water",
+      "price": 5,
+      "rating": 52,
+      "tag": "Drink",
+      "emoji": "💧"
+    },
+    {
+      "name": "Fruit Cup",
+      "price": 4,
+      "rating": 50,
+      "tag": "Healthy",
+      "emoji": "🍎"
+    },
+    {
+      "name": "Side Coleslaw",
+      "price": 1,
+      "rating": 48,
+      "tag": "Sides",
+      "emoji": "🥬"
+    },
+    {
+      "name": "Apple Slices",
+      "price": 1,
+      "rating": 47,
+      "tag": "Healthy",
+      "emoji": "🍏"
+    },
+    {
+      "name": "Diet Soda",
+      "price": 1,
+      "rating": 45,
+      "tag": "Drink",
+      "emoji": "🥤"
+    },
+    {
+      "name": "Ketchup Packet",
+      "price": 1,
+      "rating": 42,
+      "tag": "Condiment",
+      "emoji": "🍅"
+    },
+    {
+      "name": "Pickle Slice",
+      "price": 1,
+      "rating": 41,
+      "tag": "Condiment",
+      "emoji": "🥒"
+    },
+    {
+      "name": "Plain Bun",
+      "price": 1,
+      "rating": 40,
+      "tag": "Sides",
+      "emoji": "🍞"
+    }
+  ]
+}
