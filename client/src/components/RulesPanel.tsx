@@ -1,7 +1,9 @@
-import type { DraftStyle, GameSettings } from "@budget-draft/shared";
+import { BALANCED_TEAM_BONUS, type DraftStyle, type GameSettings } from "@budget-draft/shared";
+import { Toggle } from "./Toggle";
 
 interface RulesPanelProps {
   settings: GameSettings;
+  categoryRoles: string[]; // empty when the category has no roles
   disabled?: boolean;
   onChange: (settings: GameSettings) => void;
 }
@@ -11,8 +13,25 @@ const DRAFT_STYLES: { value: DraftStyle; label: string; description: string }[] 
   { value: "auction", label: "Auction", description: "Bid against each other. Highest bid wins." },
 ];
 
+// Why Balanced team can't be switched on, or null if it can.
+function balancedTeamProblem(categoryRoles: string[], slotCount: number): string | null {
+  if (categoryRoles.length === 0) {
+    return "This category has no roles.";
+  }
+  if (categoryRoles.length > slotCount) {
+    return `Needs at least ${categoryRoles.length} slots.`;
+  }
+  return null;
+}
+
 // Draft style and optional extras. Used by the local setup page and the online lobby.
-export function RulesPanel({ settings, disabled = false, onChange }: RulesPanelProps) {
+export function RulesPanel({ settings, categoryRoles, disabled = false, onChange }: RulesPanelProps) {
+  const rolesProblem = balancedTeamProblem(categoryRoles, settings.slotCount);
+  let balancedDescription = `+${BALANCED_TEAM_BONUS} points for a team with every role: ${categoryRoles.join(", ")}.`;
+  if (rolesProblem !== null) {
+    balancedDescription = rolesProblem;
+  }
+
   return (
     <div className="grid gap-3">
       <fieldset className="grid gap-2" disabled={disabled}>
@@ -35,6 +54,18 @@ export function RulesPanel({ settings, disabled = false, onChange }: RulesPanelP
           })}
         </div>
       </fieldset>
+
+      <div className="grid gap-3">
+        <p className="text-zinc-300">Extras</p>
+        <Toggle
+          label="Balanced team"
+          description={balancedDescription}
+          // Shown as off when it can't apply, so nobody expects a bonus that won't come.
+          checked={settings.balancedTeam && rolesProblem === null}
+          disabled={disabled || rolesProblem !== null}
+          onChange={(checked) => onChange({ ...settings, balancedTeam: checked })}
+        />
+      </div>
     </div>
   );
 }

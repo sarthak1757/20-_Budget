@@ -25,6 +25,7 @@ export interface StartLocalGameInput {
   settings: GameSettings;
   players: NewPlayer[];
   items: Item[];
+  roles: string[]; // the category's roles, for Balanced team
 }
 
 interface LocalGameStore {

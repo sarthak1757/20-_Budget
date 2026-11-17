@@ -107,7 +107,12 @@ export function LobbyView({ room, playerId, categories, busy, onChangeSettings, 
           disabled={!isHost || busy}
           onChange={(value) => onChangeSettings({ ...settings, slotCount: value })}
         />
-        <RulesPanel settings={settings} disabled={!isHost || busy} onChange={onChangeSettings} />
+        <RulesPanel
+          settings={settings}
+          categoryRoles={category ? category.roles : []}
+          disabled={!isHost || busy}
+          onChange={onChangeSettings}
+        />
         <p className="text-sm text-zinc-500">
           {settings.turnSeconds}s per {settings.draftStyle === "auction" ? "bid" : "turn"}. If time runs out, you pass.
         </p>

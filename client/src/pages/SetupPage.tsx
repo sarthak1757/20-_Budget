@@ -50,6 +50,7 @@ export function SetupPage() {
   const gameMode: "local" | "bot" = mode;
 
   let categoryName = categorySlug;
+  let categoryRoles: string[] = [];
   if (categories.status === "ready") {
     const match = categories.data.find((category) => category.slug === categorySlug);
     if (!match) {
@@ -60,6 +61,7 @@ export function SetupPage() {
       );
     }
     categoryName = `${match.emoji} ${match.name}`;
+    categoryRoles = match.roles;
   }
 
   function updateName(index: number, value: string) {
@@ -116,7 +118,7 @@ export function SetupPage() {
       if (isBotMode) {
         storeName(names[0]?.trim() ?? "");
       }
-      startGame({ mode: gameMode, settings, players, items });
+      startGame({ mode: gameMode, settings, players, items, roles: categoryRoles });
       navigate("/play");
     } catch (error) {
       setProblems([error instanceof Error ? error.message : "Couldn't load items"]);
@@ -192,7 +194,11 @@ export function SetupPage() {
             <p className="text-sm text-zinc-500">
               You must always keep at least $1 for each empty slot, so you can't blow it all on one pick.
             </p>
-            <RulesPanel settings={rules} onChange={setRules} />
+            <RulesPanel
+              settings={{ ...rules, slotCount: slots }}
+              categoryRoles={categoryRoles}
+              onChange={setRules}
+            />
           </Card>
 
           {problems.length > 0 && (
