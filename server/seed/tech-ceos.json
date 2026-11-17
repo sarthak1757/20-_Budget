@@ -1,0 +1,284 @@
+{
+  "slug": "tech-ceos",
+  "name": "Tech CEOs",
+  "emoji": "💼",
+  "description": "Founders, operators and visionaries who built (and sometimes sank) tech giants.",
+  "items": [
+    {
+      "name": "Steve Jobs",
+      "price": 10,
+      "rating": 98,
+      "tag": "Visionary"
+    },
+    {
+      "name": "Jensen Huang",
+      "price": 10,
+      "rating": 96,
+      "tag": "Engineer"
+    },
+    {
+      "name": "Bill Gates",
+      "price": 10,
+      "rating": 95,
+      "tag": "Founder"
+    },
+    {
+      "name": "Jeff Bezos",
+      "price": 9,
+      "rating": 94,
+      "tag": "Founder"
+    },
+    {
+      "name": "Satya Nadella",
+      "price": 9,
+      "rating": 93,
+      "tag": "Operator"
+    },
+    {
+      "name": "Lisa Su",
+      "price": 9,
+      "rating": 92,
+      "tag": "Engineer"
+    },
+    {
+      "name": "Elon Musk",
+      "price": 9,
+      "rating": 91,
+      "tag": "Founder"
+    },
+    {
+      "name": "Larry Page",
+      "price": 9,
+      "rating": 90,
+      "tag": "Founder"
+    },
+    {
+      "name": "Tim Cook",
+      "price": 9,
+      "rating": 90,
+      "tag": "Operator"
+    },
+    {
+      "name": "Mark Zuckerberg",
+      "price": 9,
+      "rating": 90,
+      "tag": "Founder"
+    },
+    {
+      "name": "Andy Grove",
+      "price": 8,
+      "rating": 89,
+      "tag": "Operator"
+    },
+    {
+      "name": "Morris Chang",
+      "price": 5,
+      "rating": 89,
+      "tag": "Founder"
+    },
+    {
+      "name": "Larry Ellison",
+      "price": 8,
+      "rating": 87,
+      "tag": "Founder"
+    },
+    {
+      "name": "Demis Hassabis",
+      "price": 8,
+      "rating": 87,
+      "tag": "Scientist"
+    },
+    {
+      "name": "Sundar Pichai",
+      "price": 8,
+      "rating": 86,
+      "tag": "Operator"
+    },
+    {
+      "name": "Reed Hastings",
+      "price": 8,
+      "rating": 86,
+      "tag": "Founder"
+    },
+    {
+      "name": "Sam Altman",
+      "price": 8,
+      "rating": 85,
+      "tag": "Founder"
+    },
+    {
+      "name": "Patrick Collison",
+      "price": 7,
+      "rating": 84,
+      "tag": "Founder"
+    },
+    {
+      "name": "Jack Ma",
+      "price": 7,
+      "rating": 83,
+      "tag": "Founder"
+    },
+    {
+      "name": "Brian Chesky",
+      "price": 7,
+      "rating": 82,
+      "tag": "Founder"
+    },
+    {
+      "name": "Michael Dell",
+      "price": 7,
+      "rating": 82,
+      "tag": "Founder"
+    },
+    {
+      "name": "Masayoshi Son",
+      "price": 10,
+      "rating": 80,
+      "tag": "Investor"
+    },
+    {
+      "name": "Marc Benioff",
+      "price": 6,
+      "rating": 79,
+      "tag": "Founder"
+    },
+    {
+      "name": "Nandan Nilekani",
+      "price": 3,
+      "rating": 79,
+      "tag": "Founder"
+    },
+    {
+      "name": "Tobi Lütke",
+      "price": 6,
+      "rating": 78,
+      "tag": "Founder"
+    },
+    {
+      "name": "Andy Jassy",
+      "price": 6,
+      "rating": 78,
+      "tag": "Operator"
+    },
+    {
+      "name": "Shantanu Narayen",
+      "price": 6,
+      "rating": 77,
+      "tag": "Operator"
+    },
+    {
+      "name": "Daniel Ek",
+      "price": 6,
+      "rating": 76,
+      "tag": "Founder"
+    },
+    {
+      "name": "Dara Khosrowshahi",
+      "price": 6,
+      "rating": 75,
+      "tag": "Operator"
+    },
+    {
+      "name": "Arvind Krishna",
+      "price": 5,
+      "rating": 74,
+      "tag": "Operator"
+    },
+    {
+      "name": "Drew Houston",
+      "price": 5,
+      "rating": 72,
+      "tag": "Founder"
+    },
+    {
+      "name": "Evan Spiegel",
+      "price": 5,
+      "rating": 71,
+      "tag": "Founder"
+    },
+    {
+      "name": "Kevin Systrom",
+      "price": 4,
+      "rating": 69,
+      "tag": "Founder"
+    },
+    {
+      "name": "Stewart Butterfield",
+      "price": 1,
+      "rating": 68,
+      "tag": "Founder"
+    },
+    {
+      "name": "Steve Ballmer",
+      "price": 4,
+      "rating": 67,
+      "tag": "Operator"
+    },
+    {
+      "name": "Jack Dorsey",
+      "price": 4,
+      "rating": 66,
+      "tag": "Founder"
+    },
+    {
+      "name": "Travis Kalanick",
+      "price": 7,
+      "rating": 64,
+      "tag": "Founder"
+    },
+    {
+      "name": "Marissa Mayer",
+      "price": 3,
+      "rating": 62,
+      "tag": "Operator"
+    },
+    {
+      "name": "John Sculley",
+      "price": 3,
+      "rating": 61,
+      "tag": "Operator"
+    },
+    {
+      "name": "Jerry Yang",
+      "price": 2,
+      "rating": 58,
+      "tag": "Founder"
+    },
+    {
+      "name": "Meg Whitman",
+      "price": 2,
+      "rating": 56,
+      "tag": "Operator"
+    },
+    {
+      "name": "Andrew Mason",
+      "price": 1,
+      "rating": 52,
+      "tag": "Founder"
+    },
+    {
+      "name": "Carly Fiorina",
+      "price": 1,
+      "rating": 50,
+      "tag": "Operator"
+    },
+    {
+      "name": "Stephen Elop",
+      "price": 4,
+      "rating": 48,
+      "tag": "Operator"
+    },
+    {
+      "name": "Léo Apotheker",
+      "price": 1,
+      "rating": 46,
+      "tag": "Operator"
+    },
+    {
+      "name": "Scott Thompson",
+      "price": 1,
+      "rating": 45,
+      "tag": "Operator"
+    }
+  ]
+}
