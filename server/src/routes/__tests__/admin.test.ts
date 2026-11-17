@@ -1,6 +1,7 @@
 import request from "supertest";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createApp } from "../../app";
+import { CategoryModel } from "../../models/Category";
 import { ItemModel } from "../../models/Item";
 import { RoomStore } from "../../rooms/roomStore";
 import { startMemoryMongo } from "../../test/memoryMongo";
@@ -73,5 +74,21 @@ describe("admin categories and items", () => {
     expect((await admin().post("/api/admin/categories", { ...category, slug: "Not A Slug" })).status).toBe(400);
     expect((await admin().put("/api/admin/items/not-an-id", item)).status).toBe(400);
     expect((await admin().delete("/api/admin/items/64b000000000000000000000")).status).toBe(404);
+  });
+
+  it("only accepts tags that are roles in a category with roles", async () => {
+    await CategoryModel.create({ ...category, slug: "five-a-side", roles: ["Keeper", "Outfield"] });
+    const wrongTag = await admin().post("/api/admin/categories/five-a-side/items", item);
+    expect(wrongTag.status).toBe(400);
+    expect(wrongTag.body.error).toBe("Tag must be one of: Keeper, Outfield");
+
+    const created = await admin().post("/api/admin/categories/five-a-side/items", { ...item, tag: "Keeper" });
+    expect(created.status).toBe(201);
+    const edit = await admin().put(`/api/admin/items/${created.body.id}`, { ...item, tag: "Goalie" });
+    expect(edit.status).toBe(400);
+
+    // Renaming the category keeps its roles.
+    await admin().put("/api/admin/categories/five-a-side", { name: "5-a-side", emoji: "⚽", description: "Small games." });
+    expect((await CategoryModel.findOne({ slug: "five-a-side" }).lean())?.roles).toEqual(["Keeper", "Outfield"]);
   });
 });

@@ -11,7 +11,7 @@ import { requireAdmin } from "../middleware/requireAdmin";
 import { parseOrThrow } from "../middleware/validate";
 import { CategoryModel } from "../models/Category";
 import { ItemModel } from "../models/Item";
-import { getCategoryItems, listCategories } from "../services/catalog";
+import { getCategoryItems, getCategoryRoles, listCategories } from "../services/catalog";
 
 // MongoDB reports a broken unique index (e.g. a repeated item name) with code 11000.
 function isDuplicateKeyError(error: unknown): boolean {
@@ -89,9 +89,11 @@ export function adminRouter(adminPassword: string): Router {
   router.post("/categories/:slug/items", async (req, res) => {
     const slug = parseOrThrow(categorySlugSchema, req.params.slug);
     const body = parseOrThrow(adminItemSchema, req.body);
-    if (!(await CategoryModel.exists({ slug }))) {
+    const roles = await getCategoryRoles(slug);
+    if (roles === null) {
       throw new HttpError(404, "Category not found");
     }
+    checkTagFitsRoles(body.tag, roles);
     try {
       const created = await ItemModel.create({ ...body, categorySlug: slug });
       res.status(201).json({ id: String(created._id), ...body, category: slug });
@@ -106,6 +108,11 @@ export function adminRouter(adminPassword: string): Router {
   router.put("/items/:id", async (req, res) => {
     const id = parseItemId(req.params.id);
     const body = parseOrThrow(adminItemSchema, req.body);
+    const existing = await ItemModel.findById(id, { categorySlug: 1 }).lean();
+    if (!existing) {
+      throw new HttpError(404, "Item not found");
+    }
+    checkTagFitsRoles(body.tag, (await getCategoryRoles(existing.categorySlug)) ?? []);
     // $unset removes the emoji when the form leaves it empty.
     const update = body.emoji === undefined ? { ...body, $unset: { emoji: 1 } } : body;
     try {
@@ -132,4 +139,12 @@ export function adminRouter(adminPassword: string): Router {
   });
 
   return router;
+}
+
+// In a category with roles (football, cricket) the tag IS the role, so a
+// typo would quietly make the Balanced team bonus impossible to earn.
+function checkTagFitsRoles(tag: string, roles: string[]): void {
+  if (roles.length > 0 && !roles.includes(tag)) {
+    throw new HttpError(400, `Tag must be one of: ${roles.join(", ")}`);
+  }
 }
