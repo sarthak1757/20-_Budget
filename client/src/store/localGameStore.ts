@@ -4,6 +4,7 @@ import {
   applyAction,
   castVote,
   createGame,
+  decideBotAction,
   endVoting,
   getCurrentPlayerId,
   type GameMode,
@@ -33,6 +34,7 @@ interface LocalGameStore {
 
   start: (input: StartLocalGameInput) => void;
   act: (type: "buy" | "pass") => void;
+  playBotTurn: () => void;
   vote: (targetId: string) => void;
   finishVoting: () => void;
   confirmHandoff: () => void;
@@ -66,6 +68,24 @@ export const useLocalGameStore = create<LocalGameStore>()(
           set({ game: result.state, error: null });
         } else {
           set({ error: result.error });
+        }
+      },
+
+      // Lets the bot whose turn it is decide, using the shared bot logic.
+      playBotTurn: () => {
+        const game = get().game;
+        if (!game) {
+          return;
+        }
+        const playerId = getCurrentPlayerId(game);
+        const bot = game.players.find((player) => player.id === playerId);
+        if (playerId === null || !bot || !bot.isBot) {
+          return;
+        }
+        const decision = decideBotAction(game, playerId);
+        const result = applyAction(game, { type: decision, playerId }, Date.now());
+        if (result.ok) {
+          set({ game: result.state });
         }
       },
 
