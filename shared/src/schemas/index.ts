@@ -123,11 +123,21 @@ export const seedCategorySchema = z.object({
   items: z.array(seedItemSchema).min(40),
 });
 
+// ---- Admin forms ----
+// The same rules as seed files, so anything the admin page saves would also be a valid seed item.
+
+export const adminCategorySchema = seedCategorySchema.omit({ items: true });
+export const adminCategoryUpdateSchema = adminCategorySchema.omit({ slug: true });
+export const adminItemSchema = seedItemSchema;
+
 export type RoomJoinPayload = z.infer<typeof roomJoinSchema>;
 export type TurnActionPayload = z.infer<typeof turnActionSchema>;
 export type CreateRoomPayload = z.infer<typeof createRoomSchema>;
 export type VoteCastPayload = z.infer<typeof voteCastSchema>;
 export type GameSettingsPayload = z.infer<typeof gameSettingsSchema>;
 export type SeedItem = z.infer<typeof seedItemSchema>;
+export type AdminCategoryPayload = z.infer<typeof adminCategorySchema>;
+export type AdminCategoryUpdatePayload = z.infer<typeof adminCategoryUpdateSchema>;
+export type AdminItemPayload = z.infer<typeof adminItemSchema>;
 export type LocalResultPayload = z.input<typeof localResultSchema>;
 export type SeedCategory = z.infer<typeof seedCategorySchema>;
