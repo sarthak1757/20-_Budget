@@ -2,6 +2,10 @@ import { create } from "zustand";
 import type { AckResponse, GameSettings, RoomSnapshot } from "@budget-draft/shared";
 import { forgetRoom, getStoredPlayerId, storeName, storePlayerId } from "../lib/playerStorage";
 import { socket } from "../lib/socket";
+import { dismissToast, showToast } from "./toastStore";
+
+// The "connection lost" toast stays up until we're back, so we remember its id.
+let connectionLostToastId: number | null = null;
 
 export type ConnectionStatus = "idle" | "connecting" | "connected" | "reconnecting";
 
@@ -38,9 +42,21 @@ export const useOnlineStore = create<OnlineStore>()((set, get) => {
     const payload = playerId === undefined ? { code, playerName: name } : { code, playerName: name, playerId };
     const response = await socket.emitWithAck("room:join", payload);
     if (response.ok) {
+      // Only announce it when coming back from a dropped connection, not on the first join.
+      if (get().connection === "reconnecting") {
+        if (connectionLostToastId !== null) {
+          dismissToast(connectionLostToastId);
+          connectionLostToastId = null;
+        }
+        showToast("Back online", "success");
+      }
       storePlayerId(code, response.data.playerId);
       set({ playerId: response.data.playerId, room: response.data.room, joinError: null, connection: "connected" });
     } else {
+      if (connectionLostToastId !== null) {
+        dismissToast(connectionLostToastId);
+        connectionLostToastId = null;
+      }
       set({ joinError: response.error, connection: "connected" });
     }
   }
@@ -63,9 +79,18 @@ export const useOnlineStore = create<OnlineStore>()((set, get) => {
   socket.on("connect", () => {
     void sendJoin();
   });
-  socket.on("disconnect", () => {
-    if (get().code !== null) {
+  socket.on("disconnect", (reason) => {
+    // "io client disconnect" means we left on purpose (Leave button).
+    if (get().code !== null && reason !== "io client disconnect") {
       set({ connection: "reconnecting" });
+      connectionLostToastId = showToast("Connection lost. Reconnecting…", "warning", null);
+    }
+  });
+  // The very first connection failed (server down, wrong URL): say so instead of spinning forever.
+  // Socket.io keeps retrying in the background, and "connect" will join once it works.
+  socket.on("connect_error", () => {
+    if (get().connection === "connecting") {
+      set({ joinError: "Can't reach the game server. Check your connection and try again." });
     }
   });
   socket.on("room:update", (room) => set({ room }));
@@ -112,6 +137,10 @@ export const useOnlineStore = create<OnlineStore>()((set, get) => {
         forgetRoom(code);
       }
       socket.disconnect();
+      if (connectionLostToastId !== null) {
+        dismissToast(connectionLostToastId);
+        connectionLostToastId = null;
+      }
       set({ code: null, playerId: null, room: null, connection: "idle", joinError: null });
     },
 

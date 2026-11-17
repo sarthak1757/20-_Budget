@@ -61,11 +61,6 @@ export function RoomPage() {
 
   return (
     <PageShell>
-      {store.connection === "reconnecting" && (
-        <p role="status" className="mb-4 rounded-xl bg-amber-950 p-3 text-center text-amber-200">
-          Connection lost. Reconnecting…
-        </p>
-      )}
       <RoomContent
         room={room}
         playerId={store.playerId}
