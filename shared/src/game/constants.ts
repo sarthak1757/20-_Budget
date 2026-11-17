@@ -40,3 +40,9 @@ export const DEFAULT_SETTINGS: GameSettings = {
   powerUps: false,
   botDifficulty: "easy",
 };
+
+// Custom categories: a list the host pastes when creating an online room.
+// Used for that room only and never saved.
+export const CUSTOM_CATEGORY_SLUG = "custom";
+export const CUSTOM_MIN_ITEMS = 20;
+export const CUSTOM_MAX_ITEMS = 150;

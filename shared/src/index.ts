@@ -19,3 +19,4 @@ export * from "./game/roles";
 export * from "./game/powerUps";
 export * from "./game/seededRandom";
 export * from "./game/daily";
+export * from "./game/customCategory";

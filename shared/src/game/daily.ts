@@ -49,16 +49,21 @@ export function dailyNumber(dateKey: string): number {
 // Builds game items from a seed file. Shared so the browser and the server
 // produce exactly the same items (same ids) for the same file.
 export function itemsFromSeed(seed: SeedCategory): Item[] {
+  return itemsFromSeedItems(seed.slug, seed.items);
+}
+
+// Same, for a bare list of items (custom categories use this).
+export function itemsFromSeedItems(slug: string, seedItems: SeedCategory["items"]): Item[] {
   const items: Item[] = [];
-  for (let i = 0; i < seed.items.length; i++) {
-    const seedItem = seed.items[i];
+  for (let i = 0; i < seedItems.length; i++) {
+    const seedItem = seedItems[i];
     if (!seedItem) {
       continue;
     }
     const item: Item = {
-      id: `${seed.slug}-${i}`,
+      id: `${slug}-${i}`,
       name: seedItem.name,
-      category: seed.slug,
+      category: slug,
       price: seedItem.price,
       rating: seedItem.rating,
       tag: seedItem.tag,

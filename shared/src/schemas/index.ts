@@ -1,5 +1,15 @@
 import { z } from "zod";
-import { MAX_PLAYERS, MAX_PRICE, MAX_SLOTS, MIN_PLAYERS, MIN_PRICE, MIN_SLOTS } from "../game/constants";
+import {
+  CUSTOM_CATEGORY_SLUG,
+  CUSTOM_MAX_ITEMS,
+  CUSTOM_MIN_ITEMS,
+  MAX_PLAYERS,
+  MAX_PRICE,
+  MAX_SLOTS,
+  MIN_PLAYERS,
+  MIN_PRICE,
+  MIN_SLOTS,
+} from "../game/constants";
 
 // Every payload that arrives from the outside world (sockets, admin forms,
 // seed files) is checked with one of these schemas before we trust it.
@@ -63,9 +73,6 @@ export const peekSchema = z.object({ roundNumber: roundNumberSchema });
 
 // ---- REST payloads ----
 
-export const createRoomSchema = z.object({
-  categorySlug: categorySlugSchema,
-});
 
 export const voteCastSchema = z.object({
   targetPlayerId: playerIdSchema,
@@ -145,6 +152,29 @@ export const seedItemSchema = z.object({
   emoji: z.string().min(1).max(16).optional(),
 });
 
+// A host's own item list for one online room (see parseCustomItems).
+export const customItemsSchema = z
+  .array(seedItemSchema.omit({ emoji: true }))
+  .min(CUSTOM_MIN_ITEMS, `Add at least ${CUSTOM_MIN_ITEMS} items`)
+  .max(CUSTOM_MAX_ITEMS, `At most ${CUSTOM_MAX_ITEMS} items`)
+  .superRefine((items, ctx) => {
+    const seen = new Set<string>();
+    for (const item of items) {
+      const key = item.name.toLowerCase();
+      if (seen.has(key)) {
+        ctx.addIssue({ code: "custom", message: `"${item.name}" is in the list twice` });
+      }
+      seen.add(key);
+    }
+  });
+
+// customItems turns the room into a custom-category room; categorySlug is
+// then ignored.
+export const createRoomSchema = z.object({
+  categorySlug: categorySlugSchema,
+  customItems: customItemsSchema.optional(),
+});
+
 const roleListSchema = z.array(z.string().trim().min(1).max(30)).max(6);
 
 export const seedCategorySchema = z
@@ -174,7 +204,7 @@ export const seedCategorySchema = z
 // Roles aren't edited from the admin page (they come from the seed files),
 // so they're left out here and an update never wipes them.
 export const adminCategorySchema = z.object({
-  slug: categorySlugSchema,
+  slug: categorySlugSchema.refine((slug) => slug !== CUSTOM_CATEGORY_SLUG, "That slug is reserved for custom lists"),
   name: z.string().trim().min(1).max(40),
   emoji: z.string().min(1).max(16),
   description: z.string().trim().min(1).max(200),
@@ -194,4 +224,5 @@ export type AdminCategoryUpdatePayload = z.infer<typeof adminCategoryUpdateSchem
 export type AdminItemPayload = z.infer<typeof adminItemSchema>;
 export type LocalResultPayload = z.input<typeof localResultSchema>;
 export type SeedCategory = z.infer<typeof seedCategorySchema>;
+export type CustomItem = z.infer<typeof customItemsSchema>[number];
 export type DailyResultPayload = z.infer<typeof dailyResultSchema>;
