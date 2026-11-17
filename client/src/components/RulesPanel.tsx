@@ -1,4 +1,4 @@
-import { BALANCED_TEAM_BONUS, type DraftStyle, type GameSettings } from "@budget-draft/shared";
+import { applyPreset, BALANCED_TEAM_BONUS, getRulesPreset, type DraftStyle, type GameSettings } from "@budget-draft/shared";
 import { Toggle } from "./Toggle";
 
 interface RulesPanelProps {
@@ -31,6 +31,7 @@ export function RulesPanel({ settings, categoryRoles, disabled = false, onChange
   if (rolesProblem !== null) {
     balancedDescription = rolesProblem;
   }
+  const preset = getRulesPreset(settings, rolesProblem === null);
 
   return (
     <div className="grid gap-3">
@@ -56,7 +57,23 @@ export function RulesPanel({ settings, categoryRoles, disabled = false, onChange
       </fieldset>
 
       <div className="grid gap-3">
-        <p className="text-zinc-300">Extras</p>
+        <div className="flex items-center justify-between gap-2">
+          <p className="text-zinc-300">Extras</p>
+          <div className="flex gap-1 text-xs" role="group" aria-label="Presets">
+            <PresetButton
+              label="Classic"
+              active={preset === "classic"}
+              disabled={disabled}
+              onClick={() => onChange(applyPreset(settings, "classic"))}
+            />
+            <PresetButton
+              label="🌀 Chaos"
+              active={preset === "chaos"}
+              disabled={disabled}
+              onClick={() => onChange(applyPreset(settings, "chaos"))}
+            />
+          </div>
+        </div>
         <Toggle
           label="Balanced team"
           description={balancedDescription}
@@ -72,7 +89,28 @@ export function RulesPanel({ settings, categoryRoles, disabled = false, onChange
           disabled={disabled}
           onChange={(checked) => onChange({ ...settings, mysteryItems: checked })}
         />
+        <Toggle
+          label="Power-ups"
+          description="Everyone gets Veto, Discount (Classic only) and Peek, once each per game."
+          checked={settings.powerUps}
+          disabled={disabled}
+          onChange={(checked) => onChange({ ...settings, powerUps: checked })}
+        />
       </div>
     </div>
+  );
+}
+
+function PresetButton({ label, active, disabled, onClick }: { label: string; active: boolean; disabled: boolean; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      aria-pressed={active}
+      disabled={disabled}
+      onClick={onClick}
+      className={`rounded-full border px-3 py-1 font-semibold disabled:opacity-60 ${active ? "border-emerald-400 text-emerald-300" : "border-zinc-700 text-zinc-400"}`}
+    >
+      {label}
+    </button>
   );
 }
