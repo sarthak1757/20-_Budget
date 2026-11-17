@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { applyAction, createGame, localResultSchema, type GameState } from "@budget-draft/shared";
+import { DEFAULT_SETTINGS, applyAction, createGame, localResultSchema, type GameState } from "@budget-draft/shared";
 import { buildLocalResultPayload } from "./localResults";
 
 function finishedGame(): GameState {
@@ -9,7 +9,7 @@ function finishedGame(): GameState {
   }
   let game = createGame({
     mode: "bot",
-    settings: { startingBudget: 20, slotCount: 3, turnSeconds: 0, voteSeconds: 0, categorySlug: "football" },
+    settings: { ...DEFAULT_SETTINGS, startingBudget: 20, slotCount: 3, turnSeconds: 0, voteSeconds: 0, categorySlug: "football" },
     players: [
       { id: "human-player", name: "Sam", isBot: false },
       { id: "bot-player-1", name: "RoboScout", isBot: true },

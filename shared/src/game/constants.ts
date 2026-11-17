@@ -9,6 +9,8 @@ export const MAX_PRICE = 10;
 
 export const ONLINE_TURN_SECONDS = 15;
 export const ONLINE_VOTE_SECONDS = 30;
+// Auction turns are shorter: a bid is a quick tap, and there are more turns per item.
+export const ONLINE_AUCTION_TURN_SECONDS = 7;
 
 // Voting with 2 players is pointless (each would just vote for the other),
 // so we only hold a vote with at least this many humans.
@@ -23,4 +25,8 @@ export const DEFAULT_SETTINGS: GameSettings = {
   turnSeconds: 0,
   voteSeconds: 0,
   categorySlug: "football",
+  draftStyle: "classic",
+  balancedTeam: false,
+  mysteryItems: false,
+  powerUps: false,
 };

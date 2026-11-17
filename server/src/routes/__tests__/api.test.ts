@@ -1,6 +1,6 @@
 import request from "supertest";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
-import { computeResults, createGame, type GameMode, type GameState, type Item } from "@budget-draft/shared";
+import { DEFAULT_SETTINGS, computeResults, createGame, type GameMode, type GameState, type Item } from "@budget-draft/shared";
 import { createApp } from "../../app";
 import { GameResultModel } from "../../models/GameResult";
 import { RoomStore } from "../../rooms/roomStore";
@@ -84,7 +84,7 @@ describe("GET /api/leaderboard", () => {
     const players = names.map((name) => ({ id: `${mode}-${name}`, name, isBot: false }));
     let state = createGame({
       mode,
-      settings: { startingBudget: 3, slotCount: 3, turnSeconds: 0, voteSeconds: 0, categorySlug: "t" },
+      settings: { ...DEFAULT_SETTINGS, startingBudget: 3, slotCount: 3, turnSeconds: 0, voteSeconds: 0, categorySlug: "t" },
       players,
       items,
       now: 0,

@@ -26,7 +26,18 @@ export function makePlayer(overrides: Partial<PlayerState> = {}): PlayerState {
 }
 
 export function makeSettings(overrides: Partial<GameSettings> = {}): GameSettings {
-  return { startingBudget: 20, slotCount: 3, turnSeconds: 0, voteSeconds: 30, categorySlug: "test", ...overrides };
+  return {
+    startingBudget: 20,
+    slotCount: 3,
+    turnSeconds: 0,
+    voteSeconds: 30,
+    categorySlug: "test",
+    draftStyle: "classic",
+    balancedTeam: false,
+    mysteryItems: false,
+    powerUps: false,
+    ...overrides,
+  };
 }
 
 export function makePlayers(count: number, botIds: string[] = []): NewPlayer[] {

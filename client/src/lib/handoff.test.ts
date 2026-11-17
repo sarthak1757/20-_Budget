@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { applyAction, castVote, createGame, type GameState } from "@budget-draft/shared";
+import { DEFAULT_SETTINGS, applyAction, castVote, createGame, type GameState } from "@budget-draft/shared";
 import { needsHandoff, whoNeedsDevice } from "./handoff";
 
 function makeItems(count: number) {
@@ -17,7 +17,7 @@ function newGame(playerCount: number, botIds: string[] = []): GameState {
   }
   return createGame({
     mode: botIds.length > 0 ? "bot" : "local",
-    settings: { startingBudget: 10, slotCount: 3, turnSeconds: 0, voteSeconds: 0, categorySlug: "t" },
+    settings: { ...DEFAULT_SETTINGS, startingBudget: 10, slotCount: 3, turnSeconds: 0, voteSeconds: 0, categorySlug: "t" },
     players,
     items: makeItems(20),
     now: 0,

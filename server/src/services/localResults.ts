@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import type { GameState, Item, PlayerState, localResultSchema } from "@budget-draft/shared";
+import { DEFAULT_SETTINGS, type GameState, type Item, type PlayerState, type localResultSchema } from "@budget-draft/shared";
 
 type LocalResult = z.output<typeof localResultSchema>;
 
@@ -50,6 +50,7 @@ export function localResultToState(result: LocalResult): GameState {
     mode: result.mode,
     phase: "finished",
     settings: {
+      ...DEFAULT_SETTINGS,
       startingBudget: result.startingBudget,
       slotCount: result.slotCount,
       turnSeconds: 0,

@@ -6,12 +6,20 @@ export type GameMode = "local" | "online" | "bot";
 // so a GameState only exists once the draft has started.
 export type Phase = "drafting" | "voting" | "finished";
 
+// Classic: BUY or PASS at the listed price. Auction: players bid, highest bid wins.
+export type DraftStyle = "classic" | "auction";
+
 export interface GameSettings {
   startingBudget: number; // default 20
   slotCount: number; // 3–7, default 5
   turnSeconds: number; // 0 means "no timer" (used for pass-and-play)
   voteSeconds: number; // 0 means "no timer": on one shared device people vote one after another
   categorySlug: CategorySlug;
+  draftStyle: DraftStyle;
+  // Optional extras. All off = the original game.
+  balancedTeam: boolean; // +bonus for covering every role the category defines
+  mysteryItems: boolean; // ~1 in 6 items hide their rating until the draft ends
+  powerUps: boolean; // Veto, Discount and Peek, once each per game
 }
 
 export interface PlayerState {

@@ -26,6 +26,11 @@ export const gameSettingsSchema = z
     turnSeconds: z.number().int().min(0).max(60),
     voteSeconds: z.number().int().min(0).max(120),
     categorySlug: categorySlugSchema,
+    // Defaults keep older clients (that don't send these) on the original rules.
+    draftStyle: z.enum(["classic", "auction"]).default("classic"),
+    balancedTeam: z.boolean().default(false),
+    mysteryItems: z.boolean().default(false),
+    powerUps: z.boolean().default(false),
   })
   // The budget rule needs at least $1 per slot, otherwise nobody could fill their team.
   .refine((settings) => settings.startingBudget >= settings.slotCount, {
@@ -134,7 +139,7 @@ export type RoomJoinPayload = z.infer<typeof roomJoinSchema>;
 export type TurnActionPayload = z.infer<typeof turnActionSchema>;
 export type CreateRoomPayload = z.infer<typeof createRoomSchema>;
 export type VoteCastPayload = z.infer<typeof voteCastSchema>;
-export type GameSettingsPayload = z.infer<typeof gameSettingsSchema>;
+export type GameSettingsPayload = z.input<typeof gameSettingsSchema>;
 export type SeedItem = z.infer<typeof seedItemSchema>;
 export type AdminCategoryPayload = z.infer<typeof adminCategorySchema>;
 export type AdminCategoryUpdatePayload = z.infer<typeof adminCategoryUpdateSchema>;

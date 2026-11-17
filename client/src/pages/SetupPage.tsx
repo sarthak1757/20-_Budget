@@ -85,6 +85,7 @@ export function SetupPage() {
 
   async function handleStart() {
     const settings: GameSettings = {
+      ...DEFAULT_SETTINGS,
       startingBudget: budget,
       slotCount: slots,
       turnSeconds: 0, // no timer: people are passing one phone around
