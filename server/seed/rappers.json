@@ -1,0 +1,284 @@
+{
+  "slug": "rappers",
+  "name": "Rappers",
+  "emoji": "🎤",
+  "description": "Lyricists, hitmakers, producers and desi hip-hop stars, plus a few one-hit wonders.",
+  "items": [
+    {
+      "name": "Kendrick Lamar",
+      "price": 10,
+      "rating": 97,
+      "tag": "Lyricist"
+    },
+    {
+      "name": "Tupac Shakur",
+      "price": 10,
+      "rating": 97,
+      "tag": "Legend"
+    },
+    {
+      "name": "Eminem",
+      "price": 10,
+      "rating": 96,
+      "tag": "Lyricist"
+    },
+    {
+      "name": "The Notorious B.I.G.",
+      "price": 10,
+      "rating": 96,
+      "tag": "Legend"
+    },
+    {
+      "name": "Jay-Z",
+      "price": 10,
+      "rating": 95,
+      "tag": "Legend"
+    },
+    {
+      "name": "Nas",
+      "price": 9,
+      "rating": 94,
+      "tag": "Lyricist"
+    },
+    {
+      "name": "André 3000",
+      "price": 9,
+      "rating": 93,
+      "tag": "Lyricist"
+    },
+    {
+      "name": "Lil Wayne",
+      "price": 9,
+      "rating": 92,
+      "tag": "Hitmaker"
+    },
+    {
+      "name": "MF DOOM",
+      "price": 6,
+      "rating": 92,
+      "tag": "Lyricist"
+    },
+    {
+      "name": "Drake",
+      "price": 9,
+      "rating": 91,
+      "tag": "Hitmaker"
+    },
+    {
+      "name": "Snoop Dogg",
+      "price": 9,
+      "rating": 90,
+      "tag": "Legend"
+    },
+    {
+      "name": "J. Cole",
+      "price": 8,
+      "rating": 89,
+      "tag": "Lyricist"
+    },
+    {
+      "name": "Dr. Dre",
+      "price": 8,
+      "rating": 89,
+      "tag": "Producer"
+    },
+    {
+      "name": "Lauryn Hill",
+      "price": 8,
+      "rating": 89,
+      "tag": "Legend"
+    },
+    {
+      "name": "Missy Elliott",
+      "price": 8,
+      "rating": 88,
+      "tag": "Producer"
+    },
+    {
+      "name": "Black Thought",
+      "price": 5,
+      "rating": 88,
+      "tag": "Lyricist"
+    },
+    {
+      "name": "Nicki Minaj",
+      "price": 8,
+      "rating": 87,
+      "tag": "Hitmaker"
+    },
+    {
+      "name": "Ice Cube",
+      "price": 8,
+      "rating": 86,
+      "tag": "Legend"
+    },
+    {
+      "name": "Tyler, the Creator",
+      "price": 8,
+      "rating": 86,
+      "tag": "Producer"
+    },
+    {
+      "name": "Busta Rhymes",
+      "price": 8,
+      "rating": 85,
+      "tag": "Speed Rapper"
+    },
+    {
+      "name": "Travis Scott",
+      "price": 7,
+      "rating": 84,
+      "tag": "Hitmaker"
+    },
+    {
+      "name": "50 Cent",
+      "price": 7,
+      "rating": 84,
+      "tag": "Hitmaker"
+    },
+    {
+      "name": "Cardi B",
+      "price": 7,
+      "rating": 80,
+      "tag": "Hitmaker"
+    },
+    {
+      "name": "Childish Gambino",
+      "price": 6,
+      "rating": 79,
+      "tag": "Multi-talent"
+    },
+    {
+      "name": "Divine",
+      "price": 3,
+      "rating": 78,
+      "tag": "Desi Hip-Hop"
+    },
+    {
+      "name": "Megan Thee Stallion",
+      "price": 6,
+      "rating": 77,
+      "tag": "Hitmaker"
+    },
+    {
+      "name": "Future",
+      "price": 6,
+      "rating": 76,
+      "tag": "Hitmaker"
+    },
+    {
+      "name": "Doja Cat",
+      "price": 6,
+      "rating": 76,
+      "tag": "Hitmaker"
+    },
+    {
+      "name": "Post Malone",
+      "price": 5,
+      "rating": 74,
+      "tag": "Hitmaker"
+    },
+    {
+      "name": "Big Sean",
+      "price": 5,
+      "rating": 73,
+      "tag": "Hitmaker"
+    },
+    {
+      "name": "Logic",
+      "price": 5,
+      "rating": 72,
+      "tag": "Lyricist"
+    },
+    {
+      "name": "Chance the Rapper",
+      "price": 5,
+      "rating": 71,
+      "tag": "Indie"
+    },
+    {
+      "name": "Raftaar",
+      "price": 5,
+      "rating": 70,
+      "tag": "Desi Hip-Hop"
+    },
+    {
+      "name": "Lil Uzi Vert",
+      "price": 4,
+      "rating": 68,
+      "tag": "Hitmaker"
+    },
+    {
+      "name": "Jack Harlow",
+      "price": 4,
+      "rating": 66,
+      "tag": "Newcomer"
+    },
+    {
+      "name": "Yo Yo Honey Singh",
+      "price": 4,
+      "rating": 65,
+      "tag": "Desi Hip-Hop"
+    },
+    {
+      "name": "Badshah",
+      "price": 3,
+      "rating": 64,
+      "tag": "Desi Hip-Hop"
+    },
+    {
+      "name": "Pitbull",
+      "price": 7,
+      "rating": 63,
+      "tag": "Hitmaker"
+    },
+    {
+      "name": "Macklemore",
+      "price": 3,
+      "rating": 62,
+      "tag": "Hitmaker"
+    },
+    {
+      "name": "Flo Rida",
+      "price": 2,
+      "rating": 56,
+      "tag": "Hitmaker"
+    },
+    {
+      "name": "Lil Dicky",
+      "price": 1,
+      "rating": 54,
+      "tag": "Comedian"
+    },
+    {
+      "name": "Iggy Azalea",
+      "price": 1,
+      "rating": 52,
+      "tag": "Hitmaker"
+    },
+    {
+      "name": "Soulja Boy",
+      "price": 1,
+      "rating": 50,
+      "tag": "Hitmaker"
+    },
+    {
+      "name": "Vanilla Ice",
+      "price": 5,
+      "rating": 45,
+      "tag": "One-Hit Wonder"
+    },
+    {
+      "name": "Lil Pump",
+      "price": 4,
+      "rating": 44,
+      "tag": "Newcomer"
+    },
+    {
+      "name": "Mims",
+      "price": 1,
+      "rating": 42,
+      "tag": "One-Hit Wonder"
+    }
+  ]
+}
