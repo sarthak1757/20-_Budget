@@ -1,0 +1,284 @@
+{
+  "slug": "nba",
+  "name": "NBA",
+  "emoji": "🏀",
+  "description": "Guards, wings and bigs from basketball's biggest league, legends included.",
+  "items": [
+    {
+      "name": "Michael Jordan",
+      "price": 10,
+      "rating": 99,
+      "tag": "Guard"
+    },
+    {
+      "name": "Nikola Jokić",
+      "price": 10,
+      "rating": 97,
+      "tag": "Center"
+    },
+    {
+      "name": "LeBron James",
+      "price": 10,
+      "rating": 96,
+      "tag": "Forward"
+    },
+    {
+      "name": "Kobe Bryant",
+      "price": 10,
+      "rating": 96,
+      "tag": "Guard"
+    },
+    {
+      "name": "Stephen Curry",
+      "price": 10,
+      "rating": 95,
+      "tag": "Point Guard"
+    },
+    {
+      "name": "Giannis Antetokounmpo",
+      "price": 10,
+      "rating": 95,
+      "tag": "Forward"
+    },
+    {
+      "name": "Luka Dončić",
+      "price": 9,
+      "rating": 94,
+      "tag": "Guard"
+    },
+    {
+      "name": "Kevin Durant",
+      "price": 9,
+      "rating": 93,
+      "tag": "Forward"
+    },
+    {
+      "name": "Shai Gilgeous-Alexander",
+      "price": 9,
+      "rating": 93,
+      "tag": "Guard"
+    },
+    {
+      "name": "Victor Wembanyama",
+      "price": 9,
+      "rating": 91,
+      "tag": "Center"
+    },
+    {
+      "name": "Joel Embiid",
+      "price": 8,
+      "rating": 89,
+      "tag": "Center"
+    },
+    {
+      "name": "Jayson Tatum",
+      "price": 8,
+      "rating": 89,
+      "tag": "Forward"
+    },
+    {
+      "name": "Anthony Davis",
+      "price": 8,
+      "rating": 88,
+      "tag": "Center"
+    },
+    {
+      "name": "Anthony Edwards",
+      "price": 8,
+      "rating": 88,
+      "tag": "Guard"
+    },
+    {
+      "name": "Kawhi Leonard",
+      "price": 8,
+      "rating": 86,
+      "tag": "Forward"
+    },
+    {
+      "name": "Jalen Brunson",
+      "price": 5,
+      "rating": 86,
+      "tag": "Point Guard"
+    },
+    {
+      "name": "Devin Booker",
+      "price": 8,
+      "rating": 85,
+      "tag": "Guard"
+    },
+    {
+      "name": "Donovan Mitchell",
+      "price": 8,
+      "rating": 85,
+      "tag": "Guard"
+    },
+    {
+      "name": "Jimmy Butler",
+      "price": 7,
+      "rating": 84,
+      "tag": "Forward"
+    },
+    {
+      "name": "Tyrese Haliburton",
+      "price": 7,
+      "rating": 84,
+      "tag": "Point Guard"
+    },
+    {
+      "name": "Damian Lillard",
+      "price": 7,
+      "rating": 84,
+      "tag": "Point Guard"
+    },
+    {
+      "name": "Jaylen Brown",
+      "price": 7,
+      "rating": 83,
+      "tag": "Wing"
+    },
+    {
+      "name": "Domantas Sabonis",
+      "price": 7,
+      "rating": 81,
+      "tag": "Center"
+    },
+    {
+      "name": "Bam Adebayo",
+      "price": 7,
+      "rating": 81,
+      "tag": "Center"
+    },
+    {
+      "name": "Kyrie Irving",
+      "price": 6,
+      "rating": 79,
+      "tag": "Guard"
+    },
+    {
+      "name": "Karl-Anthony Towns",
+      "price": 6,
+      "rating": 79,
+      "tag": "Center"
+    },
+    {
+      "name": "Trae Young",
+      "price": 6,
+      "rating": 78,
+      "tag": "Point Guard"
+    },
+    {
+      "name": "De'Aaron Fox",
+      "price": 6,
+      "rating": 77,
+      "tag": "Guard"
+    },
+    {
+      "name": "Paul George",
+      "price": 6,
+      "rating": 76,
+      "tag": "Forward"
+    },
+    {
+      "name": "Zion Williamson",
+      "price": 6,
+      "rating": 75,
+      "tag": "Forward"
+    },
+    {
+      "name": "Rudy Gobert",
+      "price": 6,
+      "rating": 75,
+      "tag": "Center"
+    },
+    {
+      "name": "Draymond Green",
+      "price": 2,
+      "rating": 74,
+      "tag": "Forward"
+    },
+    {
+      "name": "Chris Paul",
+      "price": 5,
+      "rating": 72,
+      "tag": "Point Guard"
+    },
+    {
+      "name": "Ja Morant",
+      "price": 4,
+      "rating": 69,
+      "tag": "Guard"
+    },
+    {
+      "name": "Klay Thompson",
+      "price": 4,
+      "rating": 68,
+      "tag": "Wing"
+    },
+    {
+      "name": "Russell Westbrook",
+      "price": 8,
+      "rating": 66,
+      "tag": "Point Guard"
+    },
+    {
+      "name": "Alex Caruso",
+      "price": 1,
+      "rating": 65,
+      "tag": "Guard"
+    },
+    {
+      "name": "Andrew Wiggins",
+      "price": 3,
+      "rating": 64,
+      "tag": "Wing"
+    },
+    {
+      "name": "Jordan Poole",
+      "price": 7,
+      "rating": 60,
+      "tag": "Guard"
+    },
+    {
+      "name": "Dillon Brooks",
+      "price": 2,
+      "rating": 55,
+      "tag": "Forward"
+    },
+    {
+      "name": "Patrick Beverley",
+      "price": 1,
+      "rating": 53,
+      "tag": "Guard"
+    },
+    {
+      "name": "Dwight Howard",
+      "price": 1,
+      "rating": 52,
+      "tag": "Center"
+    },
+    {
+      "name": "Kelly Olynyk",
+      "price": 1,
+      "rating": 50,
+      "tag": "Center"
+    },
+    {
+      "name": "Ben Simmons",
+      "price": 7,
+      "rating": 48,
+      "tag": "Guard"
+    },
+    {
+      "name": "Boban Marjanović",
+      "price": 1,
+      "rating": 46,
+      "tag": "Center"
+    },
+    {
+      "name": "Tristan Thompson",
+      "price": 1,
+      "rating": 45,
+      "tag": "Center"
+    }
+  ]
+}
