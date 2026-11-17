@@ -1,5 +1,6 @@
 import { Link, Route, Routes } from "react-router";
 import { PageShell } from "./components/ui";
+import { AdminPage } from "./pages/AdminPage";
 import { CategoryPickerPage } from "./pages/CategoryPickerPage";
 import { HomePage } from "./pages/HomePage";
 import { LocalGamePage } from "./pages/LocalGamePage";
@@ -21,6 +22,7 @@ export function App() {
       <Route path="/join/:code" element={<JoinPage />} />
       <Route path="/room/:code" element={<RoomPage />} />
       <Route path="/leaderboard" element={<LeaderboardPage />} />
+      <Route path="/admin" element={<AdminPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
