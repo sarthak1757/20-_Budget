@@ -4,6 +4,7 @@ import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
 import type { RoomStore } from "./rooms/roomStore";
 import { categoriesRouter } from "./routes/categories";
 import { leaderboardRouter } from "./routes/leaderboard";
+import { resultsRouter } from "./routes/results";
 import { roomsRouter } from "./routes/rooms";
 
 export interface AppOptions {
@@ -25,6 +26,7 @@ export function createApp(options: AppOptions): Express {
   app.use("/api/categories", categoriesRouter());
   app.use("/api/rooms", roomsRouter(options.rooms));
   app.use("/api/leaderboard", leaderboardRouter());
+  app.use("/api/results", resultsRouter());
 
   app.use(notFoundHandler);
   app.use(errorHandler);

@@ -115,3 +115,37 @@ describe("GET /api/leaderboard", () => {
     expect(await GameResultModel.countDocuments({ countsForLeaderboard: false })).toBe(1);
   });
 });
+
+describe("POST /api/results", () => {
+  const item = { name: "Item", price: 6, rating: 70, tag: "T", isBench: false };
+  const bench = { name: "Bench Player", price: 0, rating: 10, tag: "Bench", isBench: true };
+  const body = {
+    mode: "bot",
+    categorySlug: "football",
+    startingBudget: 20,
+    slotCount: 3,
+    players: [
+      { id: "human-player", name: "Sam", isBot: false, budgetLeft: 8, team: [item, item, bench] },
+      { id: "bot-player-1", name: "RoboScout", isBot: true, budgetLeft: 2, team: [item, item, item] },
+    ],
+  };
+
+  it("stores a bot game with server-computed scores, excluded from the leaderboard", async () => {
+    await GameResultModel.deleteMany({});
+    const res = await request(app).post("/api/results").send(body);
+    expect(res.status).toBe(201);
+    const saved = await GameResultModel.findOne({ mode: "bot" }).lean();
+    expect(saved?.countsForLeaderboard).toBe(false);
+    expect(saved?.statsWinnerIds).toEqual(["bot-player-1"]);
+    expect(saved?.players[1]?.total).toBe(212); // 3 x 70 + $2 left
+    expect((await request(app).get("/api/leaderboard")).body).toEqual([]);
+  });
+
+  it("rejects online mode and inconsistent budgets", async () => {
+    expect((await request(app).post("/api/results").send({ ...body, mode: "online" })).status).toBe(400);
+    const broken = structuredClone(body);
+    const first = broken.players[0];
+    if (first) first.budgetLeft = 19;
+    expect((await request(app).post("/api/results").send(broken)).status).toBe(400);
+  });
+});
