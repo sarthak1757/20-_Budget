@@ -1,6 +1,7 @@
 export * from "./types/item";
 export * from "./types/game";
 export * from "./types/socket";
+export * from "./types/api";
 export * from "./schemas";
 
 export * from "./game/constants";

@@ -48,6 +48,12 @@ export const turnActionSchema = z.object({
   roundNumber: z.number().int().min(1),
 });
 
+// ---- REST payloads ----
+
+export const createRoomSchema = z.object({
+  categorySlug: categorySlugSchema,
+});
+
 export const voteCastSchema = z.object({
   targetPlayerId: playerIdSchema,
 });
@@ -72,6 +78,7 @@ export const seedCategorySchema = z.object({
 
 export type RoomJoinPayload = z.infer<typeof roomJoinSchema>;
 export type TurnActionPayload = z.infer<typeof turnActionSchema>;
+export type CreateRoomPayload = z.infer<typeof createRoomSchema>;
 export type VoteCastPayload = z.infer<typeof voteCastSchema>;
 export type GameSettingsPayload = z.infer<typeof gameSettingsSchema>;
 export type SeedItem = z.infer<typeof seedItemSchema>;
