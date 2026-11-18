@@ -12,6 +12,7 @@ import { JoinPage } from "./pages/JoinPage";
 import { LeaderboardPage } from "./pages/LeaderboardPage";
 import { NewGamePage } from "./pages/NewGamePage";
 import { RoomPage } from "./pages/RoomPage";
+import { StyleGuidePage } from "./pages/StyleGuidePage";
 
 export function App() {
   return (
@@ -28,6 +29,7 @@ export function App() {
         <Route path="/join/:code" element={<JoinPage />} />
         <Route path="/room/:code" element={<RoomPage />} />
         <Route path="/daily" element={<DailyPage />} />
+        <Route path="/style-guide" element={<StyleGuidePage />} />
         <Route path="/leaderboard" element={<LeaderboardPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="*" element={<NotFoundPage />} />

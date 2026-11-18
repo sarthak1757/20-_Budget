@@ -4,6 +4,47 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --color-money: #4ade80;
 
+  /* ---- Luxury editorial theme (see /style-guide and lib/palette.ts) ---- */
+  --color-mocha: #6F4E37;
+  --color-mocha-dark: #4F3726;
+  --color-mocha-light: #7E5D46;
+  --color-lavender: #E6E0F0;
+  --color-lavender-deep: #B8A9D9;
+  --color-platinum: #E5E4E2;
+
+  --font-display: "Bodoni Moda", "Playfair Display", Georgia, serif;
+  --font-body: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+
+  /* Soft lavender-deep halo around the active player. */
+  --shadow-glow: 0 0 0 1px var(--color-lavender-deep), 0 0 36px -4px --alpha(var(--color-lavender-deep) / 45%);
+
+  /* animate-float (chrome shapes) and animate-urgent (timer under 5s, errors). */
+  --animate-float: float 9s ease-in-out infinite;
+  --animate-float-slow: float 13s ease-in-out infinite reverse;
+  --animate-urgent: urgent 1s ease-in-out infinite;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+    50% {
+      transform: translate3d(0, -14px, 0) rotate(4deg);
+    }
+  }
+
+  /* There's no red in the palette: urgency is lavender-deep that pulses in SIZE,
+     never in opacity, so the text keeps its contrast at every moment. */
+  @keyframes urgent {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.12);
+    }
+  }
+
   /* Used as Tailwind classes: animate-card-flip, animate-slot-fill, animate-bought, animate-toast-in */
   --animate-card-flip: card-flip 450ms cubic-bezier(0.2, 0.8, 0.2, 1);
   --animate-slot-fill: slot-fill 450ms ease-out;
@@ -60,6 +101,31 @@
 
 html {
   color-scheme: dark;
+}
+
+/* Tiny uppercase letter-spaced label: nav, tags, "SLOT 1", room code, prices, timer. */
+@utility label-caps {
+  font-family: var(--font-body);
+  font-size: 11px;
+  line-height: 1.4;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* Big italic serif for titles, item names, budgets, the winner. */
+@utility display-italic {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+}
+
+/* Small vertical side label, read bottom to top. */
+@utility side-label {
+  writing-mode: vertical-rl;
+  rotate: 180deg;
 }
 
 body {
