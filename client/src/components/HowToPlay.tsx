@@ -95,7 +95,7 @@ export function HelpButton() {
       onClick={show}
       aria-label="How to play"
       title="How to play"
-      className="size-9 rounded-full border border-zinc-700 font-bold text-zinc-300 hover:bg-zinc-800"
+      className="grid size-9 place-items-center rounded-full text-sm font-medium text-platinum ring-1 ring-platinum/60 hover:bg-mocha-light"
     >
       ?
     </button>

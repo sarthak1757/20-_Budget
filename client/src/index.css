@@ -129,12 +129,12 @@ html {
 }
 
 body {
-  @apply min-h-dvh bg-zinc-950 text-zinc-100 antialiased;
+  @apply min-h-dvh bg-mocha font-body text-platinum antialiased;
 }
 
 /* Makes keyboard focus easy to see everywhere, without showing it on mouse clicks. */
 :focus-visible {
-  @apply outline-2 outline-offset-2 outline-emerald-400;
+  @apply outline-2 outline-offset-2 outline-lavender-deep;
 }
 
 /* Respect the "reduce motion" system setting: keep the UI, drop the movement. */

@@ -1,101 +1,84 @@
 import { Link } from "react-router";
+import { HeroTitle } from "../components/brand/HeroTitle";
+import { Hairline, Label, PillLink } from "../components/brand/primitives";
 import { PageShell } from "../components/ui";
 
 interface ModeOption {
   to: string;
-  emoji: string;
   title: string;
   description: string;
-  available: boolean;
+  tag?: string; // a small highlighted label
 }
 
 const MODES: ModeOption[] = [
   {
     to: "/new/local",
-    emoji: "📱",
     title: "Pass & Play",
     description: "2–4 players on one device. Hand it over when it's someone else's turn.",
-    available: true,
   },
   {
     to: "/new/online",
-    emoji: "🌐",
     title: "Online Room",
     description: "Create a room and share the code. Everyone plays on their own phone.",
-    available: true,
   },
   {
     to: "/new/bot",
-    emoji: "🤖",
     title: "Solo vs Bots",
     description: "Draft against 1–3 bots that hunt for value.",
-    available: true,
+  },
+  {
+    to: "/daily",
+    title: "Daily Challenge",
+    description: "Same items for everyone today. One try. Share your score.",
+    tag: "Today",
   },
 ];
 
 export function HomePage() {
   return (
     <PageShell>
-      <section className="mb-8">
-        <h1 className="text-4xl font-black tracking-tight sm:text-6xl">
-          Who builds the better team with <span className="text-money">$20</span>?
-        </h1>
-        <p className="mt-3 max-w-xl text-zinc-400">
+      <section className="grid gap-8">
+        <HeroTitle />
+        <div className="flex items-center gap-4">
+          <Label className="text-lavender">Build the best team with $20</Label>
+          <Hairline className="flex-1" />
+        </div>
+        <p className="max-w-xl text-platinum">
           Items are revealed one at a time. Buy or pass. Fill every slot without running out of money.
         </p>
       </section>
 
-      <div className="grid gap-3 sm:grid-cols-3">
-        {MODES.map((mode) => {
-          const content = (
-            <>
-              <span className="text-4xl" aria-hidden>
-                {mode.emoji}
-              </span>
-              <span className="mt-3 block text-xl font-bold">{mode.title}</span>
-              <span className="mt-1 block text-sm text-zinc-400">{mode.description}</span>
-              {!mode.available && <span className="mt-3 inline-block text-xs text-zinc-500">Coming soon</span>}
-            </>
-          );
-          if (!mode.available) {
-            return (
-              <div key={mode.to} className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-5 opacity-60">
-                {content}
-              </div>
-            );
-          }
-          return (
-            <Link
-              key={mode.to}
-              to={mode.to}
-              className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5 transition hover:border-emerald-500 hover:bg-zinc-800"
-            >
-              {content}
-            </Link>
-          );
-        })}
-      </div>
+      <nav aria-label="Game modes" className="mt-14">
+        <ul>
+          {MODES.map((mode, index) => (
+            <li key={mode.to} className="border-t border-platinum/30 last:border-b">
+              <Link
+                to={mode.to}
+                className="group -mx-3 grid grid-cols-[2.5rem_1fr_auto] items-center gap-4 rounded-2xl px-3 py-6 transition hover:bg-mocha-light/40 sm:grid-cols-[4rem_1fr_auto]"
+              >
+                <Label className="text-platinum/80">{String(index + 1).padStart(2, "0")}</Label>
+                <span>
+                  <span className="display-italic block text-4xl text-lavender sm:text-6xl">
+                    {mode.title}
+                    {mode.tag !== undefined && <Label className="ml-3 align-middle text-lavender-deep">{mode.tag}</Label>}
+                  </span>
+                  <span className="mt-2 block max-w-lg text-sm text-platinum">{mode.description}</span>
+                </span>
+                <span
+                  aria-hidden
+                  className="grid size-11 place-items-center rounded-full text-platinum ring-1 ring-platinum/60 transition group-hover:bg-lavender group-hover:text-mocha group-hover:ring-lavender"
+                >
+                  →
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
-      <Link
-        to="/daily"
-        className="mt-3 flex items-center gap-4 rounded-2xl border border-amber-500/40 bg-amber-500/10 p-5 transition hover:border-amber-400"
-      >
-        <span className="text-4xl" aria-hidden>
-          📅
-        </span>
-        <span>
-          <span className="block text-xl font-bold">Daily Challenge</span>
-          <span className="block text-sm text-zinc-400">Same items for everyone today. One try. Share your score.</span>
-        </span>
-      </Link>
-
-      <div className="mt-6 flex flex-wrap gap-3">
-        <Link to="/join" className="rounded-xl bg-zinc-800 px-4 py-3 font-semibold hover:bg-zinc-700">
-          🔑 Join with a code
-        </Link>
-        <Link to="/leaderboard" className="rounded-xl bg-zinc-800 px-4 py-3 font-semibold hover:bg-zinc-700">
-          🏆 Leaderboard
-        </Link>
+      <div className="mt-10 flex flex-wrap gap-3">
+        <PillLink to="/join">Join with a code</PillLink>
+        <PillLink to="/leaderboard">Leaderboard</PillLink>
       </div>
     </PageShell>
   );

@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { ChromeBlob } from "../components/brand/ChromeBlob";
+import { HeroTitle } from "../components/brand/HeroTitle";
 import {
   ArrowButton,
   ArrowLink,
@@ -125,17 +126,7 @@ function HeroSpecimen() {
         <Label>Season 01</Label>
       </div>
       <div className="relative">
-        {/* The blob sits BEHIND the letters (z-0) and peeks out to the right, so every letter stays readable. */}
-        <ChromeBlob
-          shape="pebble"
-          className="absolute top-[4%] left-[52%] z-0 w-[44vw] max-w-80 sm:left-[50%]"
-        />
-        <h1 className="display-italic relative z-10 text-[22vw] leading-[0.8] text-lavender [text-shadow:0_4px_28px_var(--color-mocha-dark)] sm:text-[11rem]">
-          Budget
-        </h1>
-        <h1 className="display-italic relative z-10 pl-[18vw] text-[22vw] leading-[0.8] text-lavender [text-shadow:0_4px_28px_var(--color-mocha-dark)] sm:pl-56 sm:text-[11rem]">
-          Draft
-        </h1>
+        <HeroTitle />
         <SideLabel className="absolute top-0 right-0 hidden sm:block">Editorial · No. 20</SideLabel>
       </div>
       <div className="flex flex-wrap items-center justify-between gap-6">

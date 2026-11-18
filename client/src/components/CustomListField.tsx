@@ -1,4 +1,5 @@
 import { CUSTOM_MAX_ITEMS, CUSTOM_MIN_ITEMS } from "@budget-draft/shared";
+import { Label, UrgentNote } from "./brand/primitives";
 import { Card } from "./ui";
 
 const EXAMPLE = `Pizza Margherita, 4, 78, Pizza
@@ -26,12 +27,12 @@ export function CustomListField({ value, onChange, errors }: CustomListFieldProp
   const hidden = errors.length - shown.length;
 
   return (
-    <Card className="grid gap-2">
-      <label htmlFor="custom-list" className="font-bold">
-        Your items
+    <Card className="grid gap-3">
+      <label htmlFor="custom-list">
+        <Label className="text-lavender">Your items</Label>
       </label>
-      <p className="text-sm text-zinc-400">
-        One per line: <span className="font-mono">name, price, rating, tag</span>. Price $1–$10, rating 1–100.
+      <p className="text-sm text-platinum">
+        One per line: <span className="font-mono text-lavender">name, price, rating, tag</span>. Price $1–$10, rating 1–100.
         {` ${CUSTOM_MIN_ITEMS}–${CUSTOM_MAX_ITEMS}`} items. You can paste straight from a spreadsheet.
       </p>
       <textarea
@@ -41,15 +42,17 @@ export function CustomListField({ value, onChange, errors }: CustomListFieldProp
         rows={10}
         spellCheck={false}
         placeholder={EXAMPLE}
-        className="rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-2 font-mono text-sm outline-none focus:border-emerald-500"
+        className="rounded-2xl border border-platinum/40 bg-transparent px-3 py-2 font-mono text-sm text-lavender outline-none placeholder:text-platinum/50 focus:border-lavender"
       />
-      <p className="text-right text-xs text-zinc-500">{lineCount} lines</p>
+      <p className="text-right"><Label className="text-platinum/80">{lineCount} lines</Label></p>
       {shown.length > 0 && (
-        <ul role="alert" className="grid gap-1 text-sm text-rose-400">
+        <ul role="alert" className="grid gap-2">
           {shown.map((message) => (
-            <li key={message}>{message}</li>
+            <li key={message}>
+              <UrgentNote>{message}</UrgentNote>
+            </li>
           ))}
-          {hidden > 0 && <li>…and {hidden} more</li>}
+          {hidden > 0 && <li className="text-sm text-platinum">…and {hidden} more</li>}
         </ul>
       )}
     </Card>

@@ -1,3 +1,5 @@
+import { Label } from "./brand/primitives";
+
 interface ToggleProps {
   label: string;
   description: string;
@@ -9,7 +11,11 @@ interface ToggleProps {
 // An on/off switch with a short explanation underneath.
 export function Toggle({ label, description, checked, disabled = false, onChange }: ToggleProps) {
   return (
-    <label className={`flex items-start gap-3 ${disabled ? "opacity-50" : "cursor-pointer"}`}>
+    <label className={`flex items-start justify-between gap-6 ${disabled ? "opacity-50" : "cursor-pointer"}`}>
+      <span className="min-w-0">
+        <Label className="text-lavender">{label}</Label>
+        <span className="mt-1 block text-sm text-platinum">{description}</span>
+      </span>
       <input
         type="checkbox"
         role="switch"
@@ -20,13 +26,11 @@ export function Toggle({ label, description, checked, disabled = false, onChange
       />
       <span
         aria-hidden
-        className={`mt-0.5 flex h-6 w-11 shrink-0 items-center rounded-full p-0.5 transition peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-400 ${checked ? "bg-emerald-500" : "bg-zinc-700"}`}
+        className={`relative mt-0.5 h-7 w-12 shrink-0 rounded-full ring-1 transition peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-lavender-deep ${checked ? "bg-lavender ring-lavender" : "ring-platinum/60"}`}
       >
-        <span className={`size-5 rounded-full bg-white transition ${checked ? "translate-x-5" : ""}`} />
-      </span>
-      <span className="min-w-0">
-        <span className="block text-zinc-200">{label}</span>
-        <span className="block text-xs text-zinc-500">{description}</span>
+        <span
+          className={`absolute top-1 size-5 rounded-full transition-all ${checked ? "left-6 bg-mocha-dark" : "left-1 bg-platinum"}`}
+        />
       </span>
     </label>
   );

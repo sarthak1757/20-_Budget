@@ -2,17 +2,24 @@ import type { ButtonHTMLAttributes, ReactNode, Ref } from "react";
 import { Link } from "react-router";
 import { HelpButton } from "./HowToPlay";
 import { MuteButton } from "./MuteButton";
+import { Hairline, Label, PILL_CLASSES, UrgentNote, type PillVariant } from "./brand/primitives";
 
 // Small building blocks shared by every page, so buttons and cards look the same everywhere.
+// They use the editorial theme tokens (see /style-guide).
 
 type ButtonVariant = "primary" | "secondary" | "danger" | "ghost";
 
-const VARIANT_CLASSES: Record<ButtonVariant, string> = {
-  primary: "bg-emerald-500 text-zinc-950 hover:bg-emerald-400 disabled:bg-zinc-700 disabled:text-zinc-400",
-  secondary: "bg-zinc-800 text-zinc-100 hover:bg-zinc-700 disabled:text-zinc-500",
-  danger: "bg-rose-500 text-white hover:bg-rose-400 disabled:bg-zinc-700 disabled:text-zinc-400",
-  ghost: "bg-transparent text-zinc-300 hover:bg-zinc-800 disabled:text-zinc-600",
-};
+// "danger" has no red to use: it's an outlined pill with a lavender-deep ring.
+const DANGER_CLASSES =
+  "ring-1 ring-lavender-deep text-lavender hover:bg-mocha-light disabled:text-platinum/40 disabled:ring-platinum/30";
+
+function variantClasses(variant: ButtonVariant): string {
+  if (variant === "danger") {
+    return DANGER_CLASSES;
+  }
+  const pill: PillVariant = variant;
+  return PILL_CLASSES[pill];
+}
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
@@ -20,55 +27,88 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export function Button({ variant = "primary", className = "", ...rest }: ButtonProps) {
-  const classes = `rounded-xl px-4 py-3 font-semibold transition active:scale-[0.98] disabled:cursor-not-allowed disabled:active:scale-100 ${VARIANT_CLASSES[variant]} ${className}`;
+  const classes = `rounded-full px-6 py-3 font-body font-medium transition active:scale-[0.98] disabled:cursor-not-allowed disabled:active:scale-100 ${variantClasses(variant)} ${className}`;
   return <button type="button" className={classes} {...rest} />;
 }
 
 export function PageShell({ title, children, backTo }: { title?: string; children: ReactNode; backTo?: string }) {
   return (
-    <div className="mx-auto flex min-h-dvh w-full max-w-6xl flex-col px-4 pt-4 pb-10 sm:px-6">
-      <header className="mb-6 flex items-center gap-3">
-        {backTo !== undefined && (
-          <Link to={backTo} className="rounded-lg px-2 py-1 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100">
-            ← Back
+    <div className="flex min-h-dvh flex-col">
+      <header className="border-b border-platinum/30 bg-mocha-dark">
+        <div className="mx-auto flex w-full max-w-6xl items-center gap-5 px-4 py-3 sm:px-8">
+          {backTo !== undefined && (
+            <Link to={backTo} className="label-caps text-platinum hover:text-lavender">
+              ← Back
+            </Link>
+          )}
+          <Link to="/" className="display-italic text-2xl text-lavender">
+            Budget Draft
           </Link>
-        )}
-        <Link to="/" className="text-lg font-black tracking-tight">
-          💸 Budget <span className="text-money">Draft</span>
-        </Link>
-        <div className="ml-auto flex items-center gap-1">
-          <MuteButton />
-          <HelpButton />
+          <nav className="ml-auto hidden items-center gap-6 sm:flex" aria-label="Main">
+            <Link to="/" className="label-caps text-platinum hover:text-lavender">
+              Play
+            </Link>
+            <Link to="/daily" className="label-caps text-platinum hover:text-lavender">
+              Daily
+            </Link>
+            <Link to="/leaderboard" className="label-caps text-platinum hover:text-lavender">
+              Leaderboard
+            </Link>
+          </nav>
+          <div className="ml-auto flex items-center gap-2 sm:ml-0">
+            <MuteButton />
+            <HelpButton />
+          </div>
         </div>
       </header>
-      {title !== undefined && <h1 className="mb-6 text-3xl font-black tracking-tight sm:text-4xl">{title}</h1>}
-      <main className="flex-1">{children}</main>
+
+      <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 pt-8 pb-16 sm:px-8 sm:pt-12">
+        {title !== undefined && <h1 className="display-italic mb-10 text-5xl text-lavender sm:text-7xl">{title}</h1>}
+        <main className="flex-1">{children}</main>
+      </div>
+
+      <footer className="border-t border-platinum/30 bg-mocha-dark">
+        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-8">
+          <Label>Build the best team with $20</Label>
+          <Label className="text-platinum/70">No. 20</Label>
+        </div>
+      </footer>
     </div>
   );
 }
 
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <div className={`rounded-2xl border border-zinc-800 bg-zinc-900 p-4 ${className}`}>{children}</div>;
+  return <div className={`rounded-[1.75rem] border border-platinum/30 bg-mocha-dark p-5 sm:p-6 ${className}`}>{children}</div>;
 }
 
 export function Spinner({ label = "Loading…" }: { label?: string }) {
   return (
-    <div role="status" className="flex items-center justify-center gap-3 py-12 text-zinc-400">
-      <span className="size-5 animate-spin rounded-full border-2 border-zinc-600 border-t-emerald-400" />
-      {label}
+    <div role="status" className="flex items-center justify-center gap-3 py-12 text-platinum">
+      <span className="size-5 animate-spin rounded-full border border-platinum/30 border-t-lavender" />
+      <Label>{label}</Label>
     </div>
   );
 }
 
 export function ErrorBox({ message, onRetry }: { message: string; onRetry?: () => void }) {
   return (
-    <div role="alert" className="rounded-2xl border border-rose-900 bg-rose-950/50 p-4 text-rose-200">
-      <p>{message}</p>
+    <div role="alert" className="grid justify-items-start gap-4 rounded-[1.75rem] bg-mocha-dark p-5 ring-1 ring-lavender-deep">
+      <UrgentNote>{message}</UrgentNote>
       {onRetry && (
-        <Button variant="secondary" className="mt-3" onClick={onRetry}>
+        <Button variant="secondary" onClick={onRetry}>
           Try again
         </Button>
       )}
+    </div>
+  );
+}
+
+// A hairline-separated heading used inside cards ("Players", "Rules").
+export function CardTitle({ children }: { children: ReactNode }) {
+  return (
+    <div className="grid gap-3">
+      <Label className="text-lavender">{children}</Label>
+      <Hairline />
     </div>
   );
 }

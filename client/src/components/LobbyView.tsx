@@ -3,7 +3,8 @@ import { MAX_PLAYERS, MAX_SLOTS, MIN_SLOTS, type Category, type RoomSnapshot } f
 import { Avatar } from "./Avatar";
 import { RulesPanel } from "./RulesPanel";
 import { Stepper } from "./Stepper";
-import { Button, Card } from "./ui";
+import { INPUT_CLASS, Label, PillButton } from "./brand/primitives";
+import { Button, Card, CardTitle } from "./ui";
 
 interface LobbyViewProps {
   room: RoomSnapshot;
@@ -37,50 +38,50 @@ export function LobbyView({ room, playerId, categories, busy, onChangeSettings, 
 
   return (
     <div className="mx-auto grid max-w-xl gap-4">
-      <Card className="text-center">
-        <p className="text-sm text-zinc-400 uppercase">Room code</p>
-        <p className="my-2 font-mono text-5xl font-black tracking-[0.2em]">{room.code}</p>
+      <Card className="grid justify-items-center gap-4 text-center">
+        <Label>Room code</Label>
+        <p className="display-italic max-w-full text-6xl tracking-[0.08em] text-lavender sm:text-8xl sm:tracking-[0.12em]">{room.code}</p>
         <Button variant="secondary" onClick={copyLink} className="w-full">
           {copied ? "✓ Link copied" : "Copy invite link"}
         </Button>
       </Card>
 
-      <Card>
-        <h2 className="mb-3 font-bold">
+      <Card className="grid gap-5">
+        <CardTitle>
           Players ({room.players.length}/{MAX_PLAYERS})
-        </h2>
-        <ul className="grid gap-2">
+        </CardTitle>
+        <ul className="grid gap-4">
           {room.players.map((player) => (
             <li key={player.id} className="flex items-center gap-3">
               <Avatar name={player.name} />
-              <span className="font-semibold">{player.name}</span>
-              {player.id === playerId && <span className="text-sm text-zinc-500">(you)</span>}
-              {player.isHost && <span title="Host">👑</span>}
+              <span className="display-italic text-2xl text-lavender">{player.name}</span>
+              {player.id === playerId && <Label className="text-platinum/80">You</Label>}
+              {player.isHost && <Label className="text-lavender-deep">Host</Label>}
               <span
-                className={`ml-auto size-2.5 rounded-full ${player.isConnected ? "bg-emerald-400" : "bg-zinc-600"}`}
+                className={`ml-auto size-2.5 rounded-full ${player.isConnected ? "bg-lavender" : "ring-1 ring-platinum/60"}`}
                 aria-label={player.isConnected ? "online" : "offline"}
               />
             </li>
           ))}
         </ul>
-        {room.players.length < 2 && <p className="mt-3 text-sm text-zinc-500">Waiting for at least one more player…</p>}
+        {room.players.length < 2 && <p className="mt-4 text-sm text-platinum">Waiting for at least one more player…</p>}
       </Card>
 
-      <Card className="grid gap-3">
-        <h2 className="font-bold">Settings {!isHost && <span className="font-normal text-zinc-500">(host decides)</span>}</h2>
+      <Card className="grid gap-5">
+        <CardTitle>Settings{!isHost && " · host decides"}</CardTitle>
         {room.customItemCount !== null ? (
-          <p className="flex justify-between">
-            <span className="text-zinc-300">Category</span>
-            <span>✏️ Custom list ({room.customItemCount} items)</span>
+          <p className="flex items-baseline justify-between gap-4">
+            <Label>Category</Label>
+            <span className="display-italic text-2xl text-lavender">Custom list · {room.customItemCount} items</span>
           </p>
         ) : isHost ? (
           <label className="flex items-center justify-between gap-4">
-            <span className="text-zinc-300">Category</span>
+            <Label>Category</Label>
             <select
               value={settings.categorySlug}
               onChange={(event) => onChangeSettings({ ...settings, categorySlug: event.target.value })}
               disabled={busy}
-              className="rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-2"
+              className={`${INPUT_CLASS} w-auto bg-mocha-dark`}
             >
               {categories.map((c) => (
                 <option key={c.slug} value={c.slug}>
@@ -90,9 +91,11 @@ export function LobbyView({ room, playerId, categories, busy, onChangeSettings, 
             </select>
           </label>
         ) : (
-          <p className="flex justify-between">
-            <span className="text-zinc-300">Category</span>
-            <span>{category ? `${category.emoji} ${category.name}` : settings.categorySlug}</span>
+          <p className="flex items-baseline justify-between gap-4">
+            <Label>Category</Label>
+            <span className="display-italic text-2xl text-lavender">
+              {category ? `${category.emoji} ${category.name}` : settings.categorySlug}
+            </span>
           </p>
         )}
         <Stepper
@@ -118,17 +121,19 @@ export function LobbyView({ room, playerId, categories, busy, onChangeSettings, 
           disabled={!isHost || busy}
           onChange={onChangeSettings}
         />
-        <p className="text-sm text-zinc-500">
+        <p className="text-sm text-platinum">
           {settings.turnSeconds}s per {settings.draftStyle === "auction" ? "bid" : "turn"}. If time runs out, you pass.
         </p>
       </Card>
 
       {isHost ? (
-        <Button className="py-4 text-lg" disabled={busy || connectedCount < 2} onClick={onStart}>
+        <PillButton className="py-4 text-lg" disabled={busy || connectedCount < 2} onClick={onStart}>
           Start game
-        </Button>
+        </PillButton>
       ) : (
-        <p className="text-center text-zinc-400">Waiting for the host to start…</p>
+        <p className="text-center">
+          <Label>Waiting for the host to start…</Label>
+        </p>
       )}
       <Button variant="ghost" onClick={onLeave}>
         Leave room

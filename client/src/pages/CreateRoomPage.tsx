@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { useNavigate, useParams } from "react-router";
 import { CUSTOM_CATEGORY_SLUG, parseCustomItems, playerNameSchema, type CreateRoomResponse } from "@budget-draft/shared";
 import { CustomListField } from "../components/CustomListField";
+import { UrgentNote } from "../components/brand/primitives";
 import { NameField } from "../components/NameField";
 import { Button, Card, PageShell } from "../components/ui";
 import { apiRequest } from "../lib/api";
@@ -49,15 +50,15 @@ export function CreateRoomPage() {
 
   return (
     <PageShell title={isCustom ? "Create a room with your own list" : "Create a room"} backTo="/new/online">
-      <form onSubmit={handleSubmit} className="mx-auto grid max-w-md gap-4">
+      <form onSubmit={handleSubmit} className="grid max-w-md gap-4">
         <Card className="grid gap-4">
           <NameField value={name} onChange={setName} />
-          <p className="text-sm text-zinc-500">You'll get a 6-letter code to share. You can change the rules in the lobby.</p>
+          <p className="text-sm text-platinum">You'll get a 6-letter code to share. You can change the rules in the lobby.</p>
         </Card>
         {isCustom && <CustomListField value={customText} onChange={setCustomText} errors={listErrors} />}
         {error && (
-          <p role="alert" className="text-rose-400">
-            {error}
+          <p role="alert">
+            <UrgentNote>{error}</UrgentNote>
           </p>
         )}
         <Button type="submit" disabled={creating} className="py-4 text-lg">

@@ -12,7 +12,8 @@ import {
 import { DifficultyPicker } from "../components/DifficultyPicker";
 import { RulesPanel } from "../components/RulesPanel";
 import { Stepper } from "../components/Stepper";
-import { Button, Card, ErrorBox, PageShell, Spinner } from "../components/ui";
+import { INPUT_CLASS, Label, PillButton, UrgentNote } from "../components/brand/primitives";
+import { Button, Card, CardTitle, ErrorBox, PageShell, Spinner } from "../components/ui";
 import { fetchCategories, fetchCategoryItems } from "../lib/categories";
 import { parseMode } from "../lib/modes";
 import { getStoredName, storeName } from "../lib/playerStorage";
@@ -132,21 +133,22 @@ export function SetupPage() {
       {categories.status === "loading" && <Spinner />}
       {categories.status === "error" && <ErrorBox message={categories.message} onRetry={categories.retry} />}
       {categories.status === "ready" && (
-        <div className="mx-auto grid max-w-xl gap-4">
-          <p className="text-zinc-400">
-            Category: <span className="font-semibold text-zinc-100">{categoryName}</span>
-          </p>
+        <div className="grid max-w-xl gap-4">
+          <div className="grid gap-1">
+            <Label>Category</Label>
+            <p className="display-italic text-4xl text-lavender sm:text-5xl">{categoryName}</p>
+          </div>
 
           {isBotMode && (
             <Card className="grid gap-4">
-              <label className="grid gap-1">
-                <span className="text-sm text-zinc-400">Your name</span>
+              <label className="grid gap-2">
+                <Label>Your name</Label>
                 <input
                   value={names[0] ?? ""}
                   onChange={(event) => updateName(0, event.target.value)}
                   maxLength={20}
                   aria-label="Player 1 name"
-                  className="rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-3 outline-none focus:border-emerald-500"
+                  className={INPUT_CLASS}
                 />
               </label>
               <Stepper label="Bots" value={botCount} min={1} max={MAX_BOTS} onChange={setBotCount} />
@@ -158,9 +160,9 @@ export function SetupPage() {
           )}
 
           {!isBotMode && (
-            <Card>
-              <h2 className="mb-3 font-bold">Players</h2>
-              <div className="grid gap-2">
+            <Card className="grid gap-5">
+              <CardTitle>Players</CardTitle>
+              <div className="grid gap-4">
                 {names.map((name, index) => (
                   <div key={index} className="flex gap-2">
                     <input
@@ -169,7 +171,7 @@ export function SetupPage() {
                       placeholder={`Player ${index + 1}`}
                       maxLength={20}
                       aria-label={`Player ${index + 1} name`}
-                      className="min-w-0 flex-1 rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-3 outline-none focus:border-emerald-500"
+                      className={`${INPUT_CLASS} min-w-0 flex-1`}
                     />
                     {names.length > MIN_PLAYERS && (
                       <Button
@@ -177,25 +179,25 @@ export function SetupPage() {
                         onClick={() => removePlayer(index)}
                         aria-label={`Remove player ${index + 1}`}
                       >
-                        ✕
+                        ×
                       </Button>
                     )}
                   </div>
                 ))}
               </div>
               {names.length < MAX_PLAYERS && (
-                <Button variant="secondary" className="mt-3 w-full" onClick={addPlayer}>
+                <Button variant="secondary" className="w-full" onClick={addPlayer}>
                   + Add player
                 </Button>
               )}
             </Card>
           )}
 
-          <Card className="grid gap-3">
-            <h2 className="font-bold">Rules</h2>
+          <Card className="grid gap-5">
+            <CardTitle>Rules</CardTitle>
             <Stepper label="Budget" value={budget} min={5} max={50} format={(v) => `$${v}`} onChange={setBudget} />
             <Stepper label="Slots" value={slots} min={MIN_SLOTS} max={MAX_SLOTS} onChange={setSlots} />
-            <p className="text-sm text-zinc-500">
+            <p className="text-sm text-platinum">
               You must always keep at least $1 for each empty slot, so you can't blow it all on one pick.
             </p>
             <RulesPanel
@@ -206,18 +208,16 @@ export function SetupPage() {
           </Card>
 
           {problems.length > 0 && (
-            <div role="alert" className="rounded-2xl border border-rose-900 bg-rose-950/50 p-4 text-rose-200">
-              <ul className="list-inside list-disc">
-                {problems.map((problem) => (
-                  <li key={problem}>{problem}</li>
-                ))}
-              </ul>
+            <div role="alert" className="grid gap-2 rounded-[1.75rem] bg-mocha-dark p-5 ring-1 ring-lavender-deep">
+              {problems.map((problem) => (
+                <UrgentNote key={problem}>{problem}</UrgentNote>
+              ))}
             </div>
           )}
 
-          <Button onClick={handleStart} disabled={starting} className="py-4 text-lg">
+          <PillButton onClick={handleStart} disabled={starting} className="py-4 text-lg">
             {starting ? "Starting…" : "Start draft"}
-          </Button>
+          </PillButton>
         </div>
       )}
     </PageShell>

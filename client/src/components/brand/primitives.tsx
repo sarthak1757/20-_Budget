@@ -29,7 +29,7 @@ export function Hairline({ className = "" }: { className?: string }) {
 
 export type PillVariant = "primary" | "secondary" | "ghost";
 
-const PILL_CLASSES: Record<PillVariant, string> = {
+export const PILL_CLASSES: Record<PillVariant, string> = {
   // lavender fill + mocha text (5.77:1), platinum on hover (5.86:1).
   primary:
     "bg-lavender text-mocha hover:bg-platinum disabled:bg-transparent disabled:text-platinum/50 disabled:ring-1 disabled:ring-platinum/30",
@@ -47,6 +47,32 @@ export function PillButton({ variant = "primary", className = "", ...rest }: Pil
   const classes = `inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-body font-medium transition active:scale-[0.98] disabled:cursor-not-allowed disabled:active:scale-100 ${PILL_CLASSES[variant]} ${className}`;
   return <button type="button" className={classes} {...rest} />;
 }
+
+// A link that looks like a pill button.
+export function PillLink({
+  to,
+  variant = "secondary",
+  children,
+  className = "",
+}: {
+  to: string;
+  variant?: PillVariant;
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <Link
+      to={to}
+      className={`inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-body font-medium transition active:scale-[0.98] ${PILL_CLASSES[variant]} ${className}`}
+    >
+      {children}
+    </Link>
+  );
+}
+
+// Text fields are just a hairline underline under lavender text.
+export const INPUT_CLASS =
+  "w-full border-b border-platinum/60 bg-transparent py-2 font-body text-lg text-lavender outline-none placeholder:text-platinum/50 focus:border-lavender disabled:opacity-50";
 
 // "→ EXPLORE": an arrow in a thin circle next to a small uppercase label.
 function ArrowContent({ children }: { children: ReactNode }) {

@@ -1,3 +1,5 @@
+import { Label } from "./brand/primitives";
+
 interface StepperProps {
   label: string;
   value: number;
@@ -13,12 +15,12 @@ interface StepperProps {
 export function Stepper({ label, value, min, max, step = 1, format, onChange, disabled = false }: StepperProps) {
   const shown = format ? format(value) : String(value);
   const buttonClass =
-    "size-11 rounded-xl bg-zinc-800 text-xl font-bold hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-40";
+    "grid size-11 place-items-center rounded-full text-xl text-platinum ring-1 ring-platinum/60 transition hover:bg-mocha-light disabled:cursor-not-allowed disabled:opacity-40";
 
   return (
     <div className="flex items-center justify-between gap-4">
-      <span className="text-zinc-300">{label}</span>
-      <div className="flex items-center gap-2">
+      <Label>{label}</Label>
+      <div className="flex items-center gap-3">
         <button
           type="button"
           className={buttonClass}
@@ -28,7 +30,7 @@ export function Stepper({ label, value, min, max, step = 1, format, onChange, di
         >
           −
         </button>
-        <span className="w-14 text-center text-xl font-bold tabular-nums" aria-live="polite">
+        <span className="display-italic w-16 text-center text-4xl text-lavender tabular-nums" aria-live="polite">
           {shown}
         </span>
         <button

@@ -1,4 +1,5 @@
 import { applyPreset, BALANCED_TEAM_BONUS, getRulesPreset, type DraftStyle, type GameSettings } from "@budget-draft/shared";
+import { Label } from "./brand/primitives";
 import { Toggle } from "./Toggle";
 
 interface RulesPanelProps {
@@ -34,9 +35,11 @@ export function RulesPanel({ settings, categoryRoles, disabled = false, onChange
   const preset = getRulesPreset(settings, rolesProblem === null);
 
   return (
-    <div className="grid gap-3">
-      <fieldset className="grid gap-2" disabled={disabled}>
-        <legend className="mb-2 text-zinc-300">Draft style</legend>
+    <div className="grid gap-6">
+      <fieldset className="grid gap-3" disabled={disabled}>
+        <legend className="mb-3">
+          <Label>Draft style</Label>
+        </legend>
         <div className="grid grid-cols-2 gap-2">
           {DRAFT_STYLES.map((style) => {
             const selected = settings.draftStyle === style.value;
@@ -46,20 +49,20 @@ export function RulesPanel({ settings, categoryRoles, disabled = false, onChange
                 type="button"
                 aria-pressed={selected}
                 onClick={() => onChange({ ...settings, draftStyle: style.value })}
-                className={`rounded-xl border-2 p-3 text-left transition disabled:opacity-60 ${selected ? "border-emerald-400 bg-emerald-950/40" : "border-zinc-800 bg-zinc-950"}`}
+                className={`rounded-[1.25rem] p-4 text-left transition disabled:opacity-60 ${selected ? "bg-mocha shadow-glow" : "ring-1 ring-platinum/30 hover:bg-mocha-light"}`}
               >
-                <span className="block font-bold">{style.label}</span>
-                <span className="block text-xs text-zinc-400">{style.description}</span>
+                <span className="display-italic block text-3xl text-lavender">{style.label}</span>
+                <span className="mt-1 block text-sm text-platinum">{style.description}</span>
               </button>
             );
           })}
         </div>
       </fieldset>
 
-      <div className="grid gap-3">
+      <div className="grid gap-5">
         <div className="flex items-center justify-between gap-2">
-          <p className="text-zinc-300">Extras</p>
-          <div className="flex gap-1 text-xs" role="group" aria-label="Presets">
+          <Label>Extras</Label>
+          <div className="flex gap-2" role="group" aria-label="Presets">
             <PresetButton
               label="Classic"
               active={preset === "classic"}
@@ -67,7 +70,7 @@ export function RulesPanel({ settings, categoryRoles, disabled = false, onChange
               onClick={() => onChange(applyPreset(settings, "classic"))}
             />
             <PresetButton
-              label="🌀 Chaos"
+              label="Chaos"
               active={preset === "chaos"}
               disabled={disabled}
               onClick={() => onChange(applyPreset(settings, "chaos"))}
@@ -108,7 +111,7 @@ function PresetButton({ label, active, disabled, onClick }: { label: string; act
       aria-pressed={active}
       disabled={disabled}
       onClick={onClick}
-      className={`rounded-full border px-3 py-1 font-semibold disabled:opacity-60 ${active ? "border-emerald-400 text-emerald-300" : "border-zinc-700 text-zinc-400"}`}
+      className={`label-caps rounded-full px-3 py-1.5 ring-1 transition disabled:opacity-60 ${active ? "bg-lavender text-mocha ring-lavender" : "text-platinum ring-platinum/50 hover:bg-mocha-light"}`}
     >
       {label}
     </button>

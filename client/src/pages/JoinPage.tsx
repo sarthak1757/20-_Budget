@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate, useParams } from "react-router";
 import { playerNameSchema, roomCodeSchema, type RoomInfo } from "@budget-draft/shared";
+import { INPUT_CLASS, Label, UrgentNote } from "../components/brand/primitives";
 import { NameField } from "../components/NameField";
 import { Button, Card, PageShell } from "../components/ui";
 import { apiRequest } from "../lib/api";
@@ -48,10 +49,10 @@ export function JoinPage() {
 
   return (
     <PageShell title="Join a room" backTo="/">
-      <form onSubmit={handleSubmit} className="mx-auto grid max-w-md gap-4">
+      <form onSubmit={handleSubmit} className="grid max-w-md gap-4">
         <Card className="grid gap-4">
-          <label className="grid gap-1">
-            <span className="text-sm text-zinc-400">Room code</span>
+          <label className="grid gap-2">
+            <Label>Room code</Label>
             <input
               value={code}
               onChange={(event) => setCode(event.target.value.toUpperCase())}
@@ -59,14 +60,14 @@ export function JoinPage() {
               autoCapitalize="characters"
               autoComplete="off"
               placeholder="ABC123"
-              className="rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-3 font-mono text-2xl tracking-[0.3em] uppercase outline-none focus:border-emerald-500"
+              className={`${INPUT_CLASS} display-italic text-5xl tracking-[0.2em] uppercase`}
             />
           </label>
           <NameField value={name} onChange={setName} />
         </Card>
         {error && (
-          <p role="alert" className="text-rose-400">
-            {error}
+          <p role="alert">
+            <UrgentNote>{error}</UrgentNote>
           </p>
         )}
         <Button type="submit" disabled={checking} className="py-4 text-lg">

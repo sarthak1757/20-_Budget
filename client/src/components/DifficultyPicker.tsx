@@ -1,4 +1,5 @@
 import type { BotDifficulty } from "@budget-draft/shared";
+import { Label } from "./brand/primitives";
 
 const LEVELS: { value: BotDifficulty; label: string; description: string }[] = [
   { value: "easy", label: "Easy", description: "Grabs good value. Never pays for stars." },
@@ -14,8 +15,10 @@ interface DifficultyPickerProps {
 export function DifficultyPicker({ value, onChange }: DifficultyPickerProps) {
   const selected = LEVELS.find((level) => level.value === value);
   return (
-    <fieldset className="grid gap-2">
-      <legend className="mb-2 text-zinc-300">Bot difficulty</legend>
+    <fieldset className="grid gap-3">
+      <legend className="mb-3">
+        <Label>Bot difficulty</Label>
+      </legend>
       <div className="grid grid-cols-3 gap-2">
         {LEVELS.map((level) => (
           <button
@@ -23,13 +26,13 @@ export function DifficultyPicker({ value, onChange }: DifficultyPickerProps) {
             type="button"
             aria-pressed={level.value === value}
             onClick={() => onChange(level.value)}
-            className={`rounded-xl border-2 py-2 font-bold transition ${level.value === value ? "border-emerald-400 bg-emerald-950/40" : "border-zinc-800 bg-zinc-950"}`}
+            className={`display-italic rounded-[1.25rem] py-3 text-2xl text-lavender transition ${level.value === value ? "bg-mocha shadow-glow" : "ring-1 ring-platinum/30 hover:bg-mocha-light"}`}
           >
             {level.label}
           </button>
         ))}
       </div>
-      <p className="text-sm text-zinc-500">{selected ? selected.description : ""}</p>
+      <p className="text-sm text-platinum">{selected ? selected.description : ""}</p>
     </fieldset>
   );
 }
