@@ -1,4 +1,4 @@
-// A hairline circle with an emoji or the name's initials in italic serif.
+// A hairline circle with an emoji or the name's initials in serif.
 // We never use real photos or logos, so this is how items and players get a face.
 
 export function getInitials(name: string): string {
@@ -15,7 +15,7 @@ const SIZES = {
 };
 
 export function Avatar({ name, emoji, size = "md" }: { name: string; emoji?: string | undefined; size?: keyof typeof SIZES }) {
-  const base = `inline-grid shrink-0 place-items-center rounded-full ring-1 ring-platinum/60 text-lavender ${SIZES[size]}`;
+  const base = `inline-grid shrink-0 place-items-center rounded-full ring-1 ring-mist/60 text-ivory ${SIZES[size]}`;
   if (emoji) {
     return (
       <span className={base} aria-hidden>
@@ -24,7 +24,7 @@ export function Avatar({ name, emoji, size = "md" }: { name: string; emoji?: str
     );
   }
   return (
-    <span className={`${base} display-italic`} aria-hidden>
+    <span className={`${base} display-serif`} aria-hidden>
       {getInitials(name)}
     </span>
   );

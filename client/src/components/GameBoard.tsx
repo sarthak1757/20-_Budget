@@ -150,7 +150,7 @@ export function GameBoard({
           onUse={handlePowerUp}
         />
         {isPeekVisible(peeked, state.roundNumber, currentId) && <PeekCard peeked={peeked} />}
-        <ul className="min-h-10 text-center text-sm text-platinum" aria-live="polite">
+        <ul className="min-h-10 text-center text-sm text-mist" aria-live="polite">
           {state.lastEvents.map((event, index) => (
             <li key={index}>{describeEvent(event, state.players)}</li>
           ))}
@@ -166,13 +166,13 @@ export function GameBoard({
 function PeekCard({ peeked }: { peeked: PeekedItem }) {
   const item = peeked.item;
   return (
-    <div className="grid gap-1 rounded-[1.25rem] bg-mocha-dark p-4 ring-1 ring-lavender-deep" aria-live="polite">
-      <Label className="flex items-center gap-2 text-lavender-deep">
+    <div className="grid gap-1 rounded-[1.25rem] bg-ink-raised p-4 ring-1 ring-gold" aria-live="polite">
+      <Label className="flex items-center gap-2 text-gold">
         <Eye size={14} strokeWidth={ICON_STROKE} aria-hidden />
         Next up · only you can see this
       </Label>
-      <p className="display-italic text-3xl text-lavender">{item.name}</p>
-      <Label className="text-platinum">
+      <p className="display-serif text-3xl text-ivory">{item.name}</p>
+      <Label className="text-mist">
         {item.tag} · ${item.price} · rating {item.rating === null ? "hidden" : item.rating}
       </Label>
     </div>

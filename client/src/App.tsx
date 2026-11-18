@@ -42,7 +42,7 @@ export function App() {
 function NotFoundPage() {
   return (
     <PageShell title="Page not found">
-      <p className="mb-6 text-platinum">That page doesn't exist.</p>
+      <p className="mb-6 text-mist">That page doesn't exist.</p>
       <ArrowLink to="/">Go home</ArrowLink>
     </PageShell>
   );

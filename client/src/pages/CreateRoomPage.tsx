@@ -53,7 +53,7 @@ export function CreateRoomPage() {
       <form onSubmit={handleSubmit} className="grid max-w-md gap-4">
         <Card className="grid gap-4">
           <NameField value={name} onChange={setName} />
-          <p className="text-sm text-platinum">You'll get a 6-letter code to share. You can change the rules in the lobby.</p>
+          <p className="text-sm text-mist">You'll get a 6-letter code to share. You can change the rules in the lobby.</p>
         </Card>
         {isCustom && <CustomListField value={customText} onChange={setCustomText} errors={listErrors} />}
         {error && (

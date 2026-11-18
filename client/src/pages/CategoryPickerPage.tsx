@@ -7,13 +7,13 @@ import { parseMode } from "../lib/modes";
 import { useAsync } from "../lib/useAsync";
 
 const CARD_CLASS =
-  "group grid min-h-56 content-between gap-8 rounded-[1.75rem] border p-6 transition hover:bg-mocha-light/40 hover:shadow-glow";
+  "group grid min-h-56 content-between gap-8 rounded-[1.75rem] border p-6 transition hover:bg-ink-hover/40 hover:shadow-glow";
 
 function ArrowCircle() {
   return (
     <span
       aria-hidden
-      className="grid size-10 place-items-center rounded-full text-platinum ring-1 ring-platinum/60 transition group-hover:bg-lavender group-hover:text-mocha group-hover:ring-lavender"
+      className="grid size-10 place-items-center rounded-full text-mist ring-1 ring-mist/60 transition group-hover:bg-ivory group-hover:text-ink group-hover:ring-ivory"
     >
       →
     </span>
@@ -33,8 +33,8 @@ export function CategoryPickerPage() {
       {categories.status === "loading" && <Spinner label="Loading categories…" />}
       {categories.status === "error" && <ErrorBox message={categories.message} onRetry={categories.retry} />}
       {categories.status === "ready" && categories.data.length === 0 && (
-        <p className="text-platinum">
-          No categories yet. Run <code className="font-mono text-lavender">npm run seed</code> or add one in the admin page.
+        <p className="text-mist">
+          No categories yet. Run <code className="font-mono text-ivory">npm run seed</code> or add one in the admin page.
         </p>
       )}
       {categories.status === "ready" && (
@@ -43,18 +43,18 @@ export function CategoryPickerPage() {
             <Link
               key={category.slug}
               to={`/new/${mode}/${category.slug}`}
-              className={`${CARD_CLASS} border-platinum/30 bg-mocha-dark hover:border-lavender-deep`}
+              className={`${CARD_CLASS} border-mist/15 bg-ink-raised hover:border-gold`}
             >
               <span className="flex items-start justify-between">
-                <Label className="text-platinum/80">{String(index + 1).padStart(2, "0")}</Label>
+                <Label className="text-mist/80">{String(index + 1).padStart(2, "0")}</Label>
                 {/* The category's own emoji is part of its data (set in the admin page). */}
                 <span className="text-3xl" aria-hidden>
                   {category.emoji}
                 </span>
               </span>
               <span className="grid gap-2">
-                <span className="display-italic text-4xl text-lavender">{category.name}</span>
-                <span className="text-sm text-platinum">{category.description}</span>
+                <span className="display-serif text-4xl text-ivory">{category.name}</span>
+                <span className="text-sm text-mist">{category.description}</span>
               </span>
               <span className="flex items-center justify-between">
                 <Label>{category.itemCount} items</Label>
@@ -65,12 +65,12 @@ export function CategoryPickerPage() {
           {mode === "online" && (
             <Link
               to={`/new/online/${CUSTOM_CATEGORY_SLUG}`}
-              className={`${CARD_CLASS} border-dashed border-platinum/50 hover:border-lavender-deep`}
+              className={`${CARD_CLASS} border-dashed border-mist/50 hover:border-gold`}
             >
-              <Label className="text-lavender-deep">Custom</Label>
+              <Label className="text-gold">Custom</Label>
               <span className="grid gap-2">
-                <span className="display-italic text-4xl text-lavender">Your own list</span>
-                <span className="text-sm text-platinum">Paste 20–150 items. Used for this room only, never saved.</span>
+                <span className="display-serif text-4xl text-ivory">Your own list</span>
+                <span className="text-sm text-mist">Paste 20–150 items. Used for this room only, never saved.</span>
               </span>
               <span className="flex items-center justify-between">
                 <Label>20–150 items</Label>

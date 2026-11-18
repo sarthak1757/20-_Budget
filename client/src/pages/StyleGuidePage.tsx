@@ -22,17 +22,17 @@ import { contrastGrade, contrastRatio, PAIRINGS, PALETTE, type PaletteName } fro
 
 // Literal class names so Tailwind generates them.
 const SWATCHES: { name: PaletteName; className: string; role: string }[] = [
-  { name: "mocha", className: "bg-mocha", role: "Page background" },
-  { name: "mocha-dark", className: "bg-mocha-dark", role: "Cards, slots, header and footer bars" },
-  { name: "mocha-light", className: "bg-mocha-light", role: "Hover surfaces, dividers" },
-  { name: "lavender", className: "bg-lavender", role: "Headlines, primary text, primary button" },
-  { name: "lavender-deep", className: "bg-lavender-deep", role: "Active player, current turn, urgency" },
-  { name: "platinum", className: "bg-platinum", role: "Body text, borders, secondary buttons, bars" },
+  { name: "ink", className: "bg-ink", role: "Page background (midnight black)" },
+  { name: "ink-raised", className: "bg-ink-raised", role: "Cards, slots, header and footer bars" },
+  { name: "ink-hover", className: "bg-ink-hover", role: "Hover surfaces" },
+  { name: "ivory", className: "bg-ivory", role: "Headlines, primary text" },
+  { name: "gold", className: "bg-gold", role: "Accent: buttons, price, active player, urgency" },
+  { name: "mist", className: "bg-mist", role: "Body text, borders, rating bars" },
 ];
 
 export function StyleGuidePage() {
   return (
-    <div className="min-h-dvh bg-mocha font-body text-platinum">
+    <div className="min-h-dvh bg-ink font-body text-mist">
       <TopNav />
       <main className="mx-auto grid max-w-6xl gap-20 px-5 pt-10 pb-24 sm:px-8">
         <HeroSpecimen />
@@ -75,9 +75,9 @@ export function StyleGuidePage() {
 
 function TopNav() {
   return (
-    <header className="border-b border-platinum/30 bg-mocha-dark">
+    <header className="border-b border-mist/15 bg-ink-raised">
       <div className="mx-auto flex max-w-6xl items-center gap-6 px-5 py-4 sm:px-8">
-        <span className="display-italic text-2xl text-lavender">Budget Draft</span>
+        <span className="display-serif text-2xl text-ivory">Budget Draft</span>
         <nav className="ml-auto hidden items-center gap-6 sm:flex" aria-label="Main">
           <Label>Play</Label>
           <Label>Daily</Label>
@@ -101,7 +101,7 @@ function IconCircle({ children, label }: { children: ReactNode; label: string })
     <button
       type="button"
       aria-label={label}
-      className="grid size-9 place-items-center rounded-full text-sm text-platinum ring-1 ring-platinum/60 hover:bg-mocha-light"
+      className="grid size-9 place-items-center rounded-full text-sm text-mist ring-1 ring-mist/60 hover:bg-ink-hover"
     >
       {children}
     </button>
@@ -112,8 +112,8 @@ function Section({ number, title, children }: { number: string; title: string; c
   return (
     <section className="grid gap-8">
       <div className="flex items-end gap-4">
-        <Label className="text-platinum/80">{number}</Label>
-        <h2 className="display-italic text-5xl text-lavender sm:text-6xl">{title}</h2>
+        <Label className="text-mist/80">{number}</Label>
+        <h2 className="display-serif text-5xl text-ivory sm:text-6xl">{title}</h2>
       </div>
       <Hairline />
       {children}
@@ -136,7 +136,7 @@ function HeroSpecimen() {
         <SideLabel className="absolute top-0 right-0 hidden sm:block">Editorial · No. 20</SideLabel>
       </div>
       <div className="flex flex-wrap items-center justify-between gap-6">
-        <Label className="text-lavender">Build the best team with $20</Label>
+        <Label className="text-ivory">Build the best team with $20</Label>
         <ArrowLink to="/style-guide">Explore</ArrowLink>
       </div>
     </section>
@@ -151,11 +151,11 @@ function ColourSection() {
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
         {SWATCHES.map((swatch) => (
           <figure key={swatch.name} className="grid min-w-0 content-start gap-3">
-            <div className={`aspect-square rounded-[1.5rem] ring-1 ring-platinum/30 ${swatch.className}`} />
+            <div className={`aspect-square rounded-[1.5rem] ring-1 ring-mist/15 ${swatch.className}`} />
             <figcaption className="grid gap-1">
-              <Label className="text-lavender">{swatch.name}</Label>
-              <span className="font-mono text-xs text-platinum">{PALETTE[swatch.name]}</span>
-              <span className="text-sm text-platinum">{swatch.role}</span>
+              <Label className="text-ivory">{swatch.name}</Label>
+              <span className="font-mono text-xs text-mist">{PALETTE[swatch.name]}</span>
+              <span className="text-sm text-mist">{swatch.role}</span>
             </figcaption>
           </figure>
         ))}
@@ -167,7 +167,7 @@ function ColourSection() {
             <Label>WCAG contrast, measured</Label>
           </caption>
           <thead>
-            <tr className="border-b border-platinum/30">
+            <tr className="border-b border-mist/15">
               <th className="px-6 py-3 font-normal"><Label>Sample</Label></th>
               <th className="px-3 py-3 font-normal"><Label>Text on background</Label></th>
               <th className="px-3 py-3 font-normal"><Label>Ratio</Label></th>
@@ -179,16 +179,16 @@ function ColourSection() {
             {PAIRINGS.map((pairing) => {
               const ratio = contrastRatio(pairing.foreground, pairing.background);
               return (
-                <tr key={`${pairing.foreground}-${pairing.background}`} className="border-b border-platinum/15 last:border-0">
+                <tr key={`${pairing.foreground}-${pairing.background}`} className="border-b border-mist/15 last:border-0">
                   <td className="px-6 py-3">
                     <ContrastSample foreground={pairing.foreground} background={pairing.background} />
                   </td>
-                  <td className="px-3 py-3 text-platinum">
+                  <td className="px-3 py-3 text-mist">
                     {pairing.foreground} on {pairing.background}
                   </td>
-                  <td className="px-3 py-3 font-mono text-lavender">{ratio.toFixed(2)}:1</td>
-                  <td className="px-3 py-3 text-lavender">{contrastGrade(ratio)}</td>
-                  <td className="px-6 py-3 text-platinum">{pairing.use}</td>
+                  <td className="px-3 py-3 font-mono text-ivory">{ratio.toFixed(2)}:1</td>
+                  <td className="px-3 py-3 text-ivory">{contrastGrade(ratio)}</td>
+                  <td className="px-6 py-3 text-mist">{pairing.use}</td>
                 </tr>
               );
             })}
@@ -201,26 +201,26 @@ function ColourSection() {
 
 // Literal class pairs for Tailwind.
 const TEXT_CLASS: Record<PaletteName, string> = {
-  mocha: "text-mocha",
-  "mocha-dark": "text-mocha-dark",
-  "mocha-light": "text-mocha-light",
-  lavender: "text-lavender",
-  "lavender-deep": "text-lavender-deep",
-  platinum: "text-platinum",
+  ink: "text-ink",
+  "ink-raised": "text-ink-raised",
+  "ink-hover": "text-ink-hover",
+  ivory: "text-ivory",
+  "gold": "text-gold",
+  mist: "text-mist",
 };
 const BG_CLASS: Record<PaletteName, string> = {
-  mocha: "bg-mocha",
-  "mocha-dark": "bg-mocha-dark",
-  "mocha-light": "bg-mocha-light",
-  lavender: "bg-lavender",
-  "lavender-deep": "bg-lavender-deep",
-  platinum: "bg-platinum",
+  ink: "bg-ink",
+  "ink-raised": "bg-ink-raised",
+  "ink-hover": "bg-ink-hover",
+  ivory: "bg-ivory",
+  "gold": "bg-gold",
+  mist: "bg-mist",
 };
 
 function ContrastSample({ foreground, background }: { foreground: PaletteName; background: PaletteName }) {
   return (
-    <span className={`inline-grid h-10 w-16 place-items-center rounded-lg ring-1 ring-platinum/30 ${BG_CLASS[background]}`}>
-      <span className={`display-italic text-xl ${TEXT_CLASS[foreground]}`}>Aa</span>
+    <span className={`inline-grid h-10 w-16 place-items-center rounded-lg ring-1 ring-mist/15 ${BG_CLASS[background]}`}>
+      <span className={`display-serif text-xl ${TEXT_CLASS[foreground]}`}>Aa</span>
     </span>
   );
 }
@@ -231,17 +231,17 @@ function TypeSection() {
   return (
     <div className="grid gap-10 lg:grid-cols-[1fr_20rem]">
       <div className="grid gap-6">
-        <TypeRow name="Display · Bodoni Moda italic · 128">
-          <span className="display-italic block text-7xl text-lavender sm:text-9xl">Draft</span>
+        <TypeRow name="Display · Instrument Serif · 128">
+          <span className="display-serif block text-7xl text-ivory sm:text-9xl">Draft</span>
         </TypeRow>
         <TypeRow name="Display · 64 · item names, winner">
-          <span className="display-italic block text-5xl text-lavender sm:text-6xl">Erling Haaland</span>
+          <span className="display-serif block text-5xl text-ivory sm:text-6xl">Erling Haaland</span>
         </TypeRow>
         <TypeRow name="Display · 72 · budgets">
-          <span className="display-italic block text-7xl text-lavender">$13</span>
+          <span className="display-serif block text-7xl text-ivory">$13</span>
         </TypeRow>
         <TypeRow name="Body · DM Sans · 16">
-          <p className="max-w-prose text-base text-platinum">
+          <p className="max-w-prose text-base text-mist">
             Items are revealed one at a time. Buy or pass, and fill every slot without running out of money. Calm,
             readable, with plenty of room around it.
           </p>
@@ -257,8 +257,8 @@ function TypeSection() {
       </div>
       <Panel className="relative grid content-between gap-6 overflow-hidden">
         <Label>The rule</Label>
-        <p className="display-italic relative z-10 text-4xl text-lavender">Large serif speaks. Small labels whisper.</p>
-        <p className="relative z-10 text-sm text-platinum">
+        <p className="display-serif relative z-10 text-4xl text-ivory">Large serif speaks. Small labels whisper.</p>
+        <p className="relative z-10 text-sm text-mist">
           Serif only at 24px and up, where its hairline strokes stay sharp. Everything small is DM Sans.
         </p>
       </Panel>
@@ -269,7 +269,7 @@ function TypeSection() {
 function TypeRow({ name, children }: { name: string; children: ReactNode }) {
   return (
     <div className="grid gap-3">
-      <Label className="text-platinum/80">{name}</Label>
+      <Label className="text-mist/80">{name}</Label>
       {children}
       <Hairline />
     </div>
@@ -282,7 +282,7 @@ function ChromeSection() {
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
       {(["pebble", "ring", "ribbon"] as const).map((shape) => (
-        <Panel key={shape} className="grid place-items-center gap-4 bg-mocha">
+        <Panel key={shape} className="grid place-items-center gap-4 bg-ink">
           <ChromeBlob shape={shape} className="w-48" />
           <Label>{shape}</Label>
         </Panel>
@@ -332,7 +332,7 @@ function ControlSection() {
           <input
             value={name}
             onChange={(event) => setName(event.target.value)}
-            className="border-b border-platinum/60 bg-transparent py-2 font-body text-lg text-lavender outline-none placeholder:text-platinum/50 focus:border-lavender"
+            className="border-b border-mist/60 bg-transparent py-2 font-body text-lg text-ivory outline-none placeholder:text-mist/50 focus:border-ivory"
           />
         </label>
         <div className="flex items-center justify-between">
@@ -341,7 +341,7 @@ function ControlSection() {
             <StepButton label="Fewer slots" onClick={() => setSlots(Math.max(3, slots - 1))}>
               −
             </StepButton>
-            <span className="display-italic w-10 text-center text-4xl text-lavender">{slots}</span>
+            <span className="display-serif w-10 text-center text-4xl text-ivory">{slots}</span>
             <StepButton label="More slots" onClick={() => setSlots(Math.min(7, slots + 1))}>
               +
             </StepButton>
@@ -349,8 +349,8 @@ function ControlSection() {
         </div>
         <div className="flex items-start justify-between gap-6">
           <span>
-            <Label className="text-lavender">Mystery items</Label>
-            <span className="mt-1 block text-sm text-platinum">About 1 in 6 items hide their rating until the end.</span>
+            <Label className="text-ivory">Mystery items</Label>
+            <span className="mt-1 block text-sm text-mist">About 1 in 6 items hide their rating until the end.</span>
           </span>
           <Switch on={mystery} onChange={setMystery} label="Mystery items" />
         </div>
@@ -379,7 +379,7 @@ function StepButton({ children, label, onClick }: { children: ReactNode; label: 
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="grid size-10 place-items-center rounded-full text-xl text-platinum ring-1 ring-platinum/60 hover:bg-mocha-light"
+      className="grid size-10 place-items-center rounded-full text-xl text-mist ring-1 ring-mist/60 hover:bg-ink-hover"
     >
       {children}
     </button>
@@ -394,10 +394,10 @@ function Switch({ on, onChange, label }: { on: boolean; onChange: (on: boolean) 
       aria-checked={on}
       aria-label={label}
       onClick={() => onChange(!on)}
-      className={`relative h-7 w-12 shrink-0 rounded-full ring-1 transition ${on ? "bg-lavender ring-lavender" : "ring-platinum/60"}`}
+      className={`relative h-7 w-12 shrink-0 rounded-full ring-1 transition ${on ? "bg-gold ring-gold" : "ring-mist/60"}`}
     >
       <span
-        className={`absolute top-1 size-5 rounded-full transition-all ${on ? "left-6 bg-mocha-dark" : "left-1 bg-platinum"}`}
+        className={`absolute top-1 size-5 rounded-full transition-all ${on ? "left-6 bg-ink-raised" : "left-1 bg-mist"}`}
       />
     </button>
   );
@@ -409,10 +409,10 @@ function Choice({ selected, onClick, title, text }: { selected: boolean; onClick
       type="button"
       aria-pressed={selected}
       onClick={onClick}
-      className={`rounded-[1.25rem] p-4 text-left ring-1 transition ${selected ? "bg-mocha shadow-glow ring-lavender-deep" : "ring-platinum/30 hover:bg-mocha-light"}`}
+      className={`rounded-[1.25rem] p-4 text-left ring-1 transition ${selected ? "bg-ink shadow-glow ring-gold" : "ring-mist/15 hover:bg-ink-hover"}`}
     >
-      <span className="display-italic block text-3xl text-lavender">{title}</span>
-      <span className="mt-1 block text-sm text-platinum">{text}</span>
+      <span className="display-serif block text-3xl text-ivory">{title}</span>
+      <span className="mt-1 block text-sm text-mist">{text}</span>
     </button>
   );
 }
@@ -420,7 +420,7 @@ function Choice({ selected, onClick, title, text }: { selected: boolean; onClick
 function Chip({ children, selected = false }: { children: ReactNode; selected?: boolean }) {
   return (
     <span
-      className={`label-caps rounded-full px-3 py-1.5 ring-1 ${selected ? "bg-lavender text-mocha ring-lavender" : "text-platinum ring-platinum/50"}`}
+      className={`label-caps rounded-full px-3 py-1.5 ring-1 ${selected ? "bg-gold text-ink ring-gold" : "text-mist ring-mist/50"}`}
     >
       {children}
     </span>
@@ -452,30 +452,30 @@ interface ItemSpecimenProps {
 function ItemCardSpecimen({ name, tag, price, rating, round, left, auction = false }: ItemSpecimenProps) {
   const mystery = rating === null;
   return (
-    <article className="relative grid content-start gap-6 overflow-hidden rounded-[2rem] border border-platinum/30 bg-mocha-dark p-6">
+    <article className="relative grid content-start gap-6 overflow-hidden rounded-[2rem] border border-mist/15 bg-ink-raised p-6">
       <div className="flex items-center justify-between">
         <Label>
           Item {round} · {left} left
         </Label>
-        <Label className="text-lavender">{tag}</Label>
+        <Label className="text-ivory">{tag}</Label>
       </div>
       {mystery && (
         <div className="relative grid h-36 place-items-center">
           <ChromeBlob shape="pebble" className="absolute w-36" />
-          <span className="display-italic relative text-[7rem] text-lavender drop-shadow-[0_2px_8px_var(--color-mocha-dark)]">?</span>
+          <span className="display-serif relative text-[7rem] text-ivory drop-shadow-[0_2px_8px_var(--color-ink-raised)]">?</span>
         </div>
       )}
-      <h3 className="display-italic text-5xl text-lavender">{name}</h3>
-      {mystery && <Label className="text-lavender-deep">Mystery · rating revealed at the end</Label>}
+      <h3 className="display-serif text-5xl text-ivory">{name}</h3>
+      {mystery && <Label className="text-gold">Mystery · rating revealed at the end</Label>}
       <Hairline />
       <div className="flex items-end gap-6">
         <PriceBadge price={price} label={auction ? "Guide price" : "Price"} />
         <RatingBar rating={rating} className="flex-1 pb-6" />
       </div>
       {auction && (
-        <div className="flex items-center justify-between rounded-full px-4 py-2 ring-1 ring-lavender-deep">
-          <Label className="text-lavender-deep">High bid · Asha</Label>
-          <span className="display-italic text-3xl text-lavender">$8</span>
+        <div className="flex items-center justify-between rounded-full px-4 py-2 ring-1 ring-gold">
+          <Label className="text-gold">High bid · Asha</Label>
+          <span className="display-serif text-3xl text-ivory">$8</span>
         </div>
       )}
     </article>
@@ -530,32 +530,32 @@ function PlayerSpecimen({ name, budget, canSpend, team, active = false, highBid 
   const covered = new Set(team.map((slot) => slot?.tag));
   return (
     <section
-      className={`grid content-start gap-4 rounded-[1.75rem] bg-mocha-dark p-5 transition ${active ? "shadow-glow" : "ring-1 ring-platinum/30"}`}
+      className={`grid content-start gap-4 rounded-[1.75rem] bg-ink-raised p-5 transition ${active ? "shadow-glow" : "ring-1 ring-mist/15"}`}
     >
       <header className="flex items-center gap-3">
-        <Label className={active ? "text-lavender" : ""}>{name}</Label>
-        {active && <Label className="ml-auto text-lavender-deep">Their turn</Label>}
-        {highBid && <Label className="ml-auto rounded-full bg-lavender-deep px-2 py-0.5 text-mocha-dark">High bid</Label>}
+        <Label className={active ? "text-ivory" : ""}>{name}</Label>
+        {active && <Label className="ml-auto text-gold">Their turn</Label>}
+        {highBid && <Label className="ml-auto rounded-full bg-gold px-2 py-0.5 text-ink-raised">High bid</Label>}
       </header>
-      <p className="display-italic text-7xl text-lavender">${budget}</p>
+      <p className="display-serif text-7xl text-ivory">${budget}</p>
       <div className="h-5">
         {cantAfford ? <UrgentNote>Can't afford this one</UrgentNote> : <Label>Can spend up to ${canSpend}</Label>}
       </div>
       <ol className="grid">
         {team.map((slot, index) => (
-          <li key={index} className="flex min-h-12 items-center gap-3 border-t border-platinum/30 py-2 last:border-b">
-            <Label className="w-6 text-platinum/80">{String(index + 1).padStart(2, "0")}</Label>
+          <li key={index} className="flex min-h-12 items-center gap-3 border-t border-mist/15 py-2 last:border-b">
+            <Label className="w-6 text-mist/80">{String(index + 1).padStart(2, "0")}</Label>
             {slot === null ? (
-              <span className="text-sm text-platinum/60">—</span>
+              <span className="text-sm text-mist/60">—</span>
             ) : (
               <>
                 <span className="min-w-0 flex-1">
-                  <span className="display-italic block truncate text-xl text-lavender">{slot.name}</span>
-                  <Label className="text-platinum/80">
+                  <span className="display-serif block truncate text-xl text-ivory">{slot.name}</span>
+                  <Label className="text-mist/80">
                     {slot.tag} · ${slot.paid}
                   </Label>
                 </span>
-                <span className="display-italic text-2xl text-lavender">{slot.rating ?? "?"}</span>
+                <span className="display-serif text-2xl text-ivory">{slot.rating ?? "?"}</span>
               </>
             )}
           </li>
@@ -566,7 +566,7 @@ function PlayerSpecimen({ name, budget, canSpend, team, active = false, highBid 
           {roles.map((role) => (
             <li
               key={role}
-              className={`label-caps rounded-full px-2.5 py-1 ${covered.has(role) ? "bg-lavender text-mocha" : "text-platinum ring-1 ring-platinum/40"}`}
+              className={`label-caps rounded-full px-2.5 py-1 ${covered.has(role) ? "bg-gold text-ink" : "text-mist ring-1 ring-mist/40"}`}
             >
               {covered.has(role) && <Check size={11} strokeWidth={2} className="mr-1 inline" aria-hidden />}
               {role}
@@ -607,14 +607,14 @@ function InGameSection() {
         <Label>Reactions · the only full-colour emoji</Label>
         <div className="flex gap-2">
           {["👏", "😂", "😱", "🔥", "💸"].map((emoji) => (
-            <span key={emoji} className="grid size-11 place-items-center rounded-full text-xl ring-1 ring-platinum/40">
+            <span key={emoji} className="grid size-11 place-items-center rounded-full text-xl ring-1 ring-mist/40">
               {emoji}
             </span>
           ))}
         </div>
         <Hairline />
         <Label>Activity</Label>
-        <p className="text-sm text-platinum">Asha bought Alisson for $4 · Ben passed on Rodri</p>
+        <p className="text-sm text-mist">Asha bought Alisson for $4 · Ben passed on Rodri</p>
       </Panel>
     </div>
   );
@@ -626,10 +626,10 @@ function TimerSpecimen({ seconds, total }: { seconds: number; total: number }) {
     <div className="grid gap-2">
       <div className="flex items-baseline justify-between">
         {urgent ? <UrgentNote>Hurry</UrgentNote> : <Label>Time left</Label>}
-        <span className={`display-italic text-3xl ${urgent ? "animate-urgent origin-right text-lavender-deep" : "text-lavender"}`}>{seconds}s</span>
+        <span className={`display-serif text-3xl ${urgent ? "animate-urgent origin-right text-gold" : "text-ivory"}`}>{seconds}s</span>
       </div>
-      <div className="h-[2px] bg-platinum/20">
-        <div className={`h-full ${urgent ? "bg-lavender-deep" : "bg-platinum"}`} style={{ width: `${(seconds / total) * 100}%` }} />
+      <div className="h-[2px] bg-mist/20">
+        <div className={`h-full ${urgent ? "bg-gold" : "bg-mist"}`} style={{ width: `${(seconds / total) * 100}%` }} />
       </div>
     </div>
   );
@@ -638,9 +638,9 @@ function TimerSpecimen({ seconds, total }: { seconds: number; total: number }) {
 function PowerChip({ Icon, name, used = false }: { Icon: LucideIcon; name: string; used?: boolean }) {
   return (
     <span
-      className={`inline-flex items-center gap-2 rounded-full px-4 py-2 ring-1 ${used ? "text-platinum/50 ring-platinum/20" : "text-platinum ring-platinum/60"}`}
+      className={`inline-flex items-center gap-2 rounded-full px-4 py-2 ring-1 ${used ? "text-mist/50 ring-mist/20" : "text-mist ring-mist/60"}`}
     >
-      <Icon size={16} strokeWidth={ICON_STROKE} className="text-lavender-deep" aria-hidden />
+      <Icon size={16} strokeWidth={ICON_STROKE} className="text-gold" aria-hidden />
       <span className="label-caps">{name}</span>
       {used && <span className="label-caps">· used</span>}
     </span>
@@ -657,18 +657,18 @@ function OverlaySection() {
         <ToastSpecimen>Copied! Paste it anywhere.</ToastSpecimen>
         <ToastSpecimen urgent>Connection lost. Reconnecting…</ToastSpecimen>
       </div>
-      <div className="relative overflow-hidden rounded-[2rem] bg-mocha-dark p-8 text-center ring-1 ring-platinum/30">
+      <div className="relative overflow-hidden rounded-[2rem] bg-ink-raised p-8 text-center ring-1 ring-mist/15">
         <ChromeBlob shape="ring" className="absolute -top-10 -right-12 w-44" />
         <Label className="relative">How to play · 1 / 4</Label>
-        <h3 className="display-italic relative mt-10 text-5xl text-lavender">$20 for 5 slots</h3>
-        <p className="relative mt-4 text-platinum">
+        <h3 className="display-serif relative mt-10 text-5xl text-ivory">$20 for 5 slots</h3>
+        <p className="relative mt-4 text-mist">
           Items are shown one at a time, each with a price and a rating. Build the best team you can afford.
         </p>
         <div className="relative mt-8 flex justify-center gap-2" aria-hidden>
-          <span className="h-px w-8 bg-lavender" />
-          <span className="h-px w-8 bg-platinum/30" />
-          <span className="h-px w-8 bg-platinum/30" />
-          <span className="h-px w-8 bg-platinum/30" />
+          <span className="h-px w-8 bg-ivory" />
+          <span className="h-px w-8 bg-mist/15" />
+          <span className="h-px w-8 bg-mist/15" />
+          <span className="h-px w-8 bg-mist/15" />
         </div>
         <div className="relative mt-8 flex justify-between">
           <PillButton variant="ghost">Skip</PillButton>
@@ -681,8 +681,8 @@ function OverlaySection() {
 
 function ToastSpecimen({ children, urgent = false }: { children: ReactNode; urgent?: boolean }) {
   return (
-    <div className="flex w-fit items-center gap-3 rounded-full bg-mocha-dark px-5 py-3 ring-1 ring-platinum/30">
-      {urgent ? <UrgentNote>{children}</UrgentNote> : <span className="text-sm text-platinum">{children}</span>}
+    <div className="flex w-fit items-center gap-3 rounded-full bg-ink-raised px-5 py-3 ring-1 ring-mist/15">
+      {urgent ? <UrgentNote>{children}</UrgentNote> : <span className="text-sm text-mist">{children}</span>}
     </div>
   );
 }
@@ -699,18 +699,18 @@ function ListsSection() {
     <div className="grid gap-6 lg:grid-cols-3">
       <Panel className="grid content-start gap-4 text-center">
         <Label>Room code</Label>
-        <p className="display-italic text-6xl tracking-wide text-lavender">YB9WJR</p>
+        <p className="display-serif text-6xl tracking-wide text-ivory">YB9WJR</p>
         <PillButton variant="secondary">Copy invite link</PillButton>
         <Hairline />
         <ul className="grid gap-3 text-left">
           <li className="flex items-center gap-3">
-            <span className="display-italic text-2xl text-lavender">Asha</span>
-            <Label className="text-lavender-deep">Host</Label>
-            <span className="ml-auto size-2 rounded-full bg-lavender" aria-label="online" />
+            <span className="display-serif text-2xl text-ivory">Asha</span>
+            <Label className="text-gold">Host</Label>
+            <span className="ml-auto size-2 rounded-full bg-ivory" aria-label="online" />
           </li>
           <li className="flex items-center gap-3">
-            <span className="display-italic text-2xl text-lavender">Ben</span>
-            <span className="ml-auto size-2 rounded-full ring-1 ring-platinum/60" aria-label="offline" />
+            <span className="display-serif text-2xl text-ivory">Ben</span>
+            <span className="ml-auto size-2 rounded-full ring-1 ring-mist/60" aria-label="offline" />
           </li>
         </ul>
       </Panel>
@@ -718,7 +718,7 @@ function ListsSection() {
       <Panel className="relative grid content-start gap-4 overflow-hidden">
         <ChromeBlob shape="ribbon" className="absolute -right-10 -bottom-12 w-48 opacity-90" />
         <Label>Winner</Label>
-        <p className="display-italic relative text-7xl text-lavender">Asha</p>
+        <p className="display-serif relative text-7xl text-ivory">Asha</p>
         <dl className="relative grid gap-2">
           <ScoreRow label="Rating" value="397" />
           <ScoreRow label="Leftover" value="+3" />
@@ -738,11 +738,11 @@ function ListsSection() {
         </div>
         <ol>
           {rows.map((row, index) => (
-            <li key={row.name} className="flex items-center gap-3 border-t border-platinum/30 px-6 py-3">
-              <Label className="w-5 text-platinum/80">{String(index + 1).padStart(2, "0")}</Label>
-              <span className="display-italic text-2xl text-lavender">{row.name}</span>
-              <span className="ml-auto text-platinum">{row.wins}</span>
-              <span className="w-12 text-right text-platinum">{row.best ?? "—"}</span>
+            <li key={row.name} className="flex items-center gap-3 border-t border-mist/15 px-6 py-3">
+              <Label className="w-5 text-mist/80">{String(index + 1).padStart(2, "0")}</Label>
+              <span className="display-serif text-2xl text-ivory">{row.name}</span>
+              <span className="ml-auto text-mist">{row.wins}</span>
+              <span className="w-12 text-right text-mist">{row.best ?? "—"}</span>
             </li>
           ))}
         </ol>
@@ -753,11 +753,11 @@ function ListsSection() {
 
 function ScoreRow({ label, value, strong = false }: { label: string; value: string; strong?: boolean }) {
   return (
-    <div className={`flex items-baseline justify-between border-t border-platinum/30 pt-2 ${strong ? "pb-1" : ""}`}>
+    <div className={`flex items-baseline justify-between border-t border-mist/15 pt-2 ${strong ? "pb-1" : ""}`}>
       <dt>
-        <Label className={strong ? "text-lavender" : ""}>{label}</Label>
+        <Label className={strong ? "text-ivory" : ""}>{label}</Label>
       </dt>
-      <dd className={`display-italic ${strong ? "text-4xl text-lavender" : "text-2xl text-platinum"}`}>{value}</dd>
+      <dd className={`display-serif ${strong ? "text-4xl text-ivory" : "text-2xl text-mist"}`}>{value}</dd>
     </div>
   );
 }

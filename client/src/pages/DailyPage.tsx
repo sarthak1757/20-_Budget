@@ -44,11 +44,11 @@ export function DailyPage() {
         <Card className="grid gap-5">
           <div className="grid gap-1">
             <Label>Today's category</Label>
-            <p className="display-italic text-4xl text-lavender sm:text-5xl">
+            <p className="display-serif text-4xl text-ivory sm:text-5xl">
               {category.emoji} {category.name}
             </p>
           </div>
-          <p className="text-platinum">
+          <p className="text-mist">
             Everyone gets the same items in the same order against the same hard bot. $20, 5 slots, mystery items on.
             One try per day, so make it count.
           </p>
@@ -63,12 +63,12 @@ export function DailyPage() {
           )}
 
           {attempt !== null && !attempt.finished && (
-            <p className="text-lavender">You already started today's daily. Come back tomorrow!</p>
+            <p className="text-ivory">You already started today's daily. Come back tomorrow!</p>
           )}
 
           {attempt !== null && attempt.finished && attempt.shareText !== null && (
             <div className="grid gap-4">
-              <p className="display-italic text-3xl text-lavender">{attempt.shareText}</p>
+              <p className="display-serif text-3xl text-ivory">{attempt.shareText}</p>
               <PillButton onClick={() => void share(attempt.shareText ?? "")}>
                 <Share2 size={16} strokeWidth={ICON_STROKE} aria-hidden />
                 Copy result

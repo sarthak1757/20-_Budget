@@ -2,10 +2,10 @@ import { useToastStore, type ToastTone } from "../store/toastStore";
 import { UrgentNote } from "./brand/primitives";
 
 // One hairline pill for every tone. There is no warning colour in the palette,
-// so a warning is lavender-deep text with a pulsing "!" instead.
+// so a warning is gold text with a pulsing "!" instead.
 const TONE_CLASSES: Record<ToastTone, string> = {
-  info: "text-platinum",
-  success: "text-lavender",
+  info: "text-mist",
+  success: "text-ivory",
   warning: "",
 };
 
@@ -24,7 +24,7 @@ export function Toaster() {
           key={toast.id}
           type="button"
           onClick={() => dismissToast(toast.id)}
-          className={`animate-toast-in pointer-events-auto max-w-sm rounded-full bg-mocha-dark px-5 py-3 text-left text-sm font-medium shadow-xl ring-1 ring-platinum/30 ${TONE_CLASSES[toast.tone]}`}
+          className={`animate-toast-in pointer-events-auto max-w-sm rounded-full bg-ink-raised px-5 py-3 text-left text-sm font-medium shadow-xl ring-1 ring-mist/15 ${TONE_CLASSES[toast.tone]}`}
         >
           {toast.tone === "warning" ? <UrgentNote>{toast.message}</UrgentNote> : toast.message}
         </button>

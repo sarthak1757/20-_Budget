@@ -26,13 +26,13 @@ export function DifficultyPicker({ value, onChange }: DifficultyPickerProps) {
             type="button"
             aria-pressed={level.value === value}
             onClick={() => onChange(level.value)}
-            className={`display-italic rounded-[1.25rem] py-3 text-2xl text-lavender transition ${level.value === value ? "bg-mocha shadow-glow" : "ring-1 ring-platinum/30 hover:bg-mocha-light"}`}
+            className={`display-serif rounded-[1.25rem] py-3 text-2xl text-ivory transition ${level.value === value ? "bg-ink shadow-glow" : "ring-1 ring-mist/15 hover:bg-ink-hover"}`}
           >
             {level.label}
           </button>
         ))}
       </div>
-      <p className="text-sm text-platinum">{selected ? selected.description : ""}</p>
+      <p className="text-sm text-mist">{selected ? selected.description : ""}</p>
     </fieldset>
   );
 }

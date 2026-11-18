@@ -29,10 +29,10 @@ export function CustomListField({ value, onChange, errors }: CustomListFieldProp
   return (
     <Card className="grid gap-3">
       <label htmlFor="custom-list">
-        <Label className="text-lavender">Your items</Label>
+        <Label className="text-ivory">Your items</Label>
       </label>
-      <p className="text-sm text-platinum">
-        One per line: <span className="font-mono text-lavender">name, price, rating, tag</span>. Price $1–$10, rating 1–100.
+      <p className="text-sm text-mist">
+        One per line: <span className="font-mono text-ivory">name, price, rating, tag</span>. Price $1–$10, rating 1–100.
         {` ${CUSTOM_MIN_ITEMS}–${CUSTOM_MAX_ITEMS}`} items. You can paste straight from a spreadsheet.
       </p>
       <textarea
@@ -42,9 +42,9 @@ export function CustomListField({ value, onChange, errors }: CustomListFieldProp
         rows={10}
         spellCheck={false}
         placeholder={EXAMPLE}
-        className="rounded-2xl border border-platinum/40 bg-transparent px-3 py-2 font-mono text-sm text-lavender outline-none placeholder:text-platinum/50 focus:border-lavender"
+        className="rounded-2xl border border-mist/40 bg-transparent px-3 py-2 font-mono text-sm text-ivory outline-none placeholder:text-mist/50 focus:border-ivory"
       />
-      <p className="text-right"><Label className="text-platinum/80">{lineCount} lines</Label></p>
+      <p className="text-right"><Label className="text-mist/80">{lineCount} lines</Label></p>
       {shown.length > 0 && (
         <ul role="alert" className="grid gap-2">
           {shown.map((message) => (
@@ -52,7 +52,7 @@ export function CustomListField({ value, onChange, errors }: CustomListFieldProp
               <UrgentNote>{message}</UrgentNote>
             </li>
           ))}
-          {hidden > 0 && <li className="text-sm text-platinum">…and {hidden} more</li>}
+          {hidden > 0 && <li className="text-sm text-mist">…and {hidden} more</li>}
         </ul>
       )}
     </Card>

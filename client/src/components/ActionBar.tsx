@@ -13,7 +13,7 @@ export function ActionBar({ turnLabel, canAct, buyBlockReason, busy = false, onB
   return (
     <div className="grid gap-3">
       <p className="text-center">
-        <Label className={canAct ? "text-lavender" : ""}>{turnLabel}</Label>
+        <Label className={canAct ? "text-ivory" : ""}>{turnLabel}</Label>
       </p>
       <div className="grid grid-cols-2 gap-3">
         <PillButton className="py-4 text-lg tracking-[0.15em]" disabled={!canAct || busy || buyBlockReason !== null} onClick={onBuy}>

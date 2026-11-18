@@ -2,27 +2,27 @@ import type { ButtonHTMLAttributes, ReactNode, Ref } from "react";
 import { Link } from "react-router";
 
 // The building blocks of the editorial theme. Every colour is a theme token
-// (mocha, lavender, platinum, ...): no raw hex here or in any component.
+// (ink, ivory, mist, ...): no raw hex here or in any component.
 
 // ---- Text ----
 
 // Tiny uppercase letter-spaced label ("SLOT 1", "ROOM CODE", prices, timer).
 export function Label({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <span className={`label-caps text-platinum ${className}`}>{children}</span>;
+  return <span className={`label-caps text-mist ${className}`}>{children}</span>;
 }
 
 // Small vertical label running up the side of a section, used sparingly.
 export function SideLabel({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
-    <span aria-hidden className={`label-caps side-label text-platinum/70 ${className}`}>
+    <span aria-hidden className={`label-caps side-label text-mist/70 ${className}`}>
       {children}
     </span>
   );
 }
 
-// A 1px platinum line at 30% opacity.
+// A 1px mist line at 30% opacity.
 export function Hairline({ className = "" }: { className?: string }) {
-  return <hr className={`h-px border-0 bg-platinum/30 ${className}`} />;
+  return <hr className={`h-px border-0 bg-mist/15 ${className}`} />;
 }
 
 // ---- Buttons and links ----
@@ -30,12 +30,12 @@ export function Hairline({ className = "" }: { className?: string }) {
 export type PillVariant = "primary" | "secondary" | "ghost";
 
 export const PILL_CLASSES: Record<PillVariant, string> = {
-  // lavender fill + mocha text (5.77:1), platinum on hover (5.86:1).
+  // ivory fill + ink text (5.77:1), mist on hover (5.86:1).
   primary:
-    "bg-lavender text-mocha hover:bg-platinum disabled:bg-transparent disabled:text-platinum/50 disabled:ring-1 disabled:ring-platinum/30",
-  // 1px platinum outline.
-  secondary: "ring-1 ring-platinum text-platinum hover:bg-mocha-light disabled:text-platinum/40 disabled:ring-platinum/30",
-  ghost: "text-platinum hover:bg-mocha-light disabled:text-platinum/40",
+    "bg-gold text-ink hover:bg-ivory disabled:bg-transparent disabled:text-mist/50 disabled:ring-1 disabled:ring-mist/15",
+  // 1px mist outline.
+  secondary: "ring-1 ring-mist text-mist hover:bg-ink-hover disabled:text-mist/40 disabled:ring-mist/15",
+  ghost: "text-mist hover:bg-ink-hover disabled:text-mist/40",
 };
 
 interface PillButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -70,9 +70,9 @@ export function PillLink({
   );
 }
 
-// Text fields are just a hairline underline under lavender text.
+// Text fields are just a hairline underline under ivory text.
 export const INPUT_CLASS =
-  "w-full border-b border-platinum/60 bg-transparent py-2 font-body text-lg text-lavender outline-none placeholder:text-platinum/50 focus:border-lavender disabled:opacity-50";
+  "w-full border-b border-mist/60 bg-transparent py-2 font-body text-lg text-ivory outline-none placeholder:text-mist/50 focus:border-ivory disabled:opacity-50";
 
 // "→ EXPLORE": an arrow in a thin circle next to a small uppercase label.
 function ArrowContent({ children }: { children: ReactNode }) {
@@ -80,7 +80,7 @@ function ArrowContent({ children }: { children: ReactNode }) {
     <>
       <span
         aria-hidden
-        className="grid size-8 place-items-center rounded-full ring-1 ring-platinum/60 transition group-hover:bg-lavender group-hover:text-mocha group-hover:ring-lavender"
+        className="grid size-8 place-items-center rounded-full ring-1 ring-mist/60 transition group-hover:bg-ivory group-hover:text-ink group-hover:ring-ivory"
       >
         →
       </span>
@@ -89,7 +89,7 @@ function ArrowContent({ children }: { children: ReactNode }) {
   );
 }
 
-const ARROW_CLASSES = "group inline-flex items-center gap-3 text-platinum hover:text-lavender";
+const ARROW_CLASSES = "group inline-flex items-center gap-3 text-mist hover:text-ivory";
 
 export function ArrowLink({ to, children, className = "" }: { to: string; children: ReactNode; className?: string }) {
   return (
@@ -109,19 +109,19 @@ export function ArrowButton({ onClick, children, className = "" }: { onClick: ()
 
 // ---- Surfaces ----
 
-// The card surface: mocha-dark with a thin platinum border.
+// The card surface: ink-raised with a thin mist border.
 export function Panel({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <div className={`[&.grid]:grid-cols-[minmax(0,1fr)] rounded-[1.75rem] border border-platinum/30 bg-mocha-dark p-6 ${className}`}>{children}</div>;
+  return <div className={`[&.grid]:grid-cols-[minmax(0,1fr)] rounded-[1.75rem] border border-mist/15 bg-ink-raised p-6 ${className}`}>{children}</div>;
 }
 
 // ---- Game pieces ----
 
-// The price in a lavender circle.
+// The price in a ivory circle.
 export function PriceBadge({ price, label = "Price", size = "lg" }: { price: number; label?: string; size?: "sm" | "lg" }) {
   const circle = size === "lg" ? "size-20 text-4xl" : "size-12 text-2xl";
   return (
     <span className="inline-flex flex-col items-center gap-1.5">
-      <span className={`display-italic grid place-items-center rounded-full bg-lavender text-mocha ${circle}`}>
+      <span className={`display-serif grid place-items-center rounded-full bg-gold text-ink ${circle}`}>
         <span className="sr-only">{label}: </span>${price}
       </span>
       <Label>{label}</Label>
@@ -129,17 +129,17 @@ export function PriceBadge({ price, label = "Price", size = "lg" }: { price: num
   );
 }
 
-// Rating as a thin platinum bar. null = a mystery item (hidden rating).
+// Rating as a thin mist bar. null = a mystery item (hidden rating).
 export function RatingBar({ rating, className = "" }: { rating: number | null; className?: string }) {
   const percent = rating === null ? 0 : Math.max(0, Math.min(100, rating));
   return (
     <div className={className}>
       <div className="mb-1.5 flex items-baseline justify-between">
         <Label>Rating</Label>
-        <span className="display-italic text-2xl text-lavender">{rating === null ? "?" : rating}</span>
+        <span className="display-serif text-2xl text-ivory">{rating === null ? "?" : rating}</span>
       </div>
       <div
-        className="h-[2px] w-full bg-platinum/20"
+        className="h-[2px] w-full bg-mist/20"
         role="meter"
         aria-label="Rating"
         aria-valuemin={0}
@@ -147,21 +147,21 @@ export function RatingBar({ rating, className = "" }: { rating: number | null; c
         aria-valuenow={rating ?? undefined}
         aria-valuetext={rating === null ? "hidden until the draft ends" : `${rating} out of 100`}
       >
-        <div className="h-full bg-platinum" style={{ width: `${percent}%` }} />
+        <div className="h-full bg-mist" style={{ width: `${percent}%` }} />
       </div>
     </div>
   );
 }
 
-// Urgency without a warning colour: a pulsing lavender-deep "!" icon next to
-// lavender text. The words stay lavender (not lavender-deep) so they keep AA
-// contrast on every background: lavender-deep small text is only 3.44:1 on mocha.
+// Urgency without a warning colour: a pulsing gold "!" icon next to
+// ivory text. The words stay ivory (not gold) so they keep AA
+// contrast on every background: gold small text is only 3.44:1 on ink.
 export function UrgentNote({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
-    <span className={`inline-flex items-center gap-2 font-body text-sm font-medium text-lavender ${className}`}>
+    <span className={`inline-flex items-center gap-2 font-body text-sm font-medium text-ivory ${className}`}>
       <span
         aria-hidden
-        className="animate-urgent grid size-5 shrink-0 place-items-center rounded-full text-[11px] font-bold text-lavender-deep ring-1 ring-lavender-deep"
+        className="animate-urgent grid size-5 shrink-0 place-items-center rounded-full text-[11px] font-bold text-gold ring-1 ring-gold"
       >
         !
       </span>

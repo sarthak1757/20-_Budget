@@ -1,19 +1,19 @@
 @import "tailwindcss";
 
 @theme {
-  /* ---- Luxury editorial theme (see /style-guide and lib/palette.ts) ---- */
-  --color-mocha: #6F4E37;
-  --color-mocha-dark: #4F3726;
-  --color-mocha-light: #7E5D46;
-  --color-lavender: #E6E0F0;
-  --color-lavender-deep: #B8A9D9;
-  --color-platinum: #E5E4E2;
+  /* ---- Midnight, ivory and gold (see /style-guide and lib/palette.ts) ---- */
+  --color-ink: #08090B;
+  --color-ink-raised: #111317;
+  --color-ink-hover: #1A1D22;
+  --color-ivory: #F5F3EF;
+  --color-gold: #FFC900;
+  --color-mist: #C4C1BA;
 
-  --font-display: "Bodoni Moda", "Playfair Display", Georgia, serif;
+  --font-display: "Instrument Serif", "Cormorant Garamond", Georgia, serif;
   --font-body: "DM Sans", ui-sans-serif, system-ui, sans-serif;
 
-  /* Soft lavender-deep halo around the active player. */
-  --shadow-glow: 0 0 0 1px var(--color-lavender-deep), 0 0 36px -4px --alpha(var(--color-lavender-deep) / 45%);
+  /* Soft gold halo around the active player. */
+  --shadow-glow: 0 0 0 1px var(--color-gold), 0 0 36px -4px --alpha(var(--color-gold) / 45%);
 
   /* animate-float (chrome shapes) and animate-urgent (timer under 5s, errors). */
   --animate-float: float 9s ease-in-out infinite;
@@ -30,7 +30,7 @@
     }
   }
 
-  /* There's no red in the palette: urgency is lavender-deep that pulses in SIZE,
+  /* There's no red in the palette: urgency is gold that pulses in SIZE,
      never in opacity, so the text keeps its contrast at every moment. */
   @keyframes urgent {
     0%,
@@ -60,11 +60,11 @@
     }
   }
 
-  /* A bought item pops into its slot with a lavender flash. */
+  /* A bought item pops into its slot with a ivory flash. */
   @keyframes slot-fill {
     0% {
       transform: scale(0.85);
-      background-color: --alpha(var(--color-lavender-deep) / 55%);
+      background-color: --alpha(var(--color-gold) / 55%);
     }
     60% {
       transform: scale(1.04);
@@ -77,10 +77,10 @@
   /* The buyer's column glows briefly. */
   @keyframes bought {
     0% {
-      box-shadow: 0 0 0 0 --alpha(var(--color-lavender-deep) / 70%);
+      box-shadow: 0 0 0 0 --alpha(var(--color-gold) / 45%);
     }
     100% {
-      box-shadow: 0 0 0 14px --alpha(var(--color-lavender-deep) / 0%);
+      box-shadow: 0 0 0 10px --alpha(var(--color-gold) / 0%);
     }
   }
 
@@ -110,13 +110,13 @@ html {
   text-transform: uppercase;
 }
 
-/* Big italic serif for titles, item names, budgets, the winner. */
-@utility display-italic {
+/* Big upright serif for titles, item names, budgets, the winner. */
+@utility display-serif {
   font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  line-height: 0.95;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  line-height: 1;
 }
 
 /* Small vertical side label, read bottom to top. */
@@ -126,12 +126,15 @@ html {
 }
 
 body {
-  @apply min-h-dvh bg-mocha font-body text-platinum antialiased;
+  @apply min-h-dvh bg-ink font-body text-mist antialiased;
+  /* A faint gold glow in one corner, so the black isn't flat. */
+  background-image: radial-gradient(70rem 36rem at 88% -8%, --alpha(var(--color-gold) / 7%), transparent 70%);
+  background-repeat: no-repeat;
 }
 
 /* Makes keyboard focus easy to see everywhere, without showing it on mouse clicks. */
 :focus-visible {
-  @apply outline-2 outline-offset-2 outline-lavender-deep;
+  @apply outline-2 outline-offset-2 outline-gold;
 }
 
 /* Respect the "reduce motion" system setting: keep the UI, drop the movement. */

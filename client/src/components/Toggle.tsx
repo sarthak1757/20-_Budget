@@ -13,8 +13,8 @@ export function Toggle({ label, description, checked, disabled = false, onChange
   return (
     <label className={`flex items-start justify-between gap-6 ${disabled ? "opacity-50" : "cursor-pointer"}`}>
       <span className="min-w-0">
-        <Label className="text-lavender">{label}</Label>
-        <span className="mt-1 block text-sm text-platinum">{description}</span>
+        <Label className="text-ivory">{label}</Label>
+        <span className="mt-1 block text-sm text-mist">{description}</span>
       </span>
       <input
         type="checkbox"
@@ -26,10 +26,10 @@ export function Toggle({ label, description, checked, disabled = false, onChange
       />
       <span
         aria-hidden
-        className={`relative mt-0.5 h-7 w-12 shrink-0 rounded-full ring-1 transition peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-lavender-deep ${checked ? "bg-lavender ring-lavender" : "ring-platinum/60"}`}
+        className={`relative mt-0.5 h-7 w-12 shrink-0 rounded-full ring-1 transition peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-gold ${checked ? "bg-gold ring-gold" : "ring-mist/60"}`}
       >
         <span
-          className={`absolute top-1 size-5 rounded-full transition-all ${checked ? "left-6 bg-mocha-dark" : "left-1 bg-platinum"}`}
+          className={`absolute top-1 size-5 rounded-full transition-all ${checked ? "left-6 bg-ink-raised" : "left-1 bg-mist"}`}
         />
       </span>
     </label>

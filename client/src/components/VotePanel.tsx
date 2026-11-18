@@ -37,8 +37,8 @@ export function VotePanel({ voterId, voterName, players, selectedId, disabled = 
     <div className="grid gap-8">
       <div className="grid gap-3">
         <Label>Vote · {voterName}</Label>
-        <h1 className="display-italic text-5xl text-lavender sm:text-7xl">Vote for the best team</h1>
-        <p className="text-platinum">Pick the team you like most. You can't vote for yourself.</p>
+        <h1 className="display-serif text-5xl text-ivory sm:text-7xl">Vote for the best team</h1>
+        <p className="text-mist">Pick the team you like most. You can't vote for yourself.</p>
       </div>
       {timer}
       <div className="grid gap-4 sm:grid-cols-3">
@@ -51,26 +51,26 @@ export function VotePanel({ voterId, voterName, players, selectedId, disabled = 
               disabled={disabled}
               onClick={() => onVote(player.id)}
               aria-pressed={isSelected}
-              className={`grid grid-cols-[minmax(0,1fr)] content-start gap-3 rounded-[1.75rem] bg-mocha-dark p-5 text-left transition hover:bg-mocha-light/40 disabled:opacity-60 ${isSelected ? "shadow-glow" : "ring-1 ring-platinum/30"}`}
+              className={`grid grid-cols-[minmax(0,1fr)] content-start gap-3 rounded-[1.75rem] bg-ink-raised p-5 text-left transition hover:bg-ink-hover/40 disabled:opacity-60 ${isSelected ? "shadow-glow" : "ring-1 ring-mist/15"}`}
             >
-              <span className="display-italic text-4xl text-lavender">{player.name}</span>
+              <span className="display-serif text-4xl text-ivory">{player.name}</span>
               <Label>Rating total {ratingTotal(player.team)}</Label>
               <Hairline />
               <ul className="grid grid-cols-[minmax(0,1fr)]">
                 {player.team.map((item, index) => (
-                  <li key={index} className="flex items-center gap-2 border-b border-platinum/30 py-2 last:border-b-0">
+                  <li key={index} className="flex items-center gap-2 border-b border-mist/15 py-2 last:border-b-0">
                     {item ? (
                       <>
-                        <span className="display-italic min-w-0 flex-1 truncate text-lg text-lavender">{item.name}</span>
-                        <span className="display-italic text-xl text-platinum tabular-nums">{item.rating}</span>
+                        <span className="display-serif min-w-0 flex-1 truncate text-lg text-ivory">{item.name}</span>
+                        <span className="display-serif text-xl text-mist tabular-nums">{item.rating}</span>
                       </>
                     ) : (
-                      <Label className="text-platinum/70">Empty</Label>
+                      <Label className="text-mist/70">Empty</Label>
                     )}
                   </li>
                 ))}
               </ul>
-              {isSelected && <Label className="text-lavender-deep">Your vote</Label>}
+              {isSelected && <Label className="text-gold">Your vote</Label>}
             </button>
           );
         })}

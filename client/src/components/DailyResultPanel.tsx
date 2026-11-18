@@ -51,11 +51,11 @@ export function DailyResultPanel({ game, daily, total, alreadySubmitted, onSubmi
   return (
     <Card className="mt-10 grid max-w-xl gap-4">
       <Label>Your daily result</Label>
-      <p className="display-italic text-4xl text-lavender">{shareText}</p>
+      <p className="display-serif text-4xl text-ivory">{shareText}</p>
       {submit.status === "sending" && <Label>Saving your score…</Label>}
       {submit.status === "done" && (
-        <p className="text-platinum">
-          You're <span className="display-italic text-3xl text-lavender">#{submit.response.rank}</span> of {submit.response.players} today.
+        <p className="text-mist">
+          You're <span className="display-serif text-3xl text-ivory">#{submit.response.rank}</span> of {submit.response.players} today.
         </p>
       )}
       {submit.status === "error" && (

@@ -15,8 +15,8 @@ describe("palette contrast", () => {
   });
 
   it("grades known values like the WCAG calculator", () => {
-    expect(contrastRatio("lavender", "mocha")).toBeCloseTo(5.77, 2);
-    expect(contrastGrade(contrastRatio("lavender-deep", "mocha"))).toBe("AA large");
+    expect(contrastRatio("ivory", "ink")).toBeGreaterThan(15);
+    expect(contrastGrade(contrastRatio("gold", "ink"))).toBe("AA");
     expect(contrastGrade(2)).toBe("fail");
   });
 });

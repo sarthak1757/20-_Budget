@@ -136,7 +136,7 @@ export function SetupPage() {
         <div className="grid max-w-xl gap-4">
           <div className="grid gap-1">
             <Label>Category</Label>
-            <p className="display-italic text-4xl text-lavender sm:text-5xl">{categoryName}</p>
+            <p className="display-serif text-4xl text-ivory sm:text-5xl">{categoryName}</p>
           </div>
 
           {isBotMode && (
@@ -197,7 +197,7 @@ export function SetupPage() {
             <CardTitle>Rules</CardTitle>
             <Stepper label="Budget" value={budget} min={5} max={50} format={(v) => `$${v}`} onChange={setBudget} />
             <Stepper label="Slots" value={slots} min={MIN_SLOTS} max={MAX_SLOTS} onChange={setSlots} />
-            <p className="text-sm text-platinum">
+            <p className="text-sm text-mist">
               You must always keep at least $1 for each empty slot, so you can't blow it all on one pick.
             </p>
             <RulesPanel
@@ -208,7 +208,7 @@ export function SetupPage() {
           </Card>
 
           {problems.length > 0 && (
-            <div role="alert" className="grid gap-2 rounded-[1.75rem] bg-mocha-dark p-5 ring-1 ring-lavender-deep">
+            <div role="alert" className="grid gap-2 rounded-[1.75rem] bg-ink-raised p-5 ring-1 ring-gold">
               {problems.map((problem) => (
                 <UrgentNote key={problem}>{problem}</UrgentNote>
               ))}

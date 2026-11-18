@@ -118,7 +118,7 @@ function RoomContent({ room, playerId, categories, busy, onLeave }: RoomContentP
     const isHost = room.hostId === playerId;
     return (
       <>
-        <h1 className="display-italic mb-10 text-5xl text-lavender sm:text-7xl">Results</h1>
+        <h1 className="display-serif mb-10 text-5xl text-ivory sm:text-7xl">Results</h1>
         {room.results ? (
           <ResultsView
             players={game.players}
@@ -140,7 +140,7 @@ function RoomContent({ room, playerId, categories, busy, onLeave }: RoomContentP
         ) : (
           <Spinner />
         )}
-        {!isHost && <p className="mt-6 text-sm text-platinum">The host can start a rematch with everyone here.</p>}
+        {!isHost && <p className="mt-6 text-sm text-mist">The host can start a rematch with everyone here.</p>}
       </>
     );
   }

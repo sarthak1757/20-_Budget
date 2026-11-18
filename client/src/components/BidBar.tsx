@@ -28,7 +28,7 @@ export function BidBar({ turnLabel, auction, highBidderName, bidder, canAct, bus
   return (
     <div className="grid gap-3">
       <p className="text-center">
-        <Label className={canAct ? "text-lavender" : ""}>{turnLabel}</Label>
+        <Label className={canAct ? "text-ivory" : ""}>{turnLabel}</Label>
       </p>
       <p className="flex items-baseline justify-center gap-3 text-center" aria-live="polite">
         {auction.highBidderId === null ? (
@@ -36,7 +36,7 @@ export function BidBar({ turnLabel, auction, highBidderName, bidder, canAct, bus
         ) : (
           <>
             <Label>High bid · {highBidderName}</Label>
-            <span className="display-italic text-4xl text-lavender">${auction.highBid}</span>
+            <span className="display-serif text-4xl text-ivory">${auction.highBid}</span>
           </>
         )}
       </p>

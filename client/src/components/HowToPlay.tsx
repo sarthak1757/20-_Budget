@@ -50,12 +50,12 @@ export function HowToPlay() {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-mocha-dark/80 p-4" onClick={hide}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink-raised/80 p-4" onClick={hide}>
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="how-to-play-title"
-        className="relative isolate w-full max-w-sm overflow-hidden rounded-[2rem] bg-mocha-dark p-7 text-center shadow-2xl ring-1 ring-platinum/30"
+        className="relative isolate w-full max-w-sm overflow-hidden rounded-[2rem] bg-ink-raised p-7 text-center shadow-2xl ring-1 ring-mist/15"
         onClick={(event) => event.stopPropagation()}
       >
         {/* A different chrome shape for each card, behind the text. */}
@@ -66,15 +66,15 @@ export function HowToPlay() {
         <Label>
           How to play · {index + 1} / {HOW_TO_PLAY_CARDS.length}
         </Label>
-        <Icon size={40} strokeWidth={ICON_STROKE} className="mx-auto mt-10 text-lavender-deep" aria-hidden />
-        <h2 id="how-to-play-title" className="display-italic mt-4 text-5xl text-lavender">
+        <Icon size={40} strokeWidth={ICON_STROKE} className="mx-auto mt-10 text-gold" aria-hidden />
+        <h2 id="how-to-play-title" className="display-serif mt-4 text-5xl text-ivory">
           {card.title}
         </h2>
-        <p className="mt-4 text-platinum">{card.text}</p>
+        <p className="mt-4 text-mist">{card.text}</p>
 
         <div className="my-6 flex justify-center gap-2" aria-hidden>
           {HOW_TO_PLAY_CARDS.map((shown, dot) => (
-            <span key={shown.title} className={`h-px w-8 ${dot === index ? "bg-lavender" : "bg-platinum/30"}`} />
+            <span key={shown.title} className={`h-px w-8 ${dot === index ? "bg-ivory" : "bg-mist/15"}`} />
           ))}
         </div>
 
@@ -106,7 +106,7 @@ export function HelpButton() {
       onClick={show}
       aria-label="How to play"
       title="How to play"
-      className="grid size-9 place-items-center rounded-full text-platinum ring-1 ring-platinum/60 hover:bg-mocha-light"
+      className="grid size-9 place-items-center rounded-full text-mist ring-1 ring-mist/60 hover:bg-ink-hover"
     >
       <CircleHelp size={16} strokeWidth={ICON_STROKE} aria-hidden />
     </button>

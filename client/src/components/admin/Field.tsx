@@ -22,7 +22,7 @@ export function Field({ label, value, onChange, error, type = "text", disabled =
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value)}
         aria-invalid={error !== undefined}
-        className={`${INPUT_CLASS} min-w-0 py-1.5 text-base ${error ? "border-lavender-deep" : ""}`}
+        className={`${INPUT_CLASS} min-w-0 py-1.5 text-base ${error ? "border-gold" : ""}`}
       />
       {error && <UrgentNote>{error}</UrgentNote>}
     </label>

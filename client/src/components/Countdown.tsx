@@ -49,7 +49,7 @@ export function Countdown({ deadline, totalSeconds, label }: CountdownProps) {
     return null;
   }
   const percent = Math.min(100, (msLeft / (totalSeconds * 1000)) * 100);
-  // No red in the palette: urgency is a pulsing lavender-deep number and an icon.
+  // No red in the palette: urgency is a pulsing gold number and an icon.
   const urgent = secondsLeft <= 5;
 
   return (
@@ -57,14 +57,14 @@ export function Countdown({ deadline, totalSeconds, label }: CountdownProps) {
       <div className="flex items-baseline justify-between">
         {urgent ? <UrgentNote>Hurry</UrgentNote> : <Label>{label}</Label>}
         <span
-          className={`display-italic origin-right text-3xl tabular-nums ${urgent ? "animate-urgent text-lavender-deep" : "text-lavender"}`}
+          className={`display-serif origin-right text-3xl tabular-nums ${urgent ? "animate-urgent text-gold" : "text-ivory"}`}
         >
           {secondsLeft}s
         </span>
       </div>
-      <div className="h-[2px] bg-platinum/20">
+      <div className="h-[2px] bg-mist/20">
         <div
-          className={`h-full transition-[width] duration-200 ease-linear ${urgent ? "bg-lavender-deep" : "bg-platinum"}`}
+          className={`h-full transition-[width] duration-200 ease-linear ${urgent ? "bg-gold" : "bg-mist"}`}
           style={{ width: `${percent}%` }}
         />
       </div>

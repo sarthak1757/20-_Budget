@@ -45,9 +45,9 @@ export function PowerUpBar({ state, playerId, canAct, busy = false, onUse }: Pow
             disabled={disabled}
             onClick={() => onUse(powerUp)}
             title={used ? `${name} used` : (blockReason ?? help)}
-            className={`inline-flex items-center gap-2 rounded-full px-4 py-2 ring-1 transition disabled:cursor-not-allowed ${used ? "text-platinum/50 ring-platinum/20 line-through" : "text-platinum ring-platinum/60 enabled:hover:bg-mocha-light disabled:opacity-60"}`}
+            className={`inline-flex items-center gap-2 rounded-full px-4 py-2 ring-1 transition disabled:cursor-not-allowed ${used ? "text-mist/50 ring-mist/20 line-through" : "text-mist ring-mist/60 enabled:hover:bg-ink-hover disabled:opacity-60"}`}
           >
-            <Icon size={16} strokeWidth={ICON_STROKE} className="text-lavender-deep" aria-hidden />
+            <Icon size={16} strokeWidth={ICON_STROKE} className="text-gold" aria-hidden />
             <span className="label-caps">{name}</span>
           </button>
         );

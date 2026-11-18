@@ -23,7 +23,7 @@ export function ReactionBar({ onReact }: { onReact: (emoji: ReactionPayload["emo
 
   return (
     <div className="flex items-center justify-center gap-2" role="group" aria-label="Send a reaction">
-      <Label className="mr-1 hidden text-platinum/80 sm:inline">React</Label>
+      <Label className="mr-1 hidden text-mist/80 sm:inline">React</Label>
       {REACTION_EMOJIS.map((emoji) => (
         <button
           key={emoji}
@@ -31,7 +31,7 @@ export function ReactionBar({ onReact }: { onReact: (emoji: ReactionPayload["emo
           onClick={() => send(emoji)}
           disabled={coolingDown}
           aria-label={`React ${emoji}`}
-          className="grid size-11 place-items-center rounded-full text-xl ring-1 ring-platinum/40 transition hover:bg-mocha-light active:scale-90 disabled:opacity-40"
+          className="grid size-11 place-items-center rounded-full text-xl ring-1 ring-mist/40 transition hover:bg-ink-hover active:scale-90 disabled:opacity-40"
         >
           {emoji}
         </button>
@@ -57,7 +57,7 @@ export function ReactionLayer({ reactions }: { reactions: Reaction[] }) {
           style={{ left: `${reactionLeftPercent(reaction.id)}%` }}
         >
           <span className="text-5xl">{reaction.emoji}</span>
-          <Label className="rounded-full bg-mocha-dark px-2 py-0.5 ring-1 ring-platinum/30">{reaction.playerName}</Label>
+          <Label className="rounded-full bg-ink-raised px-2 py-0.5 ring-1 ring-mist/15">{reaction.playerName}</Label>
         </div>
       ))}
     </div>

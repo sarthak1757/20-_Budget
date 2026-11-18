@@ -65,11 +65,11 @@ export function ResultsView({ players, results, actions, hideShare = false }: Re
       {/* The winner, huge, with a chrome shape behind the letters. */}
       <section className="relative isolate grid gap-4 overflow-hidden pb-2">
         <ChromeBlob shape="ribbon" className="absolute -top-6 -right-10 -z-10 w-56 sm:right-[8%] sm:w-80" />
-        <Label className="flex items-center gap-2 text-lavender">
+        <Label className="flex items-center gap-2 text-ivory">
           <Trophy size={14} strokeWidth={ICON_STROKE} aria-hidden />
           Stats winner{statsTie && " · tie"}
         </Label>
-        <p className="display-italic text-6xl break-words text-lavender [text-shadow:0_4px_28px_var(--color-mocha-dark)] sm:text-9xl">
+        <p className="display-serif text-6xl break-words text-ivory [text-shadow:0_4px_28px_var(--color-ink-raised)] sm:text-9xl">
           {namesFor(results.statsWinnerIds, players)}
         </p>
         {results.votingHeld && (
@@ -78,7 +78,7 @@ export function ResultsView({ players, results, actions, hideShare = false }: Re
               <Vote size={14} strokeWidth={ICON_STROKE} aria-hidden />
               Vote winner{voteTie && " · tie"}
             </Label>
-            <p className="display-italic text-4xl text-lavender sm:text-6xl">
+            <p className="display-serif text-4xl text-ivory sm:text-6xl">
               {results.voteWinnerIds.length > 0 ? namesFor(results.voteWinnerIds, players) : "No votes cast"}
             </p>
           </div>
@@ -95,8 +95,8 @@ export function ResultsView({ players, results, actions, hideShare = false }: Re
       </section>
 
       <div className="grid gap-4">
-        <Label className="flex items-center gap-2 text-platinum/80">
-          <Gem size={13} strokeWidth={ICON_STROKE} className="text-lavender-deep" aria-hidden />
+        <Label className="flex items-center gap-2 text-mist/80">
+          <Gem size={13} strokeWidth={ICON_STROKE} className="text-gold" aria-hidden />
           Best value pick · most rating per dollar
         </Label>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -112,22 +112,22 @@ export function ResultsView({ players, results, actions, hideShare = false }: Re
             return (
               <section
                 key={score.playerId}
-                className={`grid grid-cols-[minmax(0,1fr)] content-start gap-4 rounded-[1.75rem] bg-mocha-dark p-5 ${isWinner ? "shadow-glow" : "ring-1 ring-platinum/30"}`}
+                className={`grid grid-cols-[minmax(0,1fr)] content-start gap-4 rounded-[1.75rem] bg-ink-raised p-5 ${isWinner ? "shadow-glow" : "ring-1 ring-mist/15"}`}
               >
                 <header className="flex items-start justify-between gap-3">
                   <div className="grid min-w-0 gap-1">
-                    <Label className="flex items-center gap-2 text-platinum/80">
+                    <Label className="flex items-center gap-2 text-mist/80">
                       {String(rank + 1).padStart(2, "0")}
-                      {player.isBot && <Bot size={13} strokeWidth={ICON_STROKE} className="text-lavender-deep" aria-label="bot" />}
+                      {player.isBot && <Bot size={13} strokeWidth={ICON_STROKE} className="text-gold" aria-label="bot" />}
                     </Label>
-                    <h2 className="display-italic truncate text-3xl text-lavender">{player.name}</h2>
+                    <h2 className="display-serif truncate text-3xl text-ivory">{player.name}</h2>
                   </div>
-                  <span className="display-italic text-6xl text-lavender tabular-nums">{score.total}</span>
+                  <span className="display-serif text-6xl text-ivory tabular-nums">{score.total}</span>
                 </header>
 
-                <div className="flex h-[2px] bg-platinum/20" aria-hidden>
-                  <div className="bg-platinum" style={{ width: `${ratingShare}%` }} />
-                  <div className="bg-lavender-deep" style={{ width: `${100 - ratingShare}%` }} />
+                <div className="flex h-[2px] bg-mist/20" aria-hidden>
+                  <div className="bg-mist" style={{ width: `${ratingShare}%` }} />
+                  <div className="bg-gold" style={{ width: `${100 - ratingShare}%` }} />
                 </div>
                 <dl className="grid gap-1.5">
                   <ScoreRow label="Rating" value={String(score.ratingTotal)} />
@@ -141,26 +141,26 @@ export function ResultsView({ players, results, actions, hideShare = false }: Re
                 <ol className="grid grid-cols-[minmax(0,1fr)]">
                   {player.team.map((item, index) =>
                     item ? (
-                      <li key={index} className="flex items-center gap-2 border-t border-platinum/30 py-2 last:border-b">
+                      <li key={index} className="flex items-center gap-2 border-t border-mist/15 py-2 last:border-b">
                         <span className="min-w-0 flex-1">
-                          <span className={`display-italic block truncate text-xl ${item.isBench ? "text-platinum/70" : "text-lavender"}`}>
+                          <span className={`display-serif block truncate text-xl ${item.isBench ? "text-mist/70" : "text-ivory"}`}>
                             {item.name}
                           </span>
-                          <Label className="text-platinum/80">${pricePaid(item)}</Label>
+                          <Label className="text-mist/80">${pricePaid(item)}</Label>
                         </span>
                         {item.isMystery && (
-                          <Gift size={15} strokeWidth={ICON_STROKE} className="shrink-0 text-lavender-deep" aria-label="Was a mystery item" />
+                          <Gift size={15} strokeWidth={ICON_STROKE} className="shrink-0 text-gold" aria-label="Was a mystery item" />
                         )}
                         {/* Outside the truncated name so it's never cut off. */}
                         {item === bestValue && (
-                          <Gem size={15} strokeWidth={ICON_STROKE} className="shrink-0 text-lavender-deep" aria-label="Best value" />
+                          <Gem size={15} strokeWidth={ICON_STROKE} className="shrink-0 text-gold" aria-label="Best value" />
                         )}
-                        <span className="display-italic w-9 text-right text-2xl text-lavender tabular-nums">{item.rating ?? "?"}</span>
+                        <span className="display-serif w-9 text-right text-2xl text-ivory tabular-nums">{item.rating ?? "?"}</span>
                       </li>
                     ) : null,
                   )}
                 </ol>
-                <Label className="text-platinum/80">${player.budget} left</Label>
+                <Label className="text-mist/80">${player.budget} left</Label>
               </section>
             );
           })}
@@ -174,9 +174,9 @@ function ScoreRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-baseline justify-between">
       <dt>
-        <Label className="text-platinum/80">{label}</Label>
+        <Label className="text-mist/80">{label}</Label>
       </dt>
-      <dd className="text-platinum tabular-nums">{value}</dd>
+      <dd className="text-mist tabular-nums">{value}</dd>
     </div>
   );
 }

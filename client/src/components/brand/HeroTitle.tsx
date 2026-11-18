@@ -1,7 +1,7 @@
 import { ChromeBlob } from "./ChromeBlob";
 
 const WORD_CLASS =
-  "display-italic relative z-10 block text-[22vw] leading-[0.8] text-lavender [text-shadow:0_4px_28px_var(--color-mocha-dark)] sm:text-[11rem]";
+  "display-serif relative z-10 block text-[22vw] leading-[0.8] text-ivory [text-shadow:0_4px_28px_var(--color-ink-raised)] sm:text-[11rem]";
 
 // "Budget" / "Draft" split around a chrome blob. The blob sits BEHIND the
 // letters (z-0) and peeks out to the right, so every letter stays readable.

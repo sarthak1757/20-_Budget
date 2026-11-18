@@ -60,7 +60,7 @@ export function JoinPage() {
               autoCapitalize="characters"
               autoComplete="off"
               placeholder="ABC123"
-              className={`${INPUT_CLASS} display-italic text-5xl tracking-[0.2em] uppercase`}
+              className={`${INPUT_CLASS} display-serif text-5xl tracking-[0.2em] uppercase`}
             />
           </label>
           <NameField value={name} onChange={setName} />

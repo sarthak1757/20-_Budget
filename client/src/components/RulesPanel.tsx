@@ -49,10 +49,10 @@ export function RulesPanel({ settings, categoryRoles, disabled = false, onChange
                 type="button"
                 aria-pressed={selected}
                 onClick={() => onChange({ ...settings, draftStyle: style.value })}
-                className={`rounded-[1.25rem] p-4 text-left transition disabled:opacity-60 ${selected ? "bg-mocha shadow-glow" : "ring-1 ring-platinum/30 hover:bg-mocha-light"}`}
+                className={`rounded-[1.25rem] p-4 text-left transition disabled:opacity-60 ${selected ? "bg-ink shadow-glow" : "ring-1 ring-mist/15 hover:bg-ink-hover"}`}
               >
-                <span className="display-italic block text-3xl text-lavender">{style.label}</span>
-                <span className="mt-1 block text-sm text-platinum">{style.description}</span>
+                <span className="display-serif block text-3xl text-ivory">{style.label}</span>
+                <span className="mt-1 block text-sm text-mist">{style.description}</span>
               </button>
             );
           })}
@@ -111,7 +111,7 @@ function PresetButton({ label, active, disabled, onClick }: { label: string; act
       aria-pressed={active}
       disabled={disabled}
       onClick={onClick}
-      className={`label-caps rounded-full px-3 py-1.5 ring-1 transition disabled:opacity-60 ${active ? "bg-lavender text-mocha ring-lavender" : "text-platinum ring-platinum/50 hover:bg-mocha-light"}`}
+      className={`label-caps rounded-full px-3 py-1.5 ring-1 transition disabled:opacity-60 ${active ? "bg-gold text-ink ring-gold" : "text-mist ring-mist/50 hover:bg-ink-hover"}`}
     >
       {label}
     </button>

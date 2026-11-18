@@ -58,24 +58,24 @@ export function ChromeBlob({ shape = "pebble", className = "", float = true }: C
       <defs>
         {/* Sharp light/dark bands: the "metal" look. */}
         <linearGradient id={`${id}-body`} x1="0.1" y1="0" x2="0.9" y2="1">
-          <stop offset="0%" stopColor="var(--color-platinum)" />
-          <stop offset="22%" stopColor="var(--color-lavender)" />
-          <stop offset="40%" stopColor="var(--color-lavender-deep)" />
-          <stop offset="48%" stopColor="var(--color-mocha-dark)" />
-          <stop offset="58%" stopColor="var(--color-lavender-deep)" />
-          <stop offset="74%" stopColor="var(--color-platinum)" />
-          <stop offset="90%" stopColor="var(--color-mocha-light)" />
-          <stop offset="100%" stopColor="var(--color-mocha-dark)" />
+          <stop offset="0%" stopColor="var(--color-mist)" />
+          <stop offset="22%" stopColor="var(--color-ivory)" />
+          <stop offset="40%" stopColor="var(--color-gold)" />
+          <stop offset="48%" stopColor="var(--color-ink-raised)" />
+          <stop offset="58%" stopColor="var(--color-gold)" />
+          <stop offset="74%" stopColor="var(--color-mist)" />
+          <stop offset="90%" stopColor="var(--color-ink-hover)" />
+          <stop offset="100%" stopColor="var(--color-ink-raised)" />
         </linearGradient>
         <linearGradient id={`${id}-band`} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="var(--color-mocha-dark)" stopOpacity="0.9" />
-          <stop offset="35%" stopColor="var(--color-platinum)" stopOpacity="0.95" />
-          <stop offset="60%" stopColor="var(--color-lavender)" stopOpacity="0.7" />
-          <stop offset="100%" stopColor="var(--color-mocha-dark)" stopOpacity="0.85" />
+          <stop offset="0%" stopColor="var(--color-ink-raised)" stopOpacity="0.9" />
+          <stop offset="35%" stopColor="var(--color-mist)" stopOpacity="0.95" />
+          <stop offset="60%" stopColor="var(--color-ivory)" stopOpacity="0.7" />
+          <stop offset="100%" stopColor="var(--color-ink-raised)" stopOpacity="0.85" />
         </linearGradient>
         <radialGradient id={`${id}-glint`}>
-          <stop offset="0%" stopColor="var(--color-platinum)" stopOpacity="1" />
-          <stop offset="100%" stopColor="var(--color-platinum)" stopOpacity="0" />
+          <stop offset="0%" stopColor="var(--color-mist)" stopOpacity="1" />
+          <stop offset="100%" stopColor="var(--color-mist)" stopOpacity="0" />
         </radialGradient>
         <filter id={`${id}-blur`} x="-50%" y="-50%" width="200%" height="200%">
           <feGaussianBlur stdDeviation="6" />
@@ -88,7 +88,7 @@ export function ChromeBlob({ shape = "pebble", className = "", float = true }: C
         </clipPath>
       </defs>
 
-      <ellipse {...def.shadow} fill="var(--color-mocha-dark)" opacity="0.7" filter={`url(#${id}-blur)`} />
+      <ellipse {...def.shadow} fill="var(--color-gold)" opacity="0.28" filter={`url(#${id}-blur)`} />
       <path d={def.body} fill={`url(#${id}-body)`} fillRule={fillRule} />
       <g clipPath={`url(#${id}-clip)`}>
         <path d={def.band} fill={`url(#${id}-band)`} filter={`url(#${id}-soft)`} />
@@ -101,8 +101,8 @@ export function ChromeBlob({ shape = "pebble", className = "", float = true }: C
           fill={`url(#${id}-glint)`}
         />
       </g>
-      {/* A thin rim light keeps the edge crisp against the mocha background. */}
-      <path d={def.body} fill="none" stroke="var(--color-platinum)" strokeOpacity="0.35" strokeWidth="0.75" fillRule={fillRule} />
+      {/* A thin rim light keeps the edge crisp against the ink background. */}
+      <path d={def.body} fill="none" stroke="var(--color-mist)" strokeOpacity="0.35" strokeWidth="0.75" fillRule={fillRule} />
     </svg>
   );
 }

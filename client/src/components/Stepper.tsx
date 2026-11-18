@@ -15,7 +15,7 @@ interface StepperProps {
 export function Stepper({ label, value, min, max, step = 1, format, onChange, disabled = false }: StepperProps) {
   const shown = format ? format(value) : String(value);
   const buttonClass =
-    "grid size-11 place-items-center rounded-full text-xl text-platinum ring-1 ring-platinum/60 transition hover:bg-mocha-light disabled:cursor-not-allowed disabled:opacity-40";
+    "grid size-11 place-items-center rounded-full text-xl text-mist ring-1 ring-mist/60 transition hover:bg-ink-hover disabled:cursor-not-allowed disabled:opacity-40";
 
   return (
     <div className="flex items-center justify-between gap-4">
@@ -30,7 +30,7 @@ export function Stepper({ label, value, min, max, step = 1, format, onChange, di
         >
           −
         </button>
-        <span className="display-italic w-16 text-center text-4xl text-lavender tabular-nums" aria-live="polite">
+        <span className="display-serif w-16 text-center text-4xl text-ivory tabular-nums" aria-live="polite">
           {shown}
         </span>
         <button

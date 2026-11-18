@@ -41,7 +41,7 @@ export function LobbyView({ room, playerId, categories, busy, onChangeSettings, 
     <div className="mx-auto grid max-w-xl gap-4">
       <Card className="grid justify-items-center gap-4 text-center">
         <Label>Room code</Label>
-        <p className="display-italic max-w-full text-6xl tracking-[0.08em] text-lavender sm:text-8xl sm:tracking-[0.12em]">{room.code}</p>
+        <p className="display-serif max-w-full text-6xl tracking-[0.08em] text-ivory sm:text-8xl sm:tracking-[0.12em]">{room.code}</p>
         <Button variant="secondary" onClick={copyLink} className="w-full">
           {copied ? (
             <>
@@ -62,17 +62,17 @@ export function LobbyView({ room, playerId, categories, busy, onChangeSettings, 
           {room.players.map((player) => (
             <li key={player.id} className="flex items-center gap-3">
               <Avatar name={player.name} />
-              <span className="display-italic text-2xl text-lavender">{player.name}</span>
-              {player.id === playerId && <Label className="text-platinum/80">You</Label>}
-              {player.isHost && <Label className="text-lavender-deep">Host</Label>}
+              <span className="display-serif text-2xl text-ivory">{player.name}</span>
+              {player.id === playerId && <Label className="text-mist/80">You</Label>}
+              {player.isHost && <Label className="text-gold">Host</Label>}
               <span
-                className={`ml-auto size-2.5 rounded-full ${player.isConnected ? "bg-lavender" : "ring-1 ring-platinum/60"}`}
+                className={`ml-auto size-2.5 rounded-full ${player.isConnected ? "bg-ivory" : "ring-1 ring-mist/60"}`}
                 aria-label={player.isConnected ? "online" : "offline"}
               />
             </li>
           ))}
         </ul>
-        {room.players.length < 2 && <p className="mt-4 text-sm text-platinum">Waiting for at least one more player…</p>}
+        {room.players.length < 2 && <p className="mt-4 text-sm text-mist">Waiting for at least one more player…</p>}
       </Card>
 
       <Card className="grid gap-5">
@@ -80,7 +80,7 @@ export function LobbyView({ room, playerId, categories, busy, onChangeSettings, 
         {room.customItemCount !== null ? (
           <p className="flex items-baseline justify-between gap-4">
             <Label>Category</Label>
-            <span className="display-italic text-2xl text-lavender">Custom list · {room.customItemCount} items</span>
+            <span className="display-serif text-2xl text-ivory">Custom list · {room.customItemCount} items</span>
           </p>
         ) : isHost ? (
           <label className="flex items-center justify-between gap-4">
@@ -89,7 +89,7 @@ export function LobbyView({ room, playerId, categories, busy, onChangeSettings, 
               value={settings.categorySlug}
               onChange={(event) => onChangeSettings({ ...settings, categorySlug: event.target.value })}
               disabled={busy}
-              className={`${INPUT_CLASS} w-auto bg-mocha-dark`}
+              className={`${INPUT_CLASS} w-auto bg-ink-raised`}
             >
               {categories.map((c) => (
                 <option key={c.slug} value={c.slug}>
@@ -101,7 +101,7 @@ export function LobbyView({ room, playerId, categories, busy, onChangeSettings, 
         ) : (
           <p className="flex items-baseline justify-between gap-4">
             <Label>Category</Label>
-            <span className="display-italic text-2xl text-lavender">
+            <span className="display-serif text-2xl text-ivory">
               {category ? `${category.emoji} ${category.name}` : settings.categorySlug}
             </span>
           </p>
@@ -129,7 +129,7 @@ export function LobbyView({ room, playerId, categories, busy, onChangeSettings, 
           disabled={!isHost || busy}
           onChange={onChangeSettings}
         />
-        <p className="text-sm text-platinum">
+        <p className="text-sm text-mist">
           {settings.turnSeconds}s per {settings.draftStyle === "auction" ? "bid" : "turn"}. If time runs out, you pass.
         </p>
       </Card>

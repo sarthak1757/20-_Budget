@@ -1,16 +1,16 @@
 // The colour palette. index.css declares the same values as Tailwind theme
-// tokens (bg-mocha, text-lavender, ...), which is what components use;
+// tokens (bg-ink, text-ivory, ...), which is what components use;
 // palette.test.ts checks the two lists match. This file exists so the
 // contrast of every pairing can be computed and tested, and shown on
 // /style-guide.
 
 export const PALETTE = {
-  mocha: "#6F4E37", // page background
-  "mocha-dark": "#4F3726", // cards, slots, header and footer bars
-  "mocha-light": "#7E5D46", // hover surfaces, dividers
-  lavender: "#E6E0F0", // headlines, primary text, primary button fill
-  "lavender-deep": "#B8A9D9", // active player, current turn, urgency, highlights
-  platinum: "#E5E4E2", // body text, borders, secondary buttons, rating bars
+  ink: "#08090B", // page background (midnight black)
+  "ink-raised": "#111317", // cards, slots, header and footer bars
+  "ink-hover": "#1A1D22", // hover surfaces
+  ivory: "#F5F3EF", // headlines and primary text (pure white, warm)
+  gold: "#FFC900", // the accent: buttons, price badge, active player, highlights, urgency
+  mist: "#C4C1BA", // body text, borders and rating bars (a softer ivory)
 } as const;
 
 export type PaletteName = keyof typeof PALETTE;
@@ -55,15 +55,14 @@ export interface ColourPairing {
 
 // Every text/background pairing the design uses.
 export const PAIRINGS: ColourPairing[] = [
-  { foreground: "lavender", background: "mocha", use: "Headlines, primary text on the page", needs: "AA" },
-  { foreground: "platinum", background: "mocha", use: "Body text and labels on the page", needs: "AA" },
-  { foreground: "lavender", background: "mocha-dark", use: "Item names, budgets on cards", needs: "AA" },
-  { foreground: "platinum", background: "mocha-dark", use: "Body text and labels on cards", needs: "AA" },
-  { foreground: "lavender-deep", background: "mocha-dark", use: "Labels, badges and icons on cards", needs: "AA" },
-  { foreground: "lavender-deep", background: "mocha", use: "Icons, frames, glows and the large timer digits", needs: "AA large" },
-  { foreground: "lavender", background: "mocha-light", use: "Text on a hovered surface", needs: "AA" },
-  { foreground: "platinum", background: "mocha-light", use: "Text on a hovered surface", needs: "AA" },
-  { foreground: "mocha", background: "lavender", use: "Primary button label, price badge", needs: "AA" },
-  { foreground: "mocha", background: "platinum", use: "Primary button label on hover", needs: "AA" },
-  { foreground: "mocha-dark", background: "lavender-deep", use: "Text on a lavender-deep chip", needs: "AA" },
+  { foreground: "ivory", background: "ink", use: "Headlines, primary text on the page", needs: "AA" },
+  { foreground: "mist", background: "ink", use: "Body text and labels on the page", needs: "AA" },
+  { foreground: "gold", background: "ink", use: "Accent text, icons and the urgent timer on the page", needs: "AA" },
+  { foreground: "ivory", background: "ink-raised", use: "Item names, budgets on cards", needs: "AA" },
+  { foreground: "mist", background: "ink-raised", use: "Body text and labels on cards", needs: "AA" },
+  { foreground: "gold", background: "ink-raised", use: "Labels, badges and icons on cards", needs: "AA" },
+  { foreground: "ivory", background: "ink-hover", use: "Text on a hovered surface", needs: "AA" },
+  { foreground: "mist", background: "ink-hover", use: "Text on a hovered surface", needs: "AA" },
+  { foreground: "ink", background: "gold", use: "Primary button label, price badge, selected chip", needs: "AA" },
+  { foreground: "ink", background: "ivory", use: "Primary button label on hover", needs: "AA" },
 ];

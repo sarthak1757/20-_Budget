@@ -3,8 +3,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router";
 import { App } from "./App";
 // Self-hosted fonts (Latin only, to keep the download small).
-import "@fontsource/bodoni-moda/latin-400-italic.css";
-import "@fontsource/bodoni-moda/latin-500-italic.css";
+import "@fontsource/instrument-serif/latin-400.css";
 import "@fontsource/dm-sans/latin-400.css";
 import "@fontsource/dm-sans/latin-500.css";
 import "@fontsource/dm-sans/latin-700.css";

@@ -40,13 +40,15 @@ Also everywhere:
 - **Sound effects** for buy, pass, the last 5 seconds of a timer, and the results. They're
   generated with the Web Audio API (no audio files). The speaker button mutes them, and
   that choice is remembered in localStorage.
-- **A luxury-editorial look**: mocha background, italic Bodoni Moda headlines in lavender
-  (self-hosted with `@fontsource`), DM Sans body, thin hairlines and small uppercase labels.
-  The palette is six Tailwind theme tokens in `client/src/index.css` (mirrored in
-  `lib/palette.ts`, where a test checks WCAG AA contrast for every pairing). There is no
-  warning colour, so urgency is a pulsing lavender-deep icon plus motion. UI icons are thin
-  lucide line icons; the only full-colour emoji are the reactions (and category emoji, which
-  are content). Open `/style-guide` to see every colour, type size and component.
+- **A dark editorial look**: midnight black (`#08090B`), warm white (`#F5F3EF`) and golden
+  yellow (`#FFC900`), with an upright Instrument Serif for headlines (self-hosted with
+  `@fontsource`), DM Sans for body text, thin hairlines and small uppercase labels. Gold is the
+  only accent: buttons, prices, the active player and urgency. The palette is six Tailwind theme
+  tokens in `client/src/index.css` (mirrored in `lib/palette.ts`, where a test checks WCAG AA
+  contrast for every pairing). There is no warning colour, so urgency is a pulsing gold icon
+  plus motion. UI icons are thin lucide line icons; the only full-colour emoji are the
+  reactions (and category emoji, which are content). Open `/style-guide` to see every colour,
+  type size and component.
 - **Emoji reactions** in online rooms: 👏 😂 😱 🔥 💸 float up the board for everyone, one per
   player per second.
 
