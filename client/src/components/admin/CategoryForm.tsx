@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { adminCategorySchema, type AdminCategoryPayload } from "@budget-draft/shared";
 import { validateForm, type FieldErrors } from "../../lib/formErrors";
+import { UrgentNote } from "../brand/primitives";
 import { Button } from "../ui";
 import { Field } from "./Field";
 
@@ -44,7 +45,7 @@ export function CategoryForm({ initial, onSave, onCancel }: CategoryFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-3">
+    <form onSubmit={handleSubmit} className="grid gap-5">
       <div className="grid grid-cols-[1fr_5rem] gap-3">
         <Field label="Name" value={name} onChange={setName} error={errors.name} />
         <Field label="Emoji" value={emoji} onChange={setEmoji} error={errors.emoji} />
@@ -60,11 +61,11 @@ export function CategoryForm({ initial, onSave, onCancel }: CategoryFormProps) {
       />
       <Field label="Description" value={description} onChange={setDescription} error={errors.description} />
       {errors.form && (
-        <p role="alert" className="text-sm text-rose-400">
-          {errors.form}
+        <p role="alert">
+          <UrgentNote>{errors.form}</UrgentNote>
         </p>
       )}
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         <Button type="submit" disabled={saving} className="py-2">
           {saving ? "Saving…" : isEditing ? "Save category" : "Add category"}
         </Button>

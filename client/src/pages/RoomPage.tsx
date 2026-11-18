@@ -1,6 +1,8 @@
+import { RotateCcw } from "lucide-react";
 import { useEffect } from "react";
-import { Link, Navigate, useNavigate, useParams } from "react-router";
+import { Navigate, useNavigate, useParams } from "react-router";
 import { getCurrentPlayerId, type PublicPlayerState, type RoomSnapshot } from "@budget-draft/shared";
+import { ArrowLink, ICON_STROKE, Label, UrgentNote } from "../components/brand/primitives";
 import { Countdown } from "../components/Countdown";
 import { GameBoard } from "../components/GameBoard";
 import { LobbyView } from "../components/LobbyView";
@@ -44,9 +46,9 @@ export function RoomPage() {
     return (
       <PageShell title="Couldn't join" backTo="/">
         <ErrorBox message={store.joinError} />
-        <Link to="/join" className="mt-4 inline-block text-emerald-400 underline">
+        <ArrowLink to="/join" className="mt-6">
           Try another code
-        </Link>
+        </ArrowLink>
       </PageShell>
     );
   }
@@ -70,8 +72,8 @@ export function RoomPage() {
         onLeave={handleLeave}
       />
       {store.actionError && (
-        <p role="alert" className="mt-4 text-center text-rose-400">
-          {store.actionError}
+        <p role="alert" className="mt-4 text-center">
+          <UrgentNote>{store.actionError}</UrgentNote>
         </p>
       )}
       {room.game !== null && (
@@ -116,26 +118,40 @@ function RoomContent({ room, playerId, categories, busy, onLeave }: RoomContentP
     const isHost = room.hostId === playerId;
     return (
       <>
-        <h1 className="mb-6 text-3xl font-black">Results</h1>
-        {room.results ? <ResultsView players={game.players} results={room.results} /> : <Spinner />}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          {isHost && (
-            <Button onClick={store.rematch} disabled={busy}>
-              🔁 Rematch
-            </Button>
-          )}
-          <Button variant={isHost ? "secondary" : "primary"} onClick={onLeave}>
-            Back to home
-          </Button>
-        </div>
-        {!isHost && <p className="mt-3 text-center text-sm text-zinc-400">The host can start a rematch with everyone here.</p>}
+        <h1 className="display-italic mb-10 text-5xl text-lavender sm:text-7xl">Results</h1>
+        {room.results ? (
+          <ResultsView
+            players={game.players}
+            results={room.results}
+            actions={
+              <>
+                {isHost && (
+                  <Button variant="secondary" onClick={store.rematch} disabled={busy}>
+                    <RotateCcw size={16} strokeWidth={ICON_STROKE} className="mr-2 inline" aria-hidden />
+                    Rematch
+                  </Button>
+                )}
+                <Button variant="ghost" onClick={onLeave}>
+                  Back to home
+                </Button>
+              </>
+            }
+          />
+        ) : (
+          <Spinner />
+        )}
+        {!isHost && <p className="mt-6 text-sm text-platinum">The host can start a rematch with everyone here.</p>}
       </>
     );
   }
 
   if (game.phase === "voting") {
     if (!me) {
-      return <p className="text-center text-zinc-400">The players are voting…</p>;
+      return (
+        <p className="text-center">
+          <Label>The players are voting…</Label>
+        </p>
+      );
     }
     return (
       <VotePanel
@@ -174,7 +190,7 @@ function RoomContent({ room, playerId, categories, busy, onLeave }: RoomContentP
         onPeek={store.peek}
       />
       <div className="mt-6 text-center">
-        <Button variant="ghost" className="text-sm" onClick={onLeave}>
+        <Button variant="ghost" className="py-2 text-sm" onClick={onLeave}>
           Leave game
         </Button>
       </div>

@@ -1,5 +1,6 @@
 import type { PublicItem } from "@budget-draft/shared";
-import { Avatar } from "./Avatar";
+import { ChromeBlob } from "./brand/ChromeBlob";
+import { Hairline, Label, PriceBadge, RatingBar } from "./brand/primitives";
 
 interface ItemCardProps {
   item: PublicItem;
@@ -13,37 +14,36 @@ export function ItemCard({ item, roundNumber, itemsRemaining, isAuction = false 
     // The parent renders this with key={item.id}, so each new item mounts a fresh card
     // and the reveal animation plays again.
     <article
-      className="animate-card-flip rounded-3xl border border-zinc-700 bg-gradient-to-b from-zinc-800 to-zinc-900 p-5 text-center shadow-xl"
+      className="animate-card-flip relative grid content-start gap-5 overflow-hidden rounded-[2rem] border border-platinum/30 bg-mocha-dark p-5"
       aria-live="polite"
     >
-      <p className="text-xs tracking-widest text-zinc-500 uppercase">
-        Item {roundNumber} · {itemsRemaining} left
-      </p>
-      <div className="mt-4 flex justify-center">
-        <Avatar name={item.name} emoji={item.emoji} size="lg" />
+      <div className="flex items-center justify-between gap-3">
+        <Label>
+          Item {roundNumber} · {itemsRemaining} left
+        </Label>
+        <Label className="truncate text-lavender">
+          {item.emoji !== undefined && <span aria-hidden>{item.emoji} </span>}
+          {item.tag}
+        </Label>
       </div>
-      <h2 className="mt-3 text-2xl leading-tight font-black">{item.name}</h2>
-      {item.isMystery && (
-        <p className="mx-auto mt-2 w-fit rounded-full bg-violet-900/60 px-3 py-0.5 text-xs font-bold text-violet-200">
-          🎁 Mystery: rating revealed at the end
-        </p>
-      )}
-      <p className="mt-1 text-sm text-zinc-400">{item.tag}</p>
 
-      <div className="mt-4 grid grid-cols-2 gap-3">
-        <div className="rounded-2xl bg-zinc-950/60 p-3">
-          <p className="text-xs text-zinc-500 uppercase">{isAuction ? "Guide price" : "Price"}</p>
-          <p className="text-money text-3xl font-black tabular-nums">${item.price}</p>
+      {item.isMystery && (
+        // A mystery item hides its rating: a big italic "?" floats over a chrome shape.
+        <div className="relative grid h-28 place-items-center">
+          <ChromeBlob shape="pebble" className="absolute w-28" />
+          <span className="display-italic relative text-[6rem] text-lavender [-webkit-text-stroke:2px_var(--color-mocha-dark)] [paint-order:stroke_fill] [text-shadow:0_2px_12px_var(--color-mocha-dark)]">
+            ?
+          </span>
         </div>
-        <div className="rounded-2xl bg-zinc-950/60 p-3">
-          <p className="text-xs text-zinc-500 uppercase">Rating</p>
-          <p className="text-3xl font-black tabular-nums">{item.rating === null ? "?" : item.rating}</p>
-        </div>
-      </div>
-      <div className="mt-3 h-2 overflow-hidden rounded-full bg-zinc-800" aria-hidden>
-        {item.rating !== null && (
-          <div className="h-full rounded-full bg-emerald-400" style={{ width: `${item.rating}%` }} />
-        )}
+      )}
+
+      <h2 className="display-italic text-4xl text-lavender">{item.name}</h2>
+      {item.isMystery && <Label className="text-lavender-deep">Mystery · rating revealed at the end</Label>}
+
+      <Hairline />
+      <div className="flex items-end gap-5">
+        <PriceBadge price={item.price} label={isAuction ? "Guide price" : "Price"} />
+        <RatingBar rating={item.rating} className="flex-1 pb-7" />
       </div>
     </article>
   );

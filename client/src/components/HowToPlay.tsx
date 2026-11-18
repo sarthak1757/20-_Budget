@@ -1,7 +1,12 @@
+import { CircleHelp } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { HOW_TO_PLAY_CARDS } from "../lib/howToPlay";
 import { useHelpStore } from "../store/helpStore";
+import { ChromeBlob, type ChromeShape } from "./brand/ChromeBlob";
+import { ICON_STROKE, Label } from "./brand/primitives";
 import { Button } from "./ui";
+
+const BLOB_SHAPES: ChromeShape[] = ["ring", "pebble", "ribbon", "ring"];
 
 // The 4 how-to-play cards in a dialog, one at a time.
 export function HowToPlay() {
@@ -34,6 +39,7 @@ export function HowToPlay() {
     return null;
   }
   const isLast = index === HOW_TO_PLAY_CARDS.length - 1;
+  const { Icon } = card;
 
   function next() {
     if (isLast) {
@@ -44,36 +50,41 @@ export function HowToPlay() {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={hide}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-mocha-dark/80 p-4" onClick={hide}>
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="how-to-play-title"
-        className="w-full max-w-sm rounded-3xl border border-zinc-700 bg-zinc-900 p-6 text-center shadow-2xl"
+        className="relative isolate w-full max-w-sm overflow-hidden rounded-[2rem] bg-mocha-dark p-7 text-center shadow-2xl ring-1 ring-platinum/30"
         onClick={(event) => event.stopPropagation()}
       >
-        <p className="text-xs tracking-widest text-zinc-500 uppercase">How to play</p>
-        <div className="my-4 text-6xl" aria-hidden>
-          {card.emoji}
-        </div>
-        <h2 id="how-to-play-title" className="text-2xl font-black">
+        {/* A different chrome shape for each card, behind the text. */}
+        <ChromeBlob
+          shape={BLOB_SHAPES[index % BLOB_SHAPES.length] ?? "ring"}
+          className="absolute -top-8 -right-12 -z-10 w-44 opacity-90"
+        />
+        <Label>
+          How to play · {index + 1} / {HOW_TO_PLAY_CARDS.length}
+        </Label>
+        <Icon size={40} strokeWidth={ICON_STROKE} className="mx-auto mt-10 text-lavender-deep" aria-hidden />
+        <h2 id="how-to-play-title" className="display-italic mt-4 text-5xl text-lavender">
           {card.title}
         </h2>
-        <p className="mt-3 text-zinc-300">{card.text}</p>
+        <p className="mt-4 text-platinum">{card.text}</p>
 
-        <div className="my-5 flex justify-center gap-2" aria-label={`Card ${index + 1} of ${HOW_TO_PLAY_CARDS.length}`}>
+        <div className="my-6 flex justify-center gap-2" aria-hidden>
           {HOW_TO_PLAY_CARDS.map((shown, dot) => (
-            <span key={shown.title} className={`size-2 rounded-full ${dot === index ? "bg-emerald-400" : "bg-zinc-700"}`} />
+            <span key={shown.title} className={`h-px w-8 ${dot === index ? "bg-lavender" : "bg-platinum/30"}`} />
           ))}
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="flex items-center justify-between gap-3">
           {index === 0 ? (
             <Button variant="ghost" onClick={hide}>
               Skip
             </Button>
           ) : (
-            <Button variant="secondary" onClick={() => setIndex(index - 1)}>
+            <Button variant="ghost" onClick={() => setIndex(index - 1)}>
               Back
             </Button>
           )}
@@ -95,9 +106,9 @@ export function HelpButton() {
       onClick={show}
       aria-label="How to play"
       title="How to play"
-      className="grid size-9 place-items-center rounded-full text-sm font-medium text-platinum ring-1 ring-platinum/60 hover:bg-mocha-light"
+      className="grid size-9 place-items-center rounded-full text-platinum ring-1 ring-platinum/60 hover:bg-mocha-light"
     >
-      ?
+      <CircleHelp size={16} strokeWidth={ICON_STROKE} aria-hidden />
     </button>
   );
 }

@@ -2,6 +2,7 @@ import { Navigate, useNavigate } from "react-router";
 import { getCurrentPlayerId, toPublicState, type PlayerState } from "@budget-draft/shared";
 import { GameBoard } from "../components/GameBoard";
 import { HandoffScreen } from "../components/HandoffScreen";
+import { UrgentNote } from "../components/brand/primitives";
 import { Button, PageShell } from "../components/ui";
 import { VotePanel } from "../components/VotePanel";
 import { describeEvent } from "../lib/describeEvents";
@@ -48,7 +49,7 @@ export function LocalGamePage() {
   }
 
   const quitButton = (
-    <Button variant="ghost" className="text-sm" onClick={handleQuit}>
+    <Button variant="ghost" className="py-2 text-sm" onClick={handleQuit}>
       Quit game
     </Button>
   );
@@ -80,7 +81,11 @@ export function LocalGamePage() {
     return (
       <PageShell>
         <VotePanel voterId={voter.id} voterName={voter.name} players={game.players} onVote={vote} />
-        {error && <p className="mt-4 text-center text-rose-400">{error}</p>}
+        {error && (
+          <p role="alert" className="mt-4 text-center">
+            <UrgentNote>{error}</UrgentNote>
+          </p>
+        )}
       </PageShell>
     );
   }
@@ -88,7 +93,7 @@ export function LocalGamePage() {
   const currentPlayer = findPlayer(game.players, getCurrentPlayerId(game));
   let turnLabel = "";
   if (currentPlayer && botIsThinking) {
-    turnLabel = `🤖 ${currentPlayer.name} is thinking…`;
+    turnLabel = `${currentPlayer.name} is thinking…`;
   } else if (currentPlayer && game.mode === "bot") {
     turnLabel = game.auction === null ? "Your turn! Buy or pass?" : "Your turn! Bid or pass?";
   } else if (currentPlayer) {
@@ -106,7 +111,11 @@ export function LocalGamePage() {
         peeked={peeked}
         onPeek={peek}
       />
-      {error && <p className="mt-4 text-center text-rose-400">{error}</p>}
+      {error && (
+        <p role="alert" className="mt-4 text-center">
+          <UrgentNote>{error}</UrgentNote>
+        </p>
+      )}
       <div className="mt-6 text-center">{quitButton}</div>
     </PageShell>
   );

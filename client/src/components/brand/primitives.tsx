@@ -111,7 +111,7 @@ export function ArrowButton({ onClick, children, className = "" }: { onClick: ()
 
 // The card surface: mocha-dark with a thin platinum border.
 export function Panel({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <div className={`rounded-[1.75rem] border border-platinum/30 bg-mocha-dark p-6 ${className}`}>{children}</div>;
+  return <div className={`[&.grid]:grid-cols-[minmax(0,1fr)] rounded-[1.75rem] border border-platinum/30 bg-mocha-dark p-6 ${className}`}>{children}</div>;
 }
 
 // ---- Game pieces ----
@@ -153,15 +153,22 @@ export function RatingBar({ rating, className = "" }: { rating: number | null; c
   );
 }
 
-// Urgency without a warning colour: lavender-deep, an icon, and a pulse.
-// (lavender-deep is 3.44:1 on mocha, so this sits on mocha-dark where it's 5.09:1.)
+// Urgency without a warning colour: a pulsing lavender-deep "!" icon next to
+// lavender text. The words stay lavender (not lavender-deep) so they keep AA
+// contrast on every background: lavender-deep small text is only 3.44:1 on mocha.
 export function UrgentNote({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
-    <span className={`inline-flex items-center gap-2 font-body text-sm font-medium text-lavender-deep ${className}`}>
-      <span aria-hidden className="animate-urgent grid size-5 place-items-center rounded-full ring-1 ring-lavender-deep text-[11px] font-bold">
+    <span className={`inline-flex items-center gap-2 font-body text-sm font-medium text-lavender ${className}`}>
+      <span
+        aria-hidden
+        className="animate-urgent grid size-5 shrink-0 place-items-center rounded-full text-[11px] font-bold text-lavender-deep ring-1 ring-lavender-deep"
+      >
         !
       </span>
       {children}
     </span>
   );
 }
+
+// Thin-line icons (lucide) share one stroke weight so they read as a set.
+export const ICON_STROKE = 1.25;

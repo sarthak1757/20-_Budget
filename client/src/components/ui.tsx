@@ -78,7 +78,7 @@ export function PageShell({ title, children, backTo }: { title?: string; childre
 }
 
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <div className={`rounded-[1.75rem] border border-platinum/30 bg-mocha-dark p-5 sm:p-6 ${className}`}>{children}</div>;
+  return <div className={`[&.grid]:grid-cols-[minmax(0,1fr)] rounded-[1.75rem] border border-platinum/30 bg-mocha-dark p-5 sm:p-6 ${className}`}>{children}</div>;
 }
 
 export function Spinner({ label = "Loading…" }: { label?: string }) {

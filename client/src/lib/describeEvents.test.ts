@@ -21,7 +21,7 @@ describe("describeEvent", () => {
     expect(describeEvent({ type: "discarded", item }, players)).toBe("Nobody bought Hot Dog, so it's gone");
     expect(describeEvent({ type: "vetoed", playerId: "a", item }, players)).toBe("Asha vetoed Hot Dog");
     // Says that someone peeked, never what they saw.
-    expect(describeEvent({ type: "peeked", playerId: "a" }, players)).toBe("Asha peeked at the next item 👀");
+    expect(describeEvent({ type: "peeked", playerId: "a" }, players)).toBe("Asha peeked at the next item");
   });
 });
 

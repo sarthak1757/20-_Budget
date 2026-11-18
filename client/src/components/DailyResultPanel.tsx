@@ -1,9 +1,10 @@
+import { Share2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router";
 import type { DailyResultResponse, GameState, TurnMove } from "@budget-draft/shared";
 import { buildShareText, copyToClipboard, saveDailyAttempt, submitDaily } from "../lib/daily";
 import { showToast } from "../store/toastStore";
-import { Button, Card } from "./ui";
+import { ICON_STROKE, Label, PillButton, PillLink, UrgentNote } from "./brand/primitives";
+import { Card } from "./ui";
 
 interface DailyResultPanelProps {
   game: GameState;
@@ -48,20 +49,26 @@ export function DailyResultPanel({ game, daily, total, alreadySubmitted, onSubmi
   }
 
   return (
-    <Card className="mt-6">
-      <p className="rounded-xl bg-zinc-950 p-3 text-center font-mono text-lg">{shareText}</p>
-      {submit.status === "sending" && <p className="mt-3 text-center text-zinc-400">Saving your score…</p>}
+    <Card className="mt-10 grid max-w-xl gap-4">
+      <Label>Your daily result</Label>
+      <p className="display-italic text-4xl text-lavender">{shareText}</p>
+      {submit.status === "sending" && <Label>Saving your score…</Label>}
       {submit.status === "done" && (
-        <p className="mt-3 text-center">
-          You're <span className="font-bold text-money">#{submit.response.rank}</span> of {submit.response.players} today.
+        <p className="text-platinum">
+          You're <span className="display-italic text-3xl text-lavender">#{submit.response.rank}</span> of {submit.response.players} today.
         </p>
       )}
-      {submit.status === "error" && <p className="mt-3 text-center text-rose-400">Score not saved: {submit.message}</p>}
-      <div className="mt-4 flex flex-wrap justify-center gap-3">
-        <Button onClick={() => void share()}>📋 Copy result</Button>
-        <Link to="/daily" className="rounded-xl bg-zinc-800 px-4 py-3 font-semibold hover:bg-zinc-700">
-          Today's leaderboard
-        </Link>
+      {submit.status === "error" && (
+        <p role="alert">
+          <UrgentNote>Score not saved: {submit.message}</UrgentNote>
+        </p>
+      )}
+      <div className="flex flex-wrap gap-3">
+        <PillButton onClick={() => void share()}>
+          <Share2 size={16} strokeWidth={ICON_STROKE} aria-hidden />
+          Copy result
+        </PillButton>
+        <PillLink to="/daily">Today's leaderboard</PillLink>
       </div>
     </Card>
   );

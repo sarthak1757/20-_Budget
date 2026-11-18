@@ -29,7 +29,7 @@ export function describeEvent(event: PublicGameEvent, players: PublicPlayerState
     return `${nameOf(players, event.playerId)} vetoed ${event.item.name}`;
   }
   if (event.type === "peeked") {
-    return `${nameOf(players, event.playerId)} peeked at the next item 👀`;
+    return `${nameOf(players, event.playerId)} peeked at the next item`;
   }
   return `Nobody bought ${event.item.name}, so it's gone`;
 }

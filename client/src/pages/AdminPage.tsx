@@ -3,7 +3,8 @@ import type { AdminCategoryPayload, AdminItemPayload, Category, Item } from "@bu
 import { CategoryForm } from "../components/admin/CategoryForm";
 import { ItemForm } from "../components/admin/ItemForm";
 import { Avatar } from "../components/Avatar";
-import { Button, Card, ErrorBox, PageShell, Spinner } from "../components/ui";
+import { INPUT_CLASS, Label, UrgentNote } from "../components/brand/primitives";
+import { Button, Card, CardTitle, ErrorBox, PageShell, Spinner } from "../components/ui";
 import { adminApi, getAdminPassword, setAdminPassword } from "../lib/adminApi";
 
 export function AdminPage() {
@@ -42,20 +43,20 @@ function AdminLogin({ onSuccess }: { onSuccess: () => void }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mx-auto grid max-w-sm gap-3">
-      <label className="grid gap-1">
-        <span className="text-sm text-zinc-400">Admin password</span>
+    <form onSubmit={handleSubmit} className="grid max-w-sm gap-5">
+      <label className="grid gap-2">
+        <Label>Admin password</Label>
         <input
           type="password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
           autoComplete="current-password"
-          className="rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-3 outline-none focus:border-emerald-500"
+          className={INPUT_CLASS}
         />
       </label>
       {error && (
-        <p role="alert" className="text-rose-400">
-          {error}
+        <p role="alert">
+          <UrgentNote>{error}</UrgentNote>
         </p>
       )}
       <Button type="submit" disabled={checking || password === ""}>
@@ -126,12 +127,12 @@ function AdminDashboard({ onLogOut }: { onLogOut: () => void }) {
   const selected = categories.find((category) => category.slug === selectedSlug);
 
   return (
-    <div className="grid gap-4 lg:grid-cols-[18rem_1fr]">
-      <aside className="grid content-start gap-3">
-        <Card>
-          <h2 className="mb-2 font-bold">Categories</h2>
-          {categories.length === 0 && <p className="text-sm text-zinc-500">No categories yet.</p>}
-          <ul className="grid gap-1">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[19rem_minmax(0,1fr)]">
+      <aside className="grid grid-cols-[minmax(0,1fr)] content-start gap-4">
+        <Card className="grid gap-4">
+          <CardTitle>Categories</CardTitle>
+          {categories.length === 0 && <p className="text-sm text-platinum">No categories yet.</p>}
+          <ul className="grid">
             {categories.map((category) => (
               <li key={category.slug}>
                 <button
@@ -140,18 +141,18 @@ function AdminDashboard({ onLogOut }: { onLogOut: () => void }) {
                     setSelectedSlug(category.slug);
                     setEditingCategory(false);
                   }}
-                  className={`flex w-full items-center gap-2 rounded-lg px-2 py-2 text-left hover:bg-zinc-800 ${category.slug === selectedSlug ? "bg-zinc-800" : ""}`}
+                  className={`flex w-full items-center gap-3 border-t border-platinum/30 px-2 py-3 text-left transition hover:bg-mocha-light/40 ${category.slug === selectedSlug ? "bg-mocha" : ""}`}
                 >
                   <span aria-hidden>{category.emoji}</span>
-                  <span className="flex-1 truncate">{category.name}</span>
-                  <span className="text-xs text-zinc-500">{category.itemCount}</span>
+                  <span className="display-italic min-w-0 flex-1 truncate text-xl text-lavender">{category.name}</span>
+                  <Label className="text-platinum/80">{category.itemCount}</Label>
                 </button>
               </li>
             ))}
           </ul>
         </Card>
-        <Card>
-          <h2 className="mb-3 font-bold">New category</h2>
+        <Card className="grid gap-4">
+          <CardTitle>New category</CardTitle>
           <CategoryForm onSave={createCategory} />
         </Card>
         <Button variant="ghost" onClick={onLogOut}>
@@ -159,8 +160,8 @@ function AdminDashboard({ onLogOut }: { onLogOut: () => void }) {
         </Button>
       </aside>
 
-      <section className="grid content-start gap-4">
-        {!selected && <p className="text-zinc-400">Pick a category to edit its items.</p>}
+      <section className="grid grid-cols-[minmax(0,1fr)] content-start gap-4">
+        {!selected && <p className="text-platinum">Pick a category to edit its items.</p>}
         {selected && (
           <>
             <Card>
@@ -168,12 +169,12 @@ function AdminDashboard({ onLogOut }: { onLogOut: () => void }) {
                 <CategoryForm initial={selected} onSave={updateCategory} onCancel={() => setEditingCategory(false)} />
               ) : (
                 <div className="flex flex-wrap items-start gap-3">
-                  <div className="flex-1">
-                    <h2 className="text-2xl font-black">
+                  <div className="grid flex-1 gap-1">
+                    <h2 className="display-italic text-4xl text-lavender">
                       {selected.emoji} {selected.name}
                     </h2>
-                    <p className="text-sm text-zinc-400">{selected.description}</p>
-                    <p className="mt-1 font-mono text-xs text-zinc-500">{selected.slug}</p>
+                    <p className="text-sm text-platinum">{selected.description}</p>
+                    <Label className="text-platinum/80">{selected.slug}</Label>
                   </div>
                   <Button variant="secondary" className="py-2" onClick={() => setEditingCategory(true)}>
                     Edit
@@ -237,34 +238,34 @@ function ItemsEditor({ slug, onItemsChanged }: { slug: string; onItemsChanged: (
 
   return (
     <>
-      <Card>
-        <h3 className="mb-3 font-bold">Add item</h3>
+      <Card className="grid gap-4">
+        <CardTitle>Add item</CardTitle>
         <ItemForm onSave={createItem} />
       </Card>
-      <Card>
-        <h3 className="mb-3 font-bold">Items {items && `(${items.length})`}</h3>
+      <Card className="grid gap-4">
+        <CardTitle>Items {items && `(${items.length})`}</CardTitle>
         {error && <ErrorBox message={error} onRetry={() => void loadItems()} />}
         {!error && items === null && <Spinner />}
-        {items && items.length === 0 && <p className="text-sm text-zinc-500">No items yet. Games need at least a few.</p>}
+        {items && items.length === 0 && <p className="text-sm text-platinum">No items yet. Games need at least a few.</p>}
         {items && items.length > 0 && (
-          <ul className="divide-y divide-zinc-800">
+          <ul>
             {items.map((item) => (
-              <li key={item.id} className="py-2">
+              <li key={item.id} className="border-t border-platinum/30 py-3 last:border-b">
                 {editingId === item.id ? (
                   <ItemForm initial={item} onSave={(values) => updateItem(item.id, values)} onCancel={() => setEditingId(null)} />
                 ) : (
                   <div className="flex items-center gap-3">
                     <Avatar name={item.name} emoji={item.emoji} size="sm" />
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate font-semibold">{item.name}</span>
-                      <span className="block text-xs text-zinc-500">{item.tag}</span>
+                      <span className="display-italic block truncate text-xl text-lavender">{item.name}</span>
+                      <Label className="text-platinum/80">{item.tag}</Label>
                     </span>
-                    <span className="text-money w-10 text-right tabular-nums">${item.price}</span>
-                    <span className="w-8 text-right font-bold tabular-nums">{item.rating}</span>
-                    <Button variant="ghost" className="px-2 py-1 text-sm" onClick={() => setEditingId(item.id)}>
+                    <span className="w-10 text-right text-platinum tabular-nums">${item.price}</span>
+                    <span className="display-italic w-10 text-right text-2xl text-lavender tabular-nums">{item.rating}</span>
+                    <Button variant="ghost" className="px-3 py-1 text-sm" onClick={() => setEditingId(item.id)}>
                       Edit
                     </Button>
-                    <Button variant="ghost" className="px-2 py-1 text-sm text-rose-400" onClick={() => void deleteItem(item)}>
+                    <Button variant="ghost" className="px-3 py-1 text-sm" onClick={() => void deleteItem(item)}>
                       Delete
                     </Button>
                   </div>

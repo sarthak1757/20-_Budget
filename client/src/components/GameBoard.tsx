@@ -1,3 +1,4 @@
+import { Eye } from "lucide-react";
 import type { ReactNode } from "react";
 import {
   getBuyBlockReason,
@@ -10,6 +11,7 @@ import {
 import { describeEvent } from "../lib/describeEvents";
 import { isPeekVisible, type PeekedItem } from "../lib/peek";
 import { useGameSounds } from "../lib/useGameSounds";
+import { ICON_STROKE, Label } from "./brand/primitives";
 import { ActionBar } from "./ActionBar";
 import { BidBar } from "./BidBar";
 import { ItemCard } from "./ItemCard";
@@ -148,7 +150,7 @@ export function GameBoard({
           onUse={handlePowerUp}
         />
         {isPeekVisible(peeked, state.roundNumber, currentId) && <PeekCard peeked={peeked} />}
-        <ul className="min-h-10 text-center text-sm text-zinc-400" aria-live="polite">
+        <ul className="min-h-10 text-center text-sm text-platinum" aria-live="polite">
           {state.lastEvents.map((event, index) => (
             <li key={index}>{describeEvent(event, state.players)}</li>
           ))}
@@ -164,12 +166,15 @@ export function GameBoard({
 function PeekCard({ peeked }: { peeked: PeekedItem }) {
   const item = peeked.item;
   return (
-    <div className="rounded-xl border border-violet-700 bg-violet-950/40 p-3 text-sm" aria-live="polite">
-      <p className="text-xs text-violet-300 uppercase">👀 Next up (only you can see this)</p>
-      <p className="font-bold">{item.name}</p>
-      <p className="text-zinc-400">
-        {item.tag} · ${item.price} · rating {item.rating === null ? "hidden 🎁" : item.rating}
-      </p>
+    <div className="grid gap-1 rounded-[1.25rem] bg-mocha-dark p-4 ring-1 ring-lavender-deep" aria-live="polite">
+      <Label className="flex items-center gap-2 text-lavender-deep">
+        <Eye size={14} strokeWidth={ICON_STROKE} aria-hidden />
+        Next up · only you can see this
+      </Label>
+      <p className="display-italic text-3xl text-lavender">{item.name}</p>
+      <Label className="text-platinum">
+        {item.tag} · ${item.price} · rating {item.rating === null ? "hidden" : item.rating}
+      </Label>
     </div>
   );
 }

@@ -1,4 +1,5 @@
-import { Link, Route, Routes } from "react-router";
+import { Route, Routes } from "react-router";
+import { ArrowLink } from "./components/brand/primitives";
 import { HowToPlay } from "./components/HowToPlay";
 import { Toaster } from "./components/Toaster";
 import { PageShell } from "./components/ui";
@@ -41,10 +42,8 @@ export function App() {
 function NotFoundPage() {
   return (
     <PageShell title="Page not found">
-      <p className="text-zinc-400">That page doesn't exist.</p>
-      <Link to="/" className="mt-4 inline-block text-emerald-400 underline">
-        Go home
-      </Link>
+      <p className="mb-6 text-platinum">That page doesn't exist.</p>
+      <ArrowLink to="/">Go home</ArrowLink>
     </PageShell>
   );
 }

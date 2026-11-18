@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { adminItemSchema, type AdminItemPayload, type Item } from "@budget-draft/shared";
 import { validateForm, type FieldErrors } from "../../lib/formErrors";
+import { UrgentNote } from "../brand/primitives";
 import { Button } from "../ui";
 import { Field } from "./Field";
 
@@ -57,7 +58,7 @@ export function ItemForm({ initial, onSave, onCancel }: ItemFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-3">
+    <form onSubmit={handleSubmit} className="grid gap-5">
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-[2fr_1.2fr_5rem_5rem_4rem]">
         <Field label="Name" value={name} onChange={setName} error={errors.name} />
         <Field label="Tag" value={tag} onChange={setTag} error={errors.tag} placeholder="Striker" />
@@ -66,11 +67,11 @@ export function ItemForm({ initial, onSave, onCancel }: ItemFormProps) {
         <Field label="Emoji" value={emoji} onChange={setEmoji} error={errors.emoji} />
       </div>
       {errors.form && (
-        <p role="alert" className="text-sm text-rose-400">
-          {errors.form}
+        <p role="alert">
+          <UrgentNote>{errors.form}</UrgentNote>
         </p>
       )}
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         <Button type="submit" disabled={saving} className="py-2">
           {saving ? "Saving…" : isEditing ? "Save item" : "Add item"}
         </Button>

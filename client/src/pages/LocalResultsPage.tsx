@@ -1,8 +1,9 @@
 import { useEffect } from "react";
-import { Link, Navigate, useNavigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 import { computeResults } from "@budget-draft/shared";
 import { DailyResultPanel } from "../components/DailyResultPanel";
 import { ResultsView } from "../components/ResultsView";
+import { PillLink } from "../components/brand/primitives";
 import { Button, PageShell } from "../components/ui";
 import { submitLocalResult } from "../lib/localResults";
 import { useLocalGameStore } from "../store/localGameStore";
@@ -49,7 +50,23 @@ export function LocalResultsPage() {
 
   return (
     <PageShell title="Results">
-      <ResultsView players={game.players} results={results} />
+      <ResultsView
+        players={game.players}
+        results={results}
+        hideShare={daily !== null}
+        actions={
+          <>
+            {daily === null && (
+              <Button variant="secondary" onClick={playAgain}>
+                Play again
+              </Button>
+            )}
+            <PillLink to="/" variant="ghost">
+              <span onClick={reset}>Home</span>
+            </PillLink>
+          </>
+        }
+      />
       {daily !== null && (
         <DailyResultPanel
           game={game}
@@ -59,12 +76,6 @@ export function LocalResultsPage() {
           onSubmitted={markResultSubmitted}
         />
       )}
-      <div className="mt-8 flex flex-wrap justify-center gap-3">
-        {daily === null && <Button onClick={playAgain}>Play again</Button>}
-        <Link to="/" onClick={reset} className="rounded-xl bg-zinc-800 px-4 py-3 font-semibold hover:bg-zinc-700">
-          Home
-        </Link>
-      </div>
     </PageShell>
   );
 }

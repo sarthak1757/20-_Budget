@@ -1,7 +1,8 @@
 import type { DailyLeaderboard as DailyLeaderboardData } from "@budget-draft/shared";
 import { apiRequest } from "../lib/api";
 import { useAsync } from "../lib/useAsync";
-import { Card, ErrorBox, Spinner } from "./ui";
+import { Label } from "./brand/primitives";
+import { Card, CardTitle, ErrorBox, Spinner } from "./ui";
 
 // Today's top scores. `refreshKey` changes after a submit, to load it again.
 export function DailyLeaderboard({ dateKey, refreshKey = 0 }: { dateKey: string; refreshKey?: number }) {
@@ -18,20 +19,16 @@ export function DailyLeaderboard({ dateKey, refreshKey = 0 }: { dateKey: string;
   }
   const entries = board.data.entries;
   return (
-    <Card>
-      <h2 className="mb-3 text-lg font-bold">Today's best · #{board.data.number}</h2>
-      {entries.length === 0 && <p className="text-zinc-400">No scores yet. Be the first!</p>}
-      <ol className="grid gap-1">
+    <Card className="grid gap-4">
+      <CardTitle>Today's best · #{board.data.number}</CardTitle>
+      {entries.length === 0 && <p className="text-platinum">No scores yet. Be the first!</p>}
+      <ol>
         {entries.map((entry, index) => (
-          <li key={entry.name} className="flex items-center gap-3 rounded-lg px-2 py-1 odd:bg-zinc-800/50">
-            <span className="w-6 text-right text-zinc-500">{index + 1}</span>
-            <span className="flex-1 truncate font-semibold">{entry.name}</span>
-            {entry.beatBot && (
-              <span className="text-xs text-emerald-400" title="Beat the Daily Bot">
-                beat bot
-              </span>
-            )}
-            <span className="font-mono">{entry.total}</span>
+          <li key={entry.name} className="flex items-center gap-3 border-t border-platinum/30 py-3 last:border-b">
+            <Label className={`w-6 ${index === 0 ? "text-lavender" : "text-platinum/80"}`}>{String(index + 1).padStart(2, "0")}</Label>
+            <span className="display-italic min-w-0 flex-1 truncate text-2xl text-lavender">{entry.name}</span>
+            {entry.beatBot && <Label className="text-lavender-deep">Beat bot</Label>}
+            <span className="display-italic text-3xl text-lavender tabular-nums">{entry.total}</span>
           </li>
         ))}
       </ol>

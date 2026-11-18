@@ -1,5 +1,5 @@
 import { getBidBlockReason, minimumBid, type AuctionState, type PublicPlayerState } from "@budget-draft/shared";
-import { Button } from "./ui";
+import { Label, PillButton, UrgentNote } from "./brand/primitives";
 
 // Quick-bid steps: one tap raises the high bid by this much.
 export const QUICK_BID_STEPS = [1, 2, 5];
@@ -26,14 +26,17 @@ export function BidBar({ turnLabel, auction, highBidderName, bidder, canAct, bus
   }
 
   return (
-    <div className="grid gap-2">
-      <p className="text-center font-semibold text-zinc-300">{turnLabel}</p>
-      <p className="text-center text-sm text-zinc-400" aria-live="polite">
+    <div className="grid gap-3">
+      <p className="text-center">
+        <Label className={canAct ? "text-lavender" : ""}>{turnLabel}</Label>
+      </p>
+      <p className="flex items-baseline justify-center gap-3 text-center" aria-live="polite">
         {auction.highBidderId === null ? (
-          <>No bids yet. Opening bid ${minimum}.</>
+          <Label>No bids yet · opening bid ${minimum}</Label>
         ) : (
           <>
-            High bid <span className="text-money text-lg font-black">${auction.highBid}</span> by {highBidderName}
+            <Label>High bid · {highBidderName}</Label>
+            <span className="display-italic text-4xl text-lavender">${auction.highBid}</span>
           </>
         )}
       </p>
@@ -43,23 +46,27 @@ export function BidBar({ turnLabel, auction, highBidderName, bidder, canAct, bus
           const amount = auction.highBid + step;
           const blocked = bidder === undefined || getBidBlockReason(bidder, auction, amount) !== null;
           return (
-            <Button
+            <PillButton
               key={step}
-              className="py-4 text-lg font-black"
+              className="grid gap-0 px-2 py-3 text-lg leading-tight"
               disabled={!canAct || busy || blocked}
               onClick={() => onBid(amount)}
               aria-label={`Bid $${amount}`}
             >
               ${amount}
-              <span className="block text-xs font-semibold opacity-70">+${step}</span>
-            </Button>
+              <span className="label-caps opacity-80">+${step}</span>
+            </PillButton>
           );
         })}
       </div>
-      <Button variant="secondary" className="py-3 text-lg font-black tracking-wide" disabled={!canAct || busy} onClick={onPass}>
+      <PillButton variant="secondary" className="py-3 text-lg tracking-[0.15em]" disabled={!canAct || busy} onClick={onPass}>
         PASS
-      </Button>
-      {canAct && blockReason !== null && <p className="text-center text-sm text-amber-400">{blockReason}</p>}
+      </PillButton>
+      {canAct && blockReason !== null && (
+        <p className="text-center">
+          <UrgentNote>{blockReason}</UrgentNote>
+        </p>
+      )}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import type { PublicItem, PublicPlayerState } from "@budget-draft/shared";
 import type { ReactNode } from "react";
-import { Avatar } from "./Avatar";
+import { Hairline, Label } from "./brand/primitives";
 
 interface VotePanelProps {
   voterId: string;
@@ -34,13 +34,14 @@ export function VotePanel({ voterId, voterName, players, selectedId, disabled = 
   }
 
   return (
-    <div className="mx-auto grid max-w-4xl gap-4">
-      <div className="text-center">
-        <h1 className="text-3xl font-black">Vote for the best team</h1>
-        <p className="mt-1 text-zinc-400">{voterName}, pick the team you like most. You can't vote for yourself.</p>
+    <div className="grid gap-8">
+      <div className="grid gap-3">
+        <Label>Vote · {voterName}</Label>
+        <h1 className="display-italic text-5xl text-lavender sm:text-7xl">Vote for the best team</h1>
+        <p className="text-platinum">Pick the team you like most. You can't vote for yourself.</p>
       </div>
       {timer}
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-3">
         {candidates.map((player) => {
           const isSelected = selectedId === player.id;
           return (
@@ -50,26 +51,26 @@ export function VotePanel({ voterId, voterName, players, selectedId, disabled = 
               disabled={disabled}
               onClick={() => onVote(player.id)}
               aria-pressed={isSelected}
-              className={`rounded-2xl border-2 bg-zinc-900 p-4 text-left transition hover:border-emerald-500 disabled:opacity-60 ${isSelected ? "border-emerald-400" : "border-zinc-800"}`}
+              className={`grid grid-cols-[minmax(0,1fr)] content-start gap-3 rounded-[1.75rem] bg-mocha-dark p-5 text-left transition hover:bg-mocha-light/40 disabled:opacity-60 ${isSelected ? "shadow-glow" : "ring-1 ring-platinum/30"}`}
             >
-              <p className="text-lg font-bold">{player.name}</p>
-              <p className="mb-2 text-sm text-zinc-500">Rating total {ratingTotal(player.team)}</p>
-              <ul className="grid grid-cols-1 gap-1">
+              <span className="display-italic text-4xl text-lavender">{player.name}</span>
+              <Label>Rating total {ratingTotal(player.team)}</Label>
+              <Hairline />
+              <ul className="grid grid-cols-[minmax(0,1fr)]">
                 {player.team.map((item, index) => (
-                  <li key={index} className="flex items-center gap-2 text-sm">
+                  <li key={index} className="flex items-center gap-2 border-b border-platinum/30 py-2 last:border-b-0">
                     {item ? (
                       <>
-                        <Avatar name={item.name} emoji={item.emoji} size="sm" />
-                        <span className="truncate">{item.name}</span>
-                        <span className="ml-auto text-zinc-500 tabular-nums">{item.rating}</span>
+                        <span className="display-italic min-w-0 flex-1 truncate text-lg text-lavender">{item.name}</span>
+                        <span className="display-italic text-xl text-platinum tabular-nums">{item.rating}</span>
                       </>
                     ) : (
-                      <span className="text-zinc-600">Empty</span>
+                      <Label className="text-platinum/70">Empty</Label>
                     )}
                   </li>
                 ))}
               </ul>
-              {isSelected && <p className="mt-2 text-sm font-semibold text-emerald-400">Your vote</p>}
+              {isSelected && <Label className="text-lavender-deep">Your vote</Label>}
             </button>
           );
         })}

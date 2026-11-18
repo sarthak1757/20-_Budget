@@ -1,9 +1,11 @@
+import { Share2 } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { createDailyGame, dailyNumber, pickDailyCategory, toDateKey } from "@budget-draft/shared";
+import { ICON_STROKE, Label, PillButton } from "../components/brand/primitives";
 import { DailyLeaderboard } from "../components/DailyLeaderboard";
 import { NameField } from "../components/NameField";
-import { Button, Card, PageShell } from "../components/ui";
+import { Card, PageShell } from "../components/ui";
 import { bundledSeeds } from "../data/bundledCategories";
 import { copyToClipboard, getDailyAttempt, saveDailyAttempt } from "../lib/daily";
 import { getStoredName, storeName } from "../lib/playerStorage";
@@ -38,34 +40,40 @@ export function DailyPage() {
 
   return (
     <PageShell title={`Daily Challenge #${dailyNumber(dateKey)}`} backTo="/">
-      <div className="grid gap-4">
-        <Card>
-          <p className="text-zinc-300">
-            Today's category: <span className="font-bold">{category.emoji} {category.name}</span>
-          </p>
-          <p className="mt-2 text-sm text-zinc-400">
-            Everyone gets the same items in the same order against the same hard bot. $20, 5 slots, mystery items
-            on. One try per day, so make it count.
+      <div className="grid max-w-xl gap-6">
+        <Card className="grid gap-5">
+          <div className="grid gap-1">
+            <Label>Today's category</Label>
+            <p className="display-italic text-4xl text-lavender sm:text-5xl">
+              {category.emoji} {category.name}
+            </p>
+          </div>
+          <p className="text-platinum">
+            Everyone gets the same items in the same order against the same hard bot. $20, 5 slots, mystery items on.
+            One try per day, so make it count.
           </p>
 
           {attempt === null && (
-            <div className="mt-4 grid gap-3">
+            <div className="grid gap-5">
               <NameField value={name} onChange={setName} />
-              <Button onClick={start} disabled={name.trim() === ""}>
+              <PillButton onClick={start} disabled={name.trim() === ""}>
                 Play today's daily
-              </Button>
+              </PillButton>
             </div>
           )}
 
           {attempt !== null && !attempt.finished && (
-            <p className="mt-4 text-amber-300">You already started today's daily. Come back tomorrow!</p>
+            <p className="text-lavender">You already started today's daily. Come back tomorrow!</p>
           )}
 
           {attempt !== null && attempt.finished && attempt.shareText !== null && (
-            <div className="mt-4 grid gap-3">
-              <p className="rounded-xl bg-zinc-950 p-3 font-mono text-lg">{attempt.shareText}</p>
-              <Button onClick={() => void share(attempt.shareText ?? "")}>📋 Copy result</Button>
-              <p className="text-sm text-zinc-400">Next daily at midnight UTC.</p>
+            <div className="grid gap-4">
+              <p className="display-italic text-3xl text-lavender">{attempt.shareText}</p>
+              <PillButton onClick={() => void share(attempt.shareText ?? "")}>
+                <Share2 size={16} strokeWidth={ICON_STROKE} aria-hidden />
+                Copy result
+              </PillButton>
+              <Label>Next daily at midnight UTC</Label>
             </div>
           )}
         </Card>

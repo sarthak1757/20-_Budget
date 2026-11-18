@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { REACTION_COOLDOWN_MS, REACTION_EMOJIS, type Reaction, type ReactionPayload } from "@budget-draft/shared";
+import { Label } from "./brand/primitives";
 
-// The 5 reaction buttons. They grey out for a second after a click,
+// The 5 reaction buttons. They fade for a second after a click,
 // matching the server's limit of one reaction per second.
+// The emoji stay full-colour on purpose: reactions are player expression.
 export function ReactionBar({ onReact }: { onReact: (emoji: ReactionPayload["emoji"]) => void }) {
   const [coolingDown, setCoolingDown] = useState(false);
 
@@ -20,7 +22,8 @@ export function ReactionBar({ onReact }: { onReact: (emoji: ReactionPayload["emo
   }
 
   return (
-    <div className="flex justify-center gap-2" role="group" aria-label="Send a reaction">
+    <div className="flex items-center justify-center gap-2" role="group" aria-label="Send a reaction">
+      <Label className="mr-1 hidden text-platinum/80 sm:inline">React</Label>
       {REACTION_EMOJIS.map((emoji) => (
         <button
           key={emoji}
@@ -28,7 +31,7 @@ export function ReactionBar({ onReact }: { onReact: (emoji: ReactionPayload["emo
           onClick={() => send(emoji)}
           disabled={coolingDown}
           aria-label={`React ${emoji}`}
-          className="rounded-full bg-zinc-800 px-3 py-2 text-xl transition hover:bg-zinc-700 active:scale-90 disabled:opacity-40"
+          className="grid size-11 place-items-center rounded-full text-xl ring-1 ring-platinum/40 transition hover:bg-mocha-light active:scale-90 disabled:opacity-40"
         >
           {emoji}
         </button>
@@ -50,11 +53,11 @@ export function ReactionLayer({ reactions }: { reactions: Reaction[] }) {
       {reactions.map((reaction) => (
         <div
           key={reaction.id}
-          className="reaction-float absolute bottom-24 flex flex-col items-center"
+          className="reaction-float absolute bottom-24 flex flex-col items-center gap-1"
           style={{ left: `${reactionLeftPercent(reaction.id)}%` }}
         >
           <span className="text-5xl">{reaction.emoji}</span>
-          <span className="rounded-full bg-zinc-900/80 px-2 text-xs text-zinc-300">{reaction.playerName}</span>
+          <Label className="rounded-full bg-mocha-dark px-2 py-0.5 ring-1 ring-platinum/30">{reaction.playerName}</Label>
         </div>
       ))}
     </div>

@@ -1,11 +1,20 @@
+import { Bot, Gem, Gift, Share2, Trophy, Vote } from "lucide-react";
 import { pricePaid, type GameResults, type PublicItem, type PublicPlayerState } from "@budget-draft/shared";
-import { useEffect } from "react";
+import { useEffect, type ReactNode } from "react";
+import { buildResultsShareText } from "../lib/shareResults";
+import { copyToClipboard } from "../lib/daily";
 import { playSound } from "../store/soundStore";
-import { Avatar } from "./Avatar";
+import { showToast } from "../store/toastStore";
+import { ChromeBlob } from "./brand/ChromeBlob";
+import { ICON_STROKE, Label, PillButton } from "./brand/primitives";
 
 interface ResultsViewProps {
   players: PublicPlayerState[];
   results: GameResults;
+  // Buttons shown under the winner (Play again, Rematch, Home...). Share is always there.
+  actions?: ReactNode;
+  // A daily challenge has its own share line, so it hides the generic one.
+  hideShare?: boolean;
 }
 
 function namesFor(ids: string[], players: PublicPlayerState[]): string {
@@ -38,7 +47,7 @@ export function findBestValue(team: (PublicItem | null)[]): PublicItem | null {
   return best;
 }
 
-export function ResultsView({ players, results }: ResultsViewProps) {
+export function ResultsView({ players, results, actions, hideShare = false }: ResultsViewProps) {
   // A short fanfare when the results first appear.
   useEffect(() => {
     playSound("win");
@@ -46,85 +55,129 @@ export function ResultsView({ players, results }: ResultsViewProps) {
   const statsTie = results.statsWinnerIds.length > 1;
   const voteTie = results.voteWinnerIds.length > 1;
 
+  async function share() {
+    const copied = await copyToClipboard(buildResultsShareText(players, results));
+    showToast(copied ? "Copied! Paste it anywhere." : "Couldn't copy to the clipboard.", copied ? "success" : "warning");
+  }
+
   return (
-    <div className="grid gap-6">
-      <div className="grid gap-3 sm:grid-cols-2">
-        <div className="rounded-2xl border border-emerald-700 bg-emerald-950/40 p-5">
-          <p className="text-sm text-emerald-300 uppercase">📊 Stats winner{statsTie && " (tie)"}</p>
-          <p className="mt-1 text-3xl font-black">{namesFor(results.statsWinnerIds, players)}</p>
-        </div>
+    <div className="grid gap-12">
+      {/* The winner, huge, with a chrome shape behind the letters. */}
+      <section className="relative isolate grid gap-4 overflow-hidden pb-2">
+        <ChromeBlob shape="ribbon" className="absolute -top-6 -right-10 -z-10 w-56 sm:right-[8%] sm:w-80" />
+        <Label className="flex items-center gap-2 text-lavender">
+          <Trophy size={14} strokeWidth={ICON_STROKE} aria-hidden />
+          Stats winner{statsTie && " · tie"}
+        </Label>
+        <p className="display-italic text-6xl break-words text-lavender [text-shadow:0_4px_28px_var(--color-mocha-dark)] sm:text-9xl">
+          {namesFor(results.statsWinnerIds, players)}
+        </p>
         {results.votingHeld && (
-          <div className="rounded-2xl border border-violet-700 bg-violet-950/40 p-5">
-            <p className="text-sm text-violet-300 uppercase">🗳️ Vote winner{voteTie && " (tie)"}</p>
-            <p className="mt-1 text-3xl font-black">
+          <div className="grid gap-1">
+            <Label className="flex items-center gap-2">
+              <Vote size={14} strokeWidth={ICON_STROKE} aria-hidden />
+              Vote winner{voteTie && " · tie"}
+            </Label>
+            <p className="display-italic text-4xl text-lavender sm:text-6xl">
               {results.voteWinnerIds.length > 0 ? namesFor(results.voteWinnerIds, players) : "No votes cast"}
             </p>
           </div>
         )}
-      </div>
+        <div className="mt-4 flex flex-wrap gap-3">
+          {!hideShare && (
+            <PillButton onClick={() => void share()}>
+              <Share2 size={16} strokeWidth={ICON_STROKE} aria-hidden />
+              Share result
+            </PillButton>
+          )}
+          {actions}
+        </div>
+      </section>
 
-      <p className="-mb-3 text-sm text-zinc-500">💎 = best value pick (most rating per dollar)</p>
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {results.scores.map((score, rank) => {
-          const player = players.find((p) => p.id === score.playerId);
-          if (!player) {
-            return null;
-          }
-          const isWinner = results.statsWinnerIds.includes(score.playerId);
-          const bestValue = findBestValue(player.team);
-          // How much of the total came from ratings vs leftover money, for the bar.
-          const ratingShare = score.total > 0 ? (score.ratingTotal / score.total) * 100 : 0;
-          return (
-            <section
-              key={score.playerId}
-              className={`rounded-2xl border-2 bg-zinc-900 p-4 ${isWinner ? "border-emerald-400" : "border-zinc-800"}`}
-            >
-              <header className="flex items-baseline justify-between">
-                <h2 className="text-lg font-bold">
-                  {rank + 1}. {player.isBot && "🤖 "}
-                  {player.name}
-                </h2>
-                <span className="text-2xl font-black tabular-nums">{score.total}</span>
-              </header>
-              <div className="mt-2 flex h-2 overflow-hidden rounded-full bg-zinc-800" aria-hidden>
-                <div className="bg-emerald-400" style={{ width: `${ratingShare}%` }} />
-                <div className="bg-amber-400" style={{ width: `${100 - ratingShare}%` }} />
-              </div>
-              <p className="mt-2 mb-3 text-sm text-zinc-400">
-                {score.ratingTotal} rating + {score.leftoverBonus} leftover
-                {score.roleBonus > 0 && ` + ${score.roleBonus} balanced team`}
-                {results.votingHeld && ` · ${score.votesReceived} vote${score.votesReceived === 1 ? "" : "s"}`}
-              </p>
-              <ol className="grid grid-cols-1 gap-1.5">
-                {player.team.map((item, index) =>
-                  item ? (
-                    <li key={index} className="flex items-center gap-2 text-sm">
-                      <Avatar name={item.name} emoji={item.emoji} size="sm" />
-                      <span className={`min-w-0 flex-1 truncate ${item.isBench ? "text-zinc-500" : ""}`}>
-                        {item.name}
-                      </span>
-                      {item.isMystery && (
-                        <span title="Was a mystery item" aria-label="Was a mystery item">
-                          🎁
+      <div className="grid gap-4">
+        <Label className="flex items-center gap-2 text-platinum/80">
+          <Gem size={13} strokeWidth={ICON_STROKE} className="text-lavender-deep" aria-hidden />
+          Best value pick · most rating per dollar
+        </Label>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {results.scores.map((score, rank) => {
+            const player = players.find((p) => p.id === score.playerId);
+            if (!player) {
+              return null;
+            }
+            const isWinner = results.statsWinnerIds.includes(score.playerId);
+            const bestValue = findBestValue(player.team);
+            // How much of the total came from ratings vs leftover money, for the line.
+            const ratingShare = score.total > 0 ? (score.ratingTotal / score.total) * 100 : 0;
+            return (
+              <section
+                key={score.playerId}
+                className={`grid grid-cols-[minmax(0,1fr)] content-start gap-4 rounded-[1.75rem] bg-mocha-dark p-5 ${isWinner ? "shadow-glow" : "ring-1 ring-platinum/30"}`}
+              >
+                <header className="flex items-start justify-between gap-3">
+                  <div className="grid min-w-0 gap-1">
+                    <Label className="flex items-center gap-2 text-platinum/80">
+                      {String(rank + 1).padStart(2, "0")}
+                      {player.isBot && <Bot size={13} strokeWidth={ICON_STROKE} className="text-lavender-deep" aria-label="bot" />}
+                    </Label>
+                    <h2 className="display-italic truncate text-3xl text-lavender">{player.name}</h2>
+                  </div>
+                  <span className="display-italic text-6xl text-lavender tabular-nums">{score.total}</span>
+                </header>
+
+                <div className="flex h-[2px] bg-platinum/20" aria-hidden>
+                  <div className="bg-platinum" style={{ width: `${ratingShare}%` }} />
+                  <div className="bg-lavender-deep" style={{ width: `${100 - ratingShare}%` }} />
+                </div>
+                <dl className="grid gap-1.5">
+                  <ScoreRow label="Rating" value={String(score.ratingTotal)} />
+                  <ScoreRow label="Leftover" value={`+${score.leftoverBonus}`} />
+                  {score.roleBonus > 0 && <ScoreRow label="Balanced team" value={`+${score.roleBonus}`} />}
+                  {results.votingHeld && (
+                    <ScoreRow label="Votes" value={String(score.votesReceived)} />
+                  )}
+                </dl>
+
+                <ol className="grid grid-cols-[minmax(0,1fr)]">
+                  {player.team.map((item, index) =>
+                    item ? (
+                      <li key={index} className="flex items-center gap-2 border-t border-platinum/30 py-2 last:border-b">
+                        <span className="min-w-0 flex-1">
+                          <span className={`display-italic block truncate text-xl ${item.isBench ? "text-platinum/70" : "text-lavender"}`}>
+                            {item.name}
+                          </span>
+                          <Label className="text-platinum/80">${pricePaid(item)}</Label>
                         </span>
-                      )}
-                      {/* Outside the truncated name so it's never cut off. */}
-                      {item === bestValue && (
-                        <span title="Best value: most rating per dollar" aria-label="Best value">
-                          💎
-                        </span>
-                      )}
-                      <span className="text-zinc-500 tabular-nums">${pricePaid(item)}</span>
-                      <span className="w-7 text-right font-semibold tabular-nums">{item.rating ?? "?"}</span>
-                    </li>
-                  ) : null,
-                )}
-              </ol>
-              <p className="text-money mt-3 text-sm">${player.budget} left</p>
-            </section>
-          );
-        })}
+                        {item.isMystery && (
+                          <Gift size={15} strokeWidth={ICON_STROKE} className="shrink-0 text-lavender-deep" aria-label="Was a mystery item" />
+                        )}
+                        {/* Outside the truncated name so it's never cut off. */}
+                        {item === bestValue && (
+                          <Gem size={15} strokeWidth={ICON_STROKE} className="shrink-0 text-lavender-deep" aria-label="Best value" />
+                        )}
+                        <span className="display-italic w-9 text-right text-2xl text-lavender tabular-nums">{item.rating ?? "?"}</span>
+                      </li>
+                    ) : null,
+                  )}
+                </ol>
+                <Label className="text-platinum/80">${player.budget} left</Label>
+              </section>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
 }
+
+function ScoreRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-baseline justify-between">
+      <dt>
+        <Label className="text-platinum/80">{label}</Label>
+      </dt>
+      <dd className="text-platinum tabular-nums">{value}</dd>
+    </div>
+  );
+}
+

@@ -1,9 +1,10 @@
+import { Check } from "lucide-react";
 import { useState } from "react";
 import { MAX_PLAYERS, MAX_SLOTS, MIN_SLOTS, type Category, type RoomSnapshot } from "@budget-draft/shared";
 import { Avatar } from "./Avatar";
 import { RulesPanel } from "./RulesPanel";
 import { Stepper } from "./Stepper";
-import { INPUT_CLASS, Label, PillButton } from "./brand/primitives";
+import { ICON_STROKE, INPUT_CLASS, Label, PillButton } from "./brand/primitives";
 import { Button, Card, CardTitle } from "./ui";
 
 interface LobbyViewProps {
@@ -42,7 +43,14 @@ export function LobbyView({ room, playerId, categories, busy, onChangeSettings, 
         <Label>Room code</Label>
         <p className="display-italic max-w-full text-6xl tracking-[0.08em] text-lavender sm:text-8xl sm:tracking-[0.12em]">{room.code}</p>
         <Button variant="secondary" onClick={copyLink} className="w-full">
-          {copied ? "✓ Link copied" : "Copy invite link"}
+          {copied ? (
+            <>
+              <Check size={15} strokeWidth={ICON_STROKE} className="mr-2 inline" aria-hidden />
+              Link copied
+            </>
+          ) : (
+            "Copy invite link"
+          )}
         </Button>
       </Card>
 

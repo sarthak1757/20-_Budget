@@ -1,4 +1,4 @@
-import { Button } from "./ui";
+import { Label, PillButton, UrgentNote } from "./brand/primitives";
 
 interface ActionBarProps {
   turnLabel: string; // "Asha's turn" or "Your turn"
@@ -11,21 +11,23 @@ interface ActionBarProps {
 
 export function ActionBar({ turnLabel, canAct, buyBlockReason, busy = false, onBuy, onPass }: ActionBarProps) {
   return (
-    <div className="grid gap-2">
-      <p className="text-center font-semibold text-zinc-300">{turnLabel}</p>
+    <div className="grid gap-3">
+      <p className="text-center">
+        <Label className={canAct ? "text-lavender" : ""}>{turnLabel}</Label>
+      </p>
       <div className="grid grid-cols-2 gap-3">
-        <Button
-          className="py-4 text-xl font-black tracking-wide"
-          disabled={!canAct || busy || buyBlockReason !== null}
-          onClick={onBuy}
-        >
+        <PillButton className="py-4 text-lg tracking-[0.15em]" disabled={!canAct || busy || buyBlockReason !== null} onClick={onBuy}>
           BUY
-        </Button>
-        <Button variant="secondary" className="py-4 text-xl font-black tracking-wide" disabled={!canAct || busy} onClick={onPass}>
+        </PillButton>
+        <PillButton variant="secondary" className="py-4 text-lg tracking-[0.15em]" disabled={!canAct || busy} onClick={onPass}>
           PASS
-        </Button>
+        </PillButton>
       </div>
-      {canAct && buyBlockReason !== null && <p className="text-center text-sm text-amber-400">{buyBlockReason}</p>}
+      {canAct && buyBlockReason !== null && (
+        <p className="text-center">
+          <UrgentNote>{buyBlockReason}</UrgentNote>
+        </p>
+      )}
     </div>
   );
 }

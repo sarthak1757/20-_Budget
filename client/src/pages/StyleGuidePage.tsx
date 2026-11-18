@@ -1,3 +1,4 @@
+import { BadgePercent, Ban, Check, CircleHelp, Eye, Volume2, type LucideIcon } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { ChromeBlob } from "../components/brand/ChromeBlob";
 import { HeroTitle } from "../components/brand/HeroTitle";
@@ -5,6 +6,7 @@ import {
   ArrowButton,
   ArrowLink,
   Hairline,
+  ICON_STROKE,
   Label,
   Panel,
   PillButton,
@@ -82,8 +84,12 @@ function TopNav() {
           <Label>Leaderboard</Label>
         </nav>
         <div className="ml-auto flex items-center gap-2 sm:ml-0">
-          <IconCircle label="Sound on">♪</IconCircle>
-          <IconCircle label="How to play">?</IconCircle>
+          <IconCircle label="Sound on">
+            <Volume2 size={16} strokeWidth={ICON_STROKE} aria-hidden />
+          </IconCircle>
+          <IconCircle label="How to play">
+            <CircleHelp size={16} strokeWidth={ICON_STROKE} aria-hidden />
+          </IconCircle>
         </div>
       </div>
     </header>
@@ -562,7 +568,7 @@ function PlayerSpecimen({ name, budget, canSpend, team, active = false, highBid 
               key={role}
               className={`label-caps rounded-full px-2.5 py-1 ${covered.has(role) ? "bg-lavender text-mocha" : "text-platinum ring-1 ring-platinum/40"}`}
             >
-              {covered.has(role) ? "✓ " : ""}
+              {covered.has(role) && <Check size={11} strokeWidth={2} className="mr-1 inline" aria-hidden />}
               {role}
             </li>
           ))}
@@ -593,12 +599,12 @@ function InGameSection() {
       <Panel className="grid content-start gap-6">
         <Label>Power-ups</Label>
         <div className="flex flex-wrap gap-3">
-          <PowerChip icon="✋" name="Veto" />
-          <PowerChip icon="✂" name="Discount" />
-          <PowerChip icon="👁" name="Peek" used />
+          <PowerChip Icon={Ban} name="Veto" />
+          <PowerChip Icon={BadgePercent} name="Discount" />
+          <PowerChip Icon={Eye} name="Peek" used />
         </div>
         <Hairline />
-        <Label>Reactions</Label>
+        <Label>Reactions · the only full-colour emoji</Label>
         <div className="flex gap-2">
           {["👏", "😂", "😱", "🔥", "💸"].map((emoji) => (
             <span key={emoji} className="grid size-11 place-items-center rounded-full text-xl ring-1 ring-platinum/40">
@@ -629,12 +635,12 @@ function TimerSpecimen({ seconds, total }: { seconds: number; total: number }) {
   );
 }
 
-function PowerChip({ icon, name, used = false }: { icon: string; name: string; used?: boolean }) {
+function PowerChip({ Icon, name, used = false }: { Icon: LucideIcon; name: string; used?: boolean }) {
   return (
     <span
       className={`inline-flex items-center gap-2 rounded-full px-4 py-2 ring-1 ${used ? "text-platinum/50 ring-platinum/20" : "text-platinum ring-platinum/60"}`}
     >
-      <span aria-hidden>{icon}</span>
+      <Icon size={16} strokeWidth={ICON_STROKE} className="text-lavender-deep" aria-hidden />
       <span className="label-caps">{name}</span>
       {used && <span className="label-caps">· used</span>}
     </span>
