@@ -1,9 +1,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { seedCategorySchema, type SeedCategory } from "@budget-draft/shared";
-
-// server/seed, relative to this file (server/src/seed).
-export const SEED_DIR = join(import.meta.dirname, "..", "..", "seed");
+import { SEED_DIR } from "../paths";
 
 export function listSeedFiles(dir: string = SEED_DIR): string[] {
   const files: string[] = [];

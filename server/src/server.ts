@@ -17,6 +17,7 @@ export interface GameServerOptions {
   clientUrl: string;
   adminPassword: string;
   rooms?: RoomStore;
+  clientDistDir?: string; // production: serve the built React app too
 }
 
 export interface RunningGameServer {
@@ -30,8 +31,15 @@ export interface RunningGameServer {
 // Wires Express and Socket.io onto one HTTP server. Used by index.ts and the tests.
 export function createGameServer(options: GameServerOptions): RunningGameServer {
   const rooms = options.rooms ?? new RoomStore();
-  const app = createApp({ clientUrl: options.clientUrl, adminPassword: options.adminPassword, rooms });
+  const app = createApp({
+    clientUrl: options.clientUrl,
+    adminPassword: options.adminPassword,
+    rooms,
+    clientDistDir: options.clientDistDir,
+  });
   const httpServer = createServer(app);
+  // Same CORS rule as the API. In production the pages come from this server,
+  // so the socket connection is same-origin and CORS doesn't come into play.
   const io: GameServer = new Server(httpServer, {
     cors: { origin: options.clientUrl },
   });

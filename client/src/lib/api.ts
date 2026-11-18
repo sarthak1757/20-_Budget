@@ -1,6 +1,11 @@
 import type { ApiError } from "@budget-draft/shared";
 
-export const SERVER_URL: string = import.meta.env.VITE_SERVER_URL ?? "http://localhost:4000";
+// Where the API and Socket.io live.
+// Production: the same server that sent this page, so always our own origin.
+// Development: Vite runs on :5173 and the server on :4000 (or VITE_SERVER_URL).
+export const SERVER_URL: string = import.meta.env.PROD
+  ? window.location.origin
+  : (import.meta.env.VITE_SERVER_URL ?? "http://localhost:4000");
 
 // Small fetch wrapper: turns non-2xx responses into Errors with the
 // server's message, and gives up after a timeout instead of hanging forever.

@@ -1,5 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { CategoryModel } from "../../models/Category";
+import { DailyResultModel } from "../../models/DailyResult";
+import { GameResultModel } from "../../models/GameResult";
 import { ItemModel } from "../../models/Item";
 import { startMemoryMongo } from "../../test/memoryMongo";
 import { loadAllSeedFiles } from "../loadSeedFiles";
@@ -42,5 +44,16 @@ describe("seedDatabase", () => {
     await expect(
       ItemModel.create({ name: existing?.name, categorySlug: "football", price: 1, rating: 1, tag: "Copy" }),
     ).rejects.toThrow(/duplicate key/);
+  });
+
+  it("leaves saved game results and daily scores alone", async () => {
+    // Raw inserts: only the documents' survival matters here, not their shape.
+    await GameResultModel.collection.insertOne({ marker: "keep-me" });
+    await DailyResultModel.collection.insertOne({ marker: "keep-me-too" });
+
+    await seedDatabase(categories);
+
+    expect(await GameResultModel.collection.countDocuments({ marker: "keep-me" })).toBe(1);
+    expect(await DailyResultModel.collection.countDocuments({ marker: "keep-me-too" })).toBe(1);
   });
 });
