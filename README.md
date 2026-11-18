@@ -85,11 +85,12 @@ at startup and stops with a clear message if one is missing.
 
 | Variable | Used by | Example | What it's for |
 | --- | --- | --- | --- |
-| `MONGO_URI` | server | `mongodb://localhost:27017/budget-draft` | Database connection |
-| `PORT` | server | `4000` | API + Socket.io port |
+| `MONGO_URI` | server | `mongodb://localhost:27017/budget-draft` | Database connection. With no database name in it, `budget-draft` is used |
+| `PORT` | server | `4000` | API + Socket.io port (Render sets it) |
 | `ADMIN_PASSWORD` | server | at least 8 characters | Password for `/admin` |
-| `CLIENT_URL` | server | `http://localhost:5173` | Allowed origin for CORS and sockets |
-| `VITE_SERVER_URL` | client | `http://localhost:4000` | Where the web app finds the API |
+| `CLIENT_URL` | server | `http://localhost:5173` | The only other origin allowed by CORS and sockets. Required in production |
+| `NODE_ENV` | server | `production` | `production` makes the server also serve `client/dist` |
+| `VITE_SERVER_URL` | client | `http://localhost:4000` | Development only: where the web app finds the API. A production build always uses its own origin |
 
 ### Scripts
 
@@ -101,11 +102,87 @@ Run these from the repo root.
 | `npm run seed` | Clears categories and items, then reloads them from `server/seed/*.json` |
 | `npm test` | Every Vitest suite (shared, server, client). Includes a typecheck of `shared`. |
 | `npm run typecheck` | Strict TypeScript check of all three packages |
-| `npm run build` | Production build of the web app into `client/dist` |
-| `npm start` | Start the server without file watching |
+| `npm run build` | Production build: typechecks `shared`, builds the web app into `client/dist`, bundles the server into `server/dist` |
+| `npm start` | Run the built server (`server/dist/index.js`). Needs `npm run build` first |
 
 Tests that need a database start a throwaway in-memory MongoDB, so `npm test` doesn't
 need your real database.
+
+## Deployment
+
+Production is **one Render web service**. It serves the API, Socket.io and the built React
+app from the same origin, so the browser never makes a cross-site request. MongoDB is
+hosted on Atlas.
+
+To try the production build locally first:
+
+```bash
+npm run build
+NODE_ENV=production CLIENT_URL=http://localhost:4000 npm start
+# open http://localhost:4000
+```
+
+### 1. MongoDB Atlas
+
+1. Sign in at [cloud.mongodb.com](https://cloud.mongodb.com) and create a project.
+2. **Create a cluster:** choose the free **M0** tier. Pick the cloud region closest to the
+   Render region in `render.yaml` (`oregon` = AWS `us-west-2`).
+3. **Database Access → Add New Database User:** password authentication, role
+   **Read and write to any database**. Use a password made of letters and digits only, so
+   it needs no URL encoding.
+4. **Network Access → Add IP Address → Allow Access from Anywhere** (`0.0.0.0/0`).
+   Render's free plan has no fixed outgoing IP, so this is required. The database
+   password still protects the data.
+5. **Connect → Drivers:** copy the connection string and put your password in it. Add
+   `budget-draft` as the database name, between `.net/` and `?`:
+
+   ```
+   mongodb+srv://USER:PASSWORD@cluster0.xxxxx.mongodb.net/budget-draft?retryWrites=true&w=majority&appName=Cluster0
+   ```
+
+   If you leave out the name, the server uses `budget-draft` anyway.
+
+6. **Load the categories from your own machine** (from the repo root):
+
+   ```bash
+   MONGO_URI="mongodb+srv://USER:PASSWORD@cluster0.xxxxx.mongodb.net/budget-draft?retryWrites=true&w=majority" npm run seed
+   ```
+
+   It should print `Seeded 10 categories and 483 items.` Seeding replaces **only**
+   categories and items. Saved games and daily scores stay. Edits made on `/admin` are
+   replaced too, so after going live, edit categories on `/admin` instead of reseeding.
+
+### 2. Render
+
+1. Push this repo to GitHub.
+2. In [dashboard.render.com](https://dashboard.render.com): **New → Blueprint**, connect
+   your GitHub account and pick this repo. Render reads `render.yaml` and shows one web
+   service called `budget-draft`.
+3. Render asks for the three secret values:
+
+   | Variable | Value |
+   | --- | --- |
+   | `MONGO_URI` | the Atlas string from step 1.5 |
+   | `ADMIN_PASSWORD` | a long password (at least 8 characters) for `/admin` |
+   | `CLIENT_URL` | `https://budget-draft.onrender.com`, the service's own URL |
+
+   `NODE_ENV=production` and the Node version (`NODE_VERSION`) come from `render.yaml`.
+   Render sets `PORT` itself.
+4. Click **Apply**. The first build runs `npm ci --include=dev && npm run build` (a few
+   minutes), then `npm start`. Render waits for `GET /api/health` to answer before
+   sending traffic.
+5. **Check the URL.** If `budget-draft` was taken, Render adds a suffix (for example
+   `budget-draft-x1y2.onrender.com`). Then go to **Environment**, set `CLIENT_URL` to the
+   real URL and save. Render redeploys. The app works either way because everything is
+   same-origin, but `CLIENT_URL` is the only origin CORS allows.
+6. **Check it's live:**
+   - `https://<your-service>.onrender.com/api/health` shows `{"ok":true,"db":"connected"}`.
+     If `db` isn't `connected`, check `MONGO_URI` and the Atlas IP access list.
+   - The home page loads, and **Online Room → Create room** works. Open the room link
+     in a second browser or on a phone and play a round.
+
+Every push to the default branch deploys again (`autoDeploy: true`). Logs are under the
+service's **Logs** tab.
 
 ## Architecture
 
@@ -160,6 +237,7 @@ A type test (`shared/src/__typetests__`) checks that this protection holds.
 
 | Method & path | Description |
 | --- | --- |
+| `GET /api/health` | `{ ok: true, db }`, where `db` is `connected`, `connecting`, `disconnecting` or `disconnected`. Render's health check |
 | `GET /api/categories` | All categories with item counts |
 | `GET /api/categories/:slug/items` | Items in a category |
 | `POST /api/rooms` | Create a room → `{ code }`. Optional `customItems` (20–150 `{ name, price, rating, tag }`) plays the host's own list |
@@ -308,6 +386,9 @@ counts. Ratings are a playful opinion for the game, not a real-world ranking.
   with that code. It may have expired." Finished games are already saved in MongoDB.
   Running several server instances would need shared room storage (for example Redis)
   and the Socket.io Redis adapter.
+- **Render's free plan sleeps.** After about 15 minutes without traffic the service
+  stops, which also ends any room in memory. The next visit wakes it, and that first
+  page load can take up to a minute.
 - **Empty rooms are deleted** after 10 minutes with nobody connected.
 - **No accounts.** A player id stored in the browser is what lets you reconnect to your
   seat. Clearing site data or switching device means joining as a new player. The

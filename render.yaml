@@ -1,0 +1,29 @@
+# Render Blueprint: one Node web service that serves the API, Socket.io and the
+# built React app from the same origin. See "Deployment" in the README.
+services:
+  - type: web
+    name: budget-draft
+    runtime: node
+    plan: free
+    # Pick the region closest to your players and use the same one for Atlas.
+    # It can't be changed after the service is created.
+    region: oregon
+    # NODE_ENV=production makes npm skip devDependencies, but the build needs
+    # them (TypeScript, Vite, esbuild), hence --include=dev.
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 26.7.0
+      - key: NODE_ENV
+        value: production
+      # Values below are entered in the Render dashboard, never committed.
+      - key: MONGO_URI
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: CLIENT_URL
+        sync: false
+      # PORT is set by Render automatically.
