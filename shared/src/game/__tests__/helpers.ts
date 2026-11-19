@@ -31,6 +31,7 @@ export function makeSettings(overrides: Partial<GameSettings> = {}): GameSetting
     startingBudget: 20,
     slotCount: 3,
     turnSeconds: 0,
+    bidSeconds: 0,
     voteSeconds: 30,
     categorySlug: "test",
     draftStyle: "classic",

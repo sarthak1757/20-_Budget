@@ -1,4 +1,5 @@
 import type { GameEvent, GameState, PlayerState } from "../types/game";
+import { secondsPerTurn } from "./timers";
 import { fillEmptySlotsWithBench } from "./bench";
 import { discountedPrice, hasPowerUp } from "./powerUps";
 import { isTeamFull } from "./rules";
@@ -10,10 +11,11 @@ import { buildTurnQueue, nextFirstPlayerIndex } from "./turns";
 // functions make with structuredClone.
 
 export function makeTurnDeadline(state: GameState, now: number): number | null {
-  if (state.settings.turnSeconds <= 0) {
+  const seconds = secondsPerTurn(state.settings);
+  if (seconds <= 0) {
     return null;
   }
-  return now + state.settings.turnSeconds * 1000;
+  return now + seconds * 1000;
 }
 
 export function endRound(state: GameState, now: number): void {

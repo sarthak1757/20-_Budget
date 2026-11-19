@@ -3,6 +3,7 @@ import { useEffect, useRef, type ReactNode } from "react";
 import {
   getBuyBlockReason,
   getCurrentPlayerId,
+  secondsPerTurn,
   type PublicPlayerState,
   type PowerUp,
   type PublicGameState,
@@ -190,7 +191,7 @@ export function GameBoard({ state, viewerId, canAct, busy = false, turnLabel, pe
         <BottomDock>
           {self && <MyTeamBar key={self.id} player={self} title={teamTitle} badges={badges} />}
           <TurnLine label={turnLabel} highlight={canAct}>
-            <Countdown deadline={state.turnDeadline} totalSeconds={state.settings.turnSeconds} label="Time left" variant="compact" />
+            <Countdown deadline={state.turnDeadline} totalSeconds={secondsPerTurn(state.settings)} label="Time left" variant="compact" />
           </TurnLine>
           {controls}
           {powerUps}
@@ -222,7 +223,7 @@ export function GameBoard({ state, viewerId, canAct, busy = false, turnLabel, pe
 
       <div className="order-first col-span-2 grid gap-3 lg:order-none lg:w-80 lg:shrink-0">
         {itemCard}
-        <Countdown deadline={state.turnDeadline} totalSeconds={state.settings.turnSeconds} label="Time left" />
+        <Countdown deadline={state.turnDeadline} totalSeconds={secondsPerTurn(state.settings)} label="Time left" />
         <TurnLine label={turnLabel} highlight={canAct} centered />
         {controls}
         {powerUps}

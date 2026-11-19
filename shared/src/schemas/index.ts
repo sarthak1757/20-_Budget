@@ -1,5 +1,6 @@
 import { z } from "zod";
 import {
+  BID_SECONDS_OPTIONS,
   CUSTOM_CATEGORY_SLUG,
   CUSTOM_MAX_ITEMS,
   CUSTOM_MIN_ITEMS,
@@ -9,7 +10,12 @@ import {
   MIN_PLAYERS,
   MIN_PRICE,
   MIN_SLOTS,
+  ONLINE_BID_SECONDS,
+  ONLINE_TURN_SECONDS,
+  ONLINE_VOTE_SECONDS,
   REACTION_EMOJIS,
+  TURN_SECONDS_OPTIONS,
+  VOTE_SECONDS_OPTIONS,
 } from "../game/constants";
 
 // Every payload that arrives from the outside world (sockets, admin forms,
@@ -35,6 +41,8 @@ export const gameSettingsSchema = z
     startingBudget: z.number().int().min(5).max(100),
     slotCount: z.number().int().min(MIN_SLOTS).max(MAX_SLOTS),
     turnSeconds: z.number().int().min(0).max(60),
+    // Older clients don't send it: 0 = no bid timer (the online room checks it separately).
+    bidSeconds: z.number().int().min(0).max(60).default(0),
     voteSeconds: z.number().int().min(0).max(120),
     categorySlug: categorySlugSchema,
     // Defaults keep older clients (that don't send these) on the original rules.
@@ -49,6 +57,22 @@ export const gameSettingsSchema = z
     message: "Starting budget must be at least $1 per slot",
     path: ["startingBudget"],
   });
+
+// Online rooms: each timer must be one of the lobby's presets, nothing else,
+// even if a modified client sends some other number.
+function presetSeconds(options: readonly number[], timerName: string, fallback: number) {
+  const list = options.map((seconds) => `${seconds}s`).join(", ");
+  return z
+    .number()
+    .refine((seconds) => options.includes(seconds), { message: `${timerName} must be one of ${list}` })
+    .default(fallback);
+}
+
+export const onlineTimersSchema = z.object({
+  turnSeconds: presetSeconds(TURN_SECONDS_OPTIONS, "Turn timer", ONLINE_TURN_SECONDS),
+  bidSeconds: presetSeconds(BID_SECONDS_OPTIONS, "Bid timer", ONLINE_BID_SECONDS),
+  voteSeconds: presetSeconds(VOTE_SECONDS_OPTIONS, "Vote timer", ONLINE_VOTE_SECONDS),
+});
 
 // ---- Socket payloads (client -> server) ----
 
@@ -222,6 +246,7 @@ export type PeekPayload = z.infer<typeof peekSchema>;
 export type CreateRoomPayload = z.infer<typeof createRoomSchema>;
 export type VoteCastPayload = z.infer<typeof voteCastSchema>;
 export type GameSettingsPayload = z.input<typeof gameSettingsSchema>;
+export type OnlineTimers = z.infer<typeof onlineTimersSchema>;
 export type SeedItem = z.infer<typeof seedItemSchema>;
 export type AdminCategoryPayload = z.infer<typeof adminCategorySchema>;
 export type AdminCategoryUpdatePayload = z.infer<typeof adminCategoryUpdateSchema>;

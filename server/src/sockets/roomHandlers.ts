@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { gameSettingsSchema, roomJoinSchema, type RoomSnapshot } from "@budget-draft/shared";
+import { gameSettingsSchema, onlineTimersSchema, roomJoinSchema, type RoomSnapshot } from "@budget-draft/shared";
 import {
   addPlayer,
   applyRoomSettings,
@@ -80,12 +80,18 @@ export function registerRoomHandlers(socket: GameSocket, ctx: SocketContext): vo
       reply({ ok: false, error: parsed.error.issues[0]?.message ?? "Invalid settings" });
       return;
     }
+    // Online timers must be one of the lobby's presets (no "off", no odd numbers).
+    const timers = onlineTimersSchema.safeParse(payload);
+    if (!timers.success) {
+      reply({ ok: false, error: timers.error.issues[0]?.message ?? "Invalid timer" });
+      return;
+    }
     // A custom room ignores the category (applyRoomSettings keeps it "custom").
     if (room.customItems === null && !(await ctx.categoryExists(parsed.data.categorySlug))) {
       reply({ ok: false, error: "That category doesn't exist" });
       return;
     }
-    applyRoomSettings(room, parsed.data);
+    applyRoomSettings(room, parsed.data, timers.data);
     reply({ ok: true, data: null });
     ctx.runner.broadcastRoom(room);
   });

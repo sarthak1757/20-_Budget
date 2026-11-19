@@ -1,5 +1,5 @@
-import type { Item } from "@budget-draft/shared";
-import { createRoom, ONLINE_TIMING, type Room, type RoomTiming } from "./room";
+import type { Item, OnlineTimers } from "@budget-draft/shared";
+import { createRoom, type Room } from "./room";
 import { generateRoomCode } from "./roomCode";
 
 // Rooms with nobody connected for this long are deleted.
@@ -10,11 +10,12 @@ export const EMPTY_ROOM_TTL_MS = 10 * 60 * 1000;
 export class RoomStore {
   private rooms = new Map<string, Room>();
 
-  constructor(private readonly timing: RoomTiming = ONLINE_TIMING) {}
+  // timerOverride is for tests: short timers so games finish in a second or two.
+  constructor(private readonly timerOverride: OnlineTimers | null = null) {}
 
   create(categorySlug: string, now: number, customItems: Item[] | null = null): Room {
     const code = generateRoomCode((candidate) => this.rooms.has(candidate));
-    const room = createRoom(code, categorySlug, now, this.timing, customItems);
+    const room = createRoom(code, categorySlug, now, this.timerOverride, customItems);
     this.rooms.set(code, room);
     return room;
   }

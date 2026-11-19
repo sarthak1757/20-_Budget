@@ -15,7 +15,7 @@ Mongoose and Socket.io.
 | Mode | How it works | Needs the server? |
 | --- | --- | --- |
 | 📱 Pass & Play | 2–4 players on one device. A "pass the device" screen between turns. | No (uses bundled data) |
-| 🌐 Online Room | Create a room, share the 6-letter code or link. 15s turn timer. The host can **Rematch** from the results (same players, new shuffle), or create the room with **their own list** of 20–150 items (`name, price, rating, tag` per line, pasted from anywhere, kept for that room only). | Yes |
+| 🌐 Online Room | Create a room, share the 6-letter code or link. The host picks the timers in the lobby (10–60s per turn, 5–20s per bid, 15–60s to vote; defaults 15s, 7s and 30s), and they stay for rematches. The host can **Rematch** from the results (same players, new shuffle), or create the room with **their own list** of 20–150 items (`name, price, rating, tag` per line, pasted from anywhere, kept for that room only). | Yes |
 | 🤖 Solo vs Bots | You against 1–3 bots (easy, medium or hard). | No |
 | 📅 Daily Challenge | Same category and item order for everyone today (UTC), against one hard bot. One try per day. Share your score as "Budget Draft #12 — 412 pts 🟩🟩🟨🟩⬜". | To post a score |
 
@@ -24,7 +24,7 @@ Every mode can be played in either **draft style**, with any mix of the **extras
 | Draft style | |
 | --- | --- |
 | Classic | BUY or PASS at the listed price. The first BUY wins the item. |
-| Auction | Bid against each other, starting at $1. The highest bid wins. Online: 7s per bid. |
+| Auction | Bid against each other, starting at $1. The highest bid wins. Online: 7s per bid by default (the host can pick 5–20s). |
 
 | Extra (all off by default) | |
 | --- | --- |
@@ -324,7 +324,8 @@ UI uses the same function to grey out BUY and explain why.
    budget rule are skipped too, and get a "can't afford" note. Budgets only change when
    someone buys, and a buy ends the round, so asking them would be pointless.
 3. Each player chooses **BUY** or **PASS**. The first BUY takes the item and ends the round.
-   Online, each player gets 15 seconds; running out of time counts as a pass.
+   Online, each player gets 15 seconds by default (the host can pick 10–60s); running out of
+   time counts as a pass. There is no "off" online, so one idle player can't freeze the game.
 4. If everyone passes, the item is discarded. If nobody can afford an item at all, it is
    discarded straight away and the next one comes up.
 5. The draft ends when every team is full. If the items run out first, the empty slots get
@@ -384,7 +385,7 @@ games (it wins about 98% in Classic and Auction), and easy vs easy must stay bet
   + **15** for a balanced team (when that extra is on).
 - **Stats winner** = highest team score. Ties share the win.
 - **Voting** only happens with **3+ human players** (with 2 you'd just vote for each
-  other). Nobody can vote for themselves. Online there is a 30-second timer; in
+  other). Nobody can vote for themselves. Online there is a timer (30 seconds by default, the host can pick 15–60s); in
   pass-and-play people vote one at a time with no timer. The results show the stats
   winner and the vote winner separately (or "tie").
 

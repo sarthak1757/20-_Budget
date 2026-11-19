@@ -28,7 +28,7 @@ export class SocketTestHarness {
     this.server = createGameServer({
       clientUrl: "http://localhost:5173",
       adminPassword: "test-admin-password",
-      rooms: new RoomStore({ turnSeconds: 1, auctionTurnSeconds: 1, voteSeconds: 1 }),
+      rooms: new RoomStore({ turnSeconds: 1, bidSeconds: 1, voteSeconds: 1 }),
     });
     await new Promise<void>((resolve) => this.server.httpServer.listen(0, resolve));
     const { port } = this.server.httpServer.address() as AddressInfo;

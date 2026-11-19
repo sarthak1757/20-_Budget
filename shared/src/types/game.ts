@@ -19,7 +19,8 @@ export type PowerUp = "veto" | "discount" | "peek";
 export interface GameSettings {
   startingBudget: number; // default 20
   slotCount: number; // 3–7, default 5
-  turnSeconds: number; // 0 means "no timer" (used for pass-and-play)
+  turnSeconds: number; // Classic: seconds per BUY/PASS. 0 means "no timer" (used for pass-and-play)
+  bidSeconds: number; // Auction: seconds per bid or pass. 0 means "no timer"
   voteSeconds: number; // 0 means "no timer": on one shared device people vote one after another
   categorySlug: CategorySlug;
   draftStyle: DraftStyle;

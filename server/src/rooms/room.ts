@@ -2,7 +2,7 @@ import {
   CUSTOM_CATEGORY_SLUG,
   DEFAULT_SETTINGS,
   MAX_PLAYERS,
-  ONLINE_AUCTION_TURN_SECONDS,
+  ONLINE_BID_SECONDS,
   ONLINE_TURN_SECONDS,
   ONLINE_VOTE_SECONDS,
   REACTION_COOLDOWN_MS,
@@ -13,6 +13,7 @@ import {
   type GameState,
   type Item,
   type LobbyPlayer,
+  type OnlineTimers,
   type RoomInfo,
   type RoomSnapshot,
 } from "@budget-draft/shared";
@@ -31,8 +32,9 @@ export interface Room {
   code: string;
   hostId: string | null;
   players: RoomPlayer[]; // in join order
-  settings: GameSettings;
-  timing: RoomTiming;
+  settings: GameSettings; // includes the host's timers (presets only, checked on the way in)
+  // Tests only: play every game with these short timers instead of the host's.
+  timerOverride: OnlineTimers | null;
   // The host's own list (custom category), or null for a normal category.
   // Kept for this room only, never saved.
   customItems: Item[] | null;
@@ -44,23 +46,11 @@ export interface Room {
   emptySince: number | null; // when the last connected player left; used for cleanup
 }
 
-export interface RoomTiming {
-  turnSeconds: number; // Classic: one BUY/PASS decision
-  auctionTurnSeconds: number; // Auction: one bid or pass
-  voteSeconds: number;
-}
-
-export const ONLINE_TIMING: RoomTiming = {
-  turnSeconds: ONLINE_TURN_SECONDS,
-  auctionTurnSeconds: ONLINE_AUCTION_TURN_SECONDS,
-  voteSeconds: ONLINE_VOTE_SECONDS,
-};
-
 export function createRoom(
   code: string,
   categorySlug: string,
   now: number,
-  timing: RoomTiming = ONLINE_TIMING,
+  timerOverride: OnlineTimers | null = null,
   customItems: Item[] | null = null,
 ): Room {
   return {
@@ -70,10 +60,11 @@ export function createRoom(
     settings: {
       ...DEFAULT_SETTINGS,
       categorySlug,
-      turnSeconds: timing.turnSeconds,
-      voteSeconds: timing.voteSeconds,
+      turnSeconds: ONLINE_TURN_SECONDS,
+      bidSeconds: ONLINE_BID_SECONDS,
+      voteSeconds: ONLINE_VOTE_SECONDS,
     },
-    timing,
+    timerOverride,
     customItems,
     game: null,
     results: null,
@@ -84,17 +75,25 @@ export function createRoom(
   };
 }
 
-// Stores the host's settings. Timers are fixed per draft style so every
-// online game plays the same way, whatever the client sent.
-export function applyRoomSettings(room: Room, settings: GameSettings): void {
-  const isAuction = settings.draftStyle === "auction";
+// Stores the host's settings. The timers come separately, already checked
+// against the presets, so whatever timer numbers the settings carried are ignored.
+export function applyRoomSettings(room: Room, settings: GameSettings, timers: OnlineTimers): void {
   room.settings = {
     ...settings,
     // A custom room always plays its own list.
     categorySlug: room.customItems === null ? settings.categorySlug : CUSTOM_CATEGORY_SLUG,
-    turnSeconds: isAuction ? room.timing.auctionTurnSeconds : room.timing.turnSeconds,
-    voteSeconds: room.timing.voteSeconds,
+    turnSeconds: timers.turnSeconds,
+    bidSeconds: timers.bidSeconds,
+    voteSeconds: timers.voteSeconds,
   };
+}
+
+// The settings a new game (or rematch) starts with.
+export function settingsForGame(room: Room): GameSettings {
+  if (room.timerOverride === null) {
+    return room.settings;
+  }
+  return { ...room.settings, ...room.timerOverride };
 }
 
 export function findRoomPlayer(room: Room, playerId: string): RoomPlayer | undefined {

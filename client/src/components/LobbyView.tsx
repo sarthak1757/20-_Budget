@@ -1,11 +1,12 @@
 import { Check, Share2 } from "lucide-react";
 import { useState } from "react";
-import { MAX_PLAYERS, MAX_SLOTS, MIN_SLOTS, type Category, type RoomSnapshot } from "@budget-draft/shared";
+import { MAX_PLAYERS, MAX_SLOTS, MIN_HUMANS_FOR_VOTE, MIN_SLOTS, type Category, type RoomSnapshot } from "@budget-draft/shared";
 import { isTouchDevice } from "../lib/useMediaQuery";
 import { Avatar } from "./Avatar";
 import { RulesPanel } from "./RulesPanel";
 import { Sheet } from "./Sheet";
 import { Stepper } from "./Stepper";
+import { TimerSettings } from "./TimerSettings";
 import { ICON_STROKE, INPUT_CLASS, Label, PillButton } from "./brand/primitives";
 import { Button, Card, CardTitle } from "./ui";
 
@@ -161,9 +162,14 @@ export function LobbyView({ room, playerId, categories, busy, onChangeSettings, 
           disabled={!isHost || busy}
           onChange={onChangeSettings}
         />
-        <p className="text-sm text-mist">
-          {settings.turnSeconds}s per {settings.draftStyle === "auction" ? "bid" : "turn"}. If time runs out, you pass.
-        </p>
+        <TimerSettings
+          settings={settings}
+          isHost={isHost}
+          disabled={busy}
+          // Online rooms have no bots, so everyone here is a human voter.
+          showVote={room.players.length >= MIN_HUMANS_FOR_VOTE}
+          onChange={onChangeSettings}
+        />
       </Card>
 
       {isHost ? (

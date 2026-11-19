@@ -16,7 +16,7 @@ import {
   type PublicItem,
   type TurnActionPayload,
 } from "@budget-draft/shared";
-import { toRoomSnapshot, type Room } from "../rooms/room";
+import { settingsForGame, toRoomSnapshot, type Room } from "../rooms/room";
 import type { GameServer } from "./types";
 
 export interface GameRunnerDeps {
@@ -79,7 +79,7 @@ export class GameRunner {
     room.players = room.players.filter((player) => player.isConnected);
     room.game = createGame({
       mode: "online",
-      settings: room.settings,
+      settings: settingsForGame(room),
       players: seated,
       items: category.items,
       roles: category.roles,

@@ -244,7 +244,7 @@ export function castVote(state: GameState, voterId: string, targetId: string, no
   return { ok: true, state: next };
 }
 
-// Called when the 30-second vote timer runs out.
+// Called when the vote timer runs out (online only).
 export function endVoting(state: GameState): GameState {
   if (state.phase !== "voting") {
     return state;
