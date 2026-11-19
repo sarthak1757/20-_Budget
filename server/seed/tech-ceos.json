@@ -8,277 +8,277 @@
       "name": "Steve Jobs",
       "price": 10,
       "rating": 98,
-      "tag": "Visionary"
+      "tag": "Apple · Founder"
     },
     {
       "name": "Jensen Huang",
       "price": 10,
       "rating": 96,
-      "tag": "Engineer"
+      "tag": "Nvidia · Founder"
     },
     {
       "name": "Bill Gates",
       "price": 10,
       "rating": 95,
-      "tag": "Founder"
+      "tag": "Microsoft · Founder"
     },
     {
       "name": "Jeff Bezos",
       "price": 9,
       "rating": 94,
-      "tag": "Founder"
+      "tag": "Amazon · Founder"
     },
     {
       "name": "Satya Nadella",
       "price": 9,
       "rating": 93,
-      "tag": "Operator"
+      "tag": "Microsoft · CEO"
     },
     {
       "name": "Lisa Su",
       "price": 9,
       "rating": 92,
-      "tag": "Engineer"
+      "tag": "AMD · CEO"
     },
     {
       "name": "Elon Musk",
       "price": 9,
       "rating": 91,
-      "tag": "Founder"
+      "tag": "Tesla · CEO"
     },
     {
       "name": "Larry Page",
       "price": 9,
       "rating": 90,
-      "tag": "Founder"
+      "tag": "Google · Founder"
     },
     {
       "name": "Tim Cook",
       "price": 9,
       "rating": 90,
-      "tag": "Operator"
+      "tag": "Apple · CEO"
     },
     {
       "name": "Mark Zuckerberg",
       "price": 9,
       "rating": 90,
-      "tag": "Founder"
+      "tag": "Meta · Founder"
     },
     {
       "name": "Andy Grove",
       "price": 8,
       "rating": 89,
-      "tag": "Operator"
+      "tag": "Intel · CEO"
     },
     {
       "name": "Morris Chang",
       "price": 5,
       "rating": 89,
-      "tag": "Founder"
+      "tag": "TSMC · Founder"
     },
     {
       "name": "Larry Ellison",
       "price": 8,
       "rating": 87,
-      "tag": "Founder"
+      "tag": "Oracle · Founder"
     },
     {
       "name": "Demis Hassabis",
       "price": 8,
       "rating": 87,
-      "tag": "Scientist"
+      "tag": "DeepMind · Founder"
     },
     {
       "name": "Sundar Pichai",
       "price": 8,
       "rating": 86,
-      "tag": "Operator"
+      "tag": "Google · CEO"
     },
     {
       "name": "Reed Hastings",
       "price": 8,
       "rating": 86,
-      "tag": "Founder"
+      "tag": "Netflix · Founder"
     },
     {
       "name": "Sam Altman",
       "price": 8,
       "rating": 85,
-      "tag": "Founder"
+      "tag": "OpenAI · Founder"
     },
     {
       "name": "Patrick Collison",
       "price": 7,
       "rating": 84,
-      "tag": "Founder"
+      "tag": "Stripe · Founder"
     },
     {
       "name": "Jack Ma",
       "price": 7,
       "rating": 83,
-      "tag": "Founder"
+      "tag": "Alibaba · Founder"
     },
     {
       "name": "Brian Chesky",
       "price": 7,
       "rating": 82,
-      "tag": "Founder"
+      "tag": "Airbnb · Founder"
     },
     {
       "name": "Michael Dell",
       "price": 7,
       "rating": 82,
-      "tag": "Founder"
+      "tag": "Dell · Founder"
     },
     {
       "name": "Masayoshi Son",
       "price": 10,
       "rating": 80,
-      "tag": "Investor"
+      "tag": "SoftBank · Founder"
     },
     {
       "name": "Marc Benioff",
       "price": 6,
       "rating": 79,
-      "tag": "Founder"
+      "tag": "Salesforce · Founder"
     },
     {
       "name": "Nandan Nilekani",
       "price": 3,
       "rating": 79,
-      "tag": "Founder"
+      "tag": "Infosys · Founder"
     },
     {
       "name": "Tobi Lütke",
       "price": 6,
       "rating": 78,
-      "tag": "Founder"
+      "tag": "Shopify · Founder"
     },
     {
       "name": "Andy Jassy",
       "price": 6,
       "rating": 78,
-      "tag": "Operator"
+      "tag": "Amazon · CEO"
     },
     {
       "name": "Shantanu Narayen",
       "price": 6,
       "rating": 77,
-      "tag": "Operator"
+      "tag": "Adobe · CEO"
     },
     {
       "name": "Daniel Ek",
       "price": 6,
       "rating": 76,
-      "tag": "Founder"
+      "tag": "Spotify · Founder"
     },
     {
       "name": "Dara Khosrowshahi",
       "price": 6,
       "rating": 75,
-      "tag": "Operator"
+      "tag": "Uber · CEO"
     },
     {
       "name": "Arvind Krishna",
       "price": 5,
       "rating": 74,
-      "tag": "Operator"
+      "tag": "IBM · CEO"
     },
     {
       "name": "Drew Houston",
       "price": 5,
       "rating": 72,
-      "tag": "Founder"
+      "tag": "Dropbox · Founder"
     },
     {
       "name": "Evan Spiegel",
       "price": 5,
       "rating": 71,
-      "tag": "Founder"
+      "tag": "Snap · Founder"
     },
     {
       "name": "Kevin Systrom",
       "price": 4,
       "rating": 69,
-      "tag": "Founder"
+      "tag": "Instagram · Founder"
     },
     {
       "name": "Stewart Butterfield",
       "price": 1,
       "rating": 68,
-      "tag": "Founder"
+      "tag": "Slack · Founder"
     },
     {
       "name": "Steve Ballmer",
       "price": 4,
       "rating": 67,
-      "tag": "Operator"
+      "tag": "Microsoft · CEO"
     },
     {
       "name": "Jack Dorsey",
       "price": 4,
       "rating": 66,
-      "tag": "Founder"
+      "tag": "Twitter · Founder"
     },
     {
       "name": "Travis Kalanick",
       "price": 7,
       "rating": 64,
-      "tag": "Founder"
+      "tag": "Uber · Founder"
     },
     {
       "name": "Marissa Mayer",
       "price": 3,
       "rating": 62,
-      "tag": "Operator"
+      "tag": "Yahoo · CEO"
     },
     {
       "name": "John Sculley",
       "price": 3,
       "rating": 61,
-      "tag": "Operator"
+      "tag": "Apple · CEO"
     },
     {
       "name": "Jerry Yang",
       "price": 2,
       "rating": 58,
-      "tag": "Founder"
+      "tag": "Yahoo · Founder"
     },
     {
       "name": "Meg Whitman",
       "price": 2,
       "rating": 56,
-      "tag": "Operator"
+      "tag": "eBay · CEO"
     },
     {
       "name": "Andrew Mason",
       "price": 1,
       "rating": 52,
-      "tag": "Founder"
+      "tag": "Groupon · Founder"
     },
     {
       "name": "Carly Fiorina",
       "price": 1,
       "rating": 50,
-      "tag": "Operator"
+      "tag": "HP · CEO"
     },
     {
       "name": "Stephen Elop",
       "price": 4,
       "rating": 48,
-      "tag": "Operator"
+      "tag": "Nokia · CEO"
     },
     {
       "name": "Léo Apotheker",
       "price": 1,
       "rating": 46,
-      "tag": "Operator"
+      "tag": "HP · CEO"
     },
     {
       "name": "Scott Thompson",
       "price": 1,
       "rating": 45,
-      "tag": "Operator"
+      "tag": "Yahoo · CEO"
     }
   ]
 }

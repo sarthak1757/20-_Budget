@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- App icon: the chrome pebble from ChromeBlob.tsx on midnight black.
+       The shape stays inside the central 80% circle, so it also works as a
+       maskable icon (Android crops it to a circle or squircle).
+       The PNGs next to this file are rendered from it. -->
+  <defs>
+    <radialGradient id="glow" cx="0.78" cy="0.12" r="0.9">
+      <stop offset="0%" stop-color="#FFC900" stop-opacity="0.16" />
+      <stop offset="60%" stop-color="#FFC900" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="body" x1="0.1" y1="0" x2="0.9" y2="1">
+      <stop offset="0%" stop-color="#C4C1BA" />
+      <stop offset="22%" stop-color="#F5F3EF" />
+      <stop offset="40%" stop-color="#FFC900" />
+      <stop offset="48%" stop-color="#111317" />
+      <stop offset="58%" stop-color="#FFC900" />
+      <stop offset="74%" stop-color="#C4C1BA" />
+      <stop offset="90%" stop-color="#1A1D22" />
+      <stop offset="100%" stop-color="#111317" />
+    </linearGradient>
+    <linearGradient id="band" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#111317" stop-opacity="0.9" />
+      <stop offset="35%" stop-color="#C4C1BA" stop-opacity="0.95" />
+      <stop offset="60%" stop-color="#F5F3EF" stop-opacity="0.7" />
+      <stop offset="100%" stop-color="#111317" stop-opacity="0.85" />
+    </linearGradient>
+    <radialGradient id="glint">
+      <stop offset="0%" stop-color="#C4C1BA" stop-opacity="1" />
+      <stop offset="100%" stop-color="#C4C1BA" stop-opacity="0" />
+    </radialGradient>
+    <filter id="blur" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" />
+    </filter>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.5" />
+    </filter>
+    <clipPath id="clip">
+      <path d="M104 16 C150 10 190 48 186 98 C182 148 138 188 90 182 C44 176 12 138 18 92 C24 48 60 22 104 16 Z" />
+    </clipPath>
+  </defs>
+
+  <rect width="512" height="512" fill="#08090B" />
+  <rect width="512" height="512" fill="url(#glow)" />
+
+  <!-- The 200x200 pebble, scaled to about 300px and centred. -->
+  <g transform="translate(70 66) scale(1.84)">
+    <ellipse cx="104" cy="192" rx="70" ry="8" fill="#FFC900" opacity="0.28" filter="url(#blur)" />
+    <path d="M104 16 C150 10 190 48 186 98 C182 148 138 188 90 182 C44 176 12 138 18 92 C24 48 60 22 104 16 Z" fill="url(#body)" />
+    <g clip-path="url(#clip)">
+      <path d="M30 118 C60 96 120 90 178 112 C176 126 170 138 162 150 C118 128 70 132 40 150 C34 140 31 129 30 118 Z" fill="url(#band)" filter="url(#soft)" />
+      <ellipse cx="78" cy="52" rx="34" ry="14" transform="rotate(-24 78 52)" fill="url(#glint)" />
+    </g>
+    <path d="M104 16 C150 10 190 48 186 98 C182 148 138 188 90 182 C44 176 12 138 18 92 C24 48 60 22 104 16 Z" fill="none" stroke="#C4C1BA" stroke-opacity="0.35" stroke-width="0.75" />
+  </g>
+</svg>

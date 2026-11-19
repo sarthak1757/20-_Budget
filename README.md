@@ -51,6 +51,23 @@ Also everywhere:
   type size and component.
 - **Emoji reactions** in online rooms: 👏 😂 😱 🔥 💸 float up the board for everyone, one per
   player per second.
+- **Made for phones.** Below 768px the board changes shape: the other players sit in a
+  strip at the top (tap one for their full team in a bottom sheet), and BUY/PASS or the bid
+  buttons, the power-ups and your own team (a row that opens upward) are pinned to the
+  bottom of the screen, in thumb reach and clear of the home indicator. The item card fits
+  above them on an iPhone SE (375×667). The turn timer is also a thin bar across the top of
+  the screen. Dialogs (how to play, power-up info, team view, list errors, quit) are bottom
+  sheets on phones. Buttons are at least 44×44px, inputs are 16px or larger so iOS doesn't
+  zoom, and double-tap zoom is off on controls.
+- **Haptics**: a short buzz on buy and bid, when your online turn starts, and for the winner
+  (`navigator.vibrate`, so Android only; iPhones don't support it). Muting turns it off too.
+- **Phones that sleep**: when an online room's tab comes back from the background, it
+  re-joins straight away and shows "Reconnecting…" over the board until the latest state
+  has arrived, instead of a frozen board. The invite button uses the phone's share sheet
+  (falls back to copying the link).
+- **Installable** (PWA): `client/public/manifest.webmanifest` plus iOS meta tags, so "Add to
+  Home Screen" opens it full-screen with the chrome-pebble icon (`client/public/icons`,
+  rendered from `icon.svg`). There's no service worker: the game needs the network anyway.
 
 ## Setup
 
