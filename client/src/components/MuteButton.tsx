@@ -13,7 +13,7 @@ export function MuteButton() {
       aria-label={muted ? "Turn sound on" : "Turn sound off"}
       aria-pressed={muted}
       title={muted ? "Sound off" : "Sound on"}
-      className="grid size-9 place-items-center rounded-full text-mist ring-1 ring-mist/60 hover:bg-ink-hover"
+      className="grid size-11 place-items-center rounded-full text-mist ring-1 ring-mist/60 hover:bg-ink-hover"
     >
       <Icon size={16} strokeWidth={ICON_STROKE} className={muted ? "text-gold" : ""} aria-hidden />
     </button>

@@ -6,12 +6,15 @@ interface CountdownProps {
   deadline: number | null; // epoch ms from the server
   totalSeconds: number;
   label: string;
+  // full: label, big number and a line underneath. compact: just the number,
+  // for the phone's bottom bar. Both also draw a thin bar across the top of the screen.
+  variant?: "full" | "compact";
 }
 
 // Shows the seconds left on a server timer as a thin shrinking line.
 // Phone clocks are often a few seconds off from the server, so we never show
 // more than the full timer length: the server decides when time is up anyway.
-export function Countdown({ deadline, totalSeconds, label }: CountdownProps) {
+export function Countdown({ deadline, totalSeconds, label, variant = "full" }: CountdownProps) {
   const [now, setNow] = useState(() => Date.now());
   const [localEnd, setLocalEnd] = useState<number | null>(null);
 
@@ -52,8 +55,34 @@ export function Countdown({ deadline, totalSeconds, label }: CountdownProps) {
   // No red in the palette: urgency is a pulsing gold number and an icon.
   const urgent = secondsLeft <= 5;
 
+  const barColour = urgent ? "bg-gold" : "bg-mist";
+
+  // Pinned to the top edge (below the notch), so the time left is always in
+  // view even when the number has scrolled away.
+  const topBar = (
+    <div aria-hidden className="pointer-events-none fixed inset-x-0 top-[env(safe-area-inset-top)] z-40 h-1 bg-mist/15">
+      <div className={`h-full transition-[width] duration-200 ease-linear ${barColour}`} style={{ width: `${percent}%` }} />
+    </div>
+  );
+
+  if (variant === "compact") {
+    return (
+      <>
+        {topBar}
+        <span
+          role="timer"
+          aria-label={`${label}: ${secondsLeft} seconds left`}
+          className={`display-serif inline-block origin-right text-2xl tabular-nums ${urgent ? "animate-urgent text-gold" : "text-ivory"}`}
+        >
+          {secondsLeft}s
+        </span>
+      </>
+    );
+  }
+
   return (
     <div role="timer" aria-label={`${label}: ${secondsLeft} seconds left`} className="grid gap-2">
+      {topBar}
       <div className="flex items-baseline justify-between">
         {urgent ? <UrgentNote>Hurry</UrgentNote> : <Label>{label}</Label>}
         <span
@@ -63,10 +92,7 @@ export function Countdown({ deadline, totalSeconds, label }: CountdownProps) {
         </span>
       </div>
       <div className="h-[2px] bg-mist/20">
-        <div
-          className={`h-full transition-[width] duration-200 ease-linear ${urgent ? "bg-gold" : "bg-mist"}`}
-          style={{ width: `${percent}%` }}
-        />
+        <div className={`h-full transition-[width] duration-200 ease-linear ${barColour}`} style={{ width: `${percent}%` }} />
       </div>
     </div>
   );

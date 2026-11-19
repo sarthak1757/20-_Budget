@@ -3,37 +3,30 @@ import { useEffect, useRef, useState } from "react";
 import { HOW_TO_PLAY_CARDS } from "../lib/howToPlay";
 import { useHelpStore } from "../store/helpStore";
 import { ChromeBlob, type ChromeShape } from "./brand/ChromeBlob";
-import { ICON_STROKE, Label } from "./brand/primitives";
+import { ICON_STROKE } from "./brand/primitives";
+import { Sheet } from "./Sheet";
 import { Button } from "./ui";
 
 const BLOB_SHAPES: ChromeShape[] = ["ring", "pebble", "ribbon", "ring"];
 
-// The 4 how-to-play cards in a dialog, one at a time.
+// The 4 how-to-play cards, one at a time: a bottom sheet on phones,
+// a centred dialog on wider screens.
 export function HowToPlay() {
   const open = useHelpStore((store) => store.open);
   const hide = useHelpStore((store) => store.hide);
   const [index, setIndex] = useState(0);
   const nextButton = useRef<HTMLButtonElement>(null);
 
-  // Start from the first card each time, put focus in the dialog, and let Esc close it.
+  // Start from the first card each time, with focus on Next.
+  // (The sheet handles Esc and keeps focus inside.)
   useEffect(() => {
     if (!open) {
       return;
     }
     setIndex(0);
     nextButton.current?.focus();
-    function onKey(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        hide();
-      }
-    }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open, hide]);
+  }, [open]);
 
-  if (!open) {
-    return null;
-  }
   const card = HOW_TO_PLAY_CARDS[index];
   if (!card) {
     return null;
@@ -50,23 +43,14 @@ export function HowToPlay() {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink-raised/80 p-4" onClick={hide}>
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="how-to-play-title"
-        className="relative isolate w-full max-w-sm overflow-hidden rounded-[2rem] bg-ink-raised p-7 text-center shadow-2xl ring-1 ring-mist/15"
-        onClick={(event) => event.stopPropagation()}
-      >
+    <Sheet open={open} onClose={hide} title={`How to play · ${index + 1} / ${HOW_TO_PLAY_CARDS.length}`} className="isolate overflow-hidden">
+      <div className="relative text-center">
         {/* A different chrome shape for each card, behind the text. */}
         <ChromeBlob
           shape={BLOB_SHAPES[index % BLOB_SHAPES.length] ?? "ring"}
-          className="absolute -top-8 -right-12 -z-10 w-44 opacity-90"
+          className="absolute -top-16 -right-14 -z-10 w-40 opacity-90"
         />
-        <Label>
-          How to play · {index + 1} / {HOW_TO_PLAY_CARDS.length}
-        </Label>
-        <Icon size={40} strokeWidth={ICON_STROKE} className="mx-auto mt-10 text-gold" aria-hidden />
+        <Icon size={40} strokeWidth={ICON_STROKE} className="mx-auto mt-4 text-gold" aria-hidden />
         <h2 id="how-to-play-title" className="display-serif mt-4 text-5xl text-ivory">
           {card.title}
         </h2>
@@ -93,7 +77,7 @@ export function HowToPlay() {
           </Button>
         </div>
       </div>
-    </div>
+    </Sheet>
   );
 }
 
@@ -106,7 +90,7 @@ export function HelpButton() {
       onClick={show}
       aria-label="How to play"
       title="How to play"
-      className="grid size-9 place-items-center rounded-full text-mist ring-1 ring-mist/60 hover:bg-ink-hover"
+      className="grid size-11 place-items-center rounded-full text-mist ring-1 ring-mist/60 hover:bg-ink-hover"
     >
       <CircleHelp size={16} strokeWidth={ICON_STROKE} aria-hidden />
     </button>

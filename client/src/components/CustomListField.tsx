@@ -1,3 +1,4 @@
+import type { Ref } from "react";
 import { CUSTOM_MAX_ITEMS, CUSTOM_MIN_ITEMS } from "@budget-draft/shared";
 import { Label, UrgentNote } from "./brand/primitives";
 import { Card } from "./ui";
@@ -13,10 +14,11 @@ interface CustomListFieldProps {
   value: string;
   onChange: (value: string) => void;
   errors: string[];
+  ref?: Ref<HTMLTextAreaElement>; // React 19 passes ref as a normal prop
 }
 
 // The textarea for a custom category, with the format and any line errors.
-export function CustomListField({ value, onChange, errors }: CustomListFieldProps) {
+export function CustomListField({ value, onChange, errors, ref }: CustomListFieldProps) {
   let lineCount = 0;
   for (const line of value.split("\n")) {
     if (line.trim() !== "" && !line.trim().startsWith("#")) {
@@ -36,13 +38,16 @@ export function CustomListField({ value, onChange, errors }: CustomListFieldProp
         {` ${CUSTOM_MIN_ITEMS}–${CUSTOM_MAX_ITEMS}`} items. You can paste straight from a spreadsheet.
       </p>
       <textarea
+        ref={ref}
         id="custom-list"
         value={value}
         onChange={(event) => onChange(event.target.value)}
         rows={10}
         spellCheck={false}
+        autoCapitalize="off"
+        autoCorrect="off"
         placeholder={EXAMPLE}
-        className="rounded-2xl border border-mist/40 bg-transparent px-3 py-2 font-mono text-sm text-ivory outline-none placeholder:text-mist/50 focus:border-ivory"
+        className="rounded-2xl border border-mist/40 bg-transparent px-3 py-2 font-mono text-base text-ivory outline-none placeholder:text-mist/50 focus:border-ivory"
       />
       <p className="text-right"><Label className="text-mist/80">{lineCount} lines</Label></p>
       {shown.length > 0 && (

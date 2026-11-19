@@ -1,8 +1,10 @@
-import { Check } from "lucide-react";
+import { Check, Share2 } from "lucide-react";
 import { useState } from "react";
 import { MAX_PLAYERS, MAX_SLOTS, MIN_SLOTS, type Category, type RoomSnapshot } from "@budget-draft/shared";
+import { isTouchDevice } from "../lib/useMediaQuery";
 import { Avatar } from "./Avatar";
 import { RulesPanel } from "./RulesPanel";
+import { Sheet } from "./Sheet";
 import { Stepper } from "./Stepper";
 import { ICON_STROKE, INPUT_CLASS, Label, PillButton } from "./brand/primitives";
 import { Button, Card, CardTitle } from "./ui";
@@ -19,19 +21,34 @@ interface LobbyViewProps {
 
 export function LobbyView({ room, playerId, categories, busy, onChangeSettings, onStart, onLeave }: LobbyViewProps) {
   const [copied, setCopied] = useState(false);
+  const [showingLink, setShowingLink] = useState(false);
   const isHost = room.hostId !== null && room.hostId === playerId;
   const connectedCount = room.players.filter((player) => player.isConnected).length;
   const inviteLink = `${window.location.origin}/join/${room.code}`;
   const settings = room.settings;
 
-  async function copyLink() {
+  // Phones get the system share sheet (WhatsApp, Messages...). Laptops copy.
+  const canShare = typeof navigator.share === "function" && isTouchDevice();
+
+  async function shareLink() {
+    if (canShare) {
+      try {
+        await navigator.share({ title: "Budget Draft", text: `Join my Budget Draft room: ${room.code}`, url: inviteLink });
+        return;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") {
+          return; // closed the share sheet without picking anything
+        }
+        // Sharing failed for another reason: copy instead.
+      }
+    }
     try {
       await navigator.clipboard.writeText(inviteLink);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
       // Clipboard can be blocked (e.g. plain http on a phone). Show the link instead.
-      window.prompt("Copy this link:", inviteLink);
+      setShowingLink(true);
     }
   }
 
@@ -42,17 +59,32 @@ export function LobbyView({ room, playerId, categories, busy, onChangeSettings, 
       <Card className="grid justify-items-center gap-4 text-center">
         <Label>Room code</Label>
         <p className="display-serif max-w-full text-6xl tracking-[0.08em] text-ivory sm:text-8xl sm:tracking-[0.12em]">{room.code}</p>
-        <Button variant="secondary" onClick={copyLink} className="w-full">
-          {copied ? (
+        <Button variant="secondary" onClick={shareLink} className="w-full">
+          {copied && (
             <>
               <Check size={15} strokeWidth={ICON_STROKE} className="mr-2 inline" aria-hidden />
               Link copied
             </>
-          ) : (
-            "Copy invite link"
           )}
+          {!copied && canShare && (
+            <>
+              <Share2 size={15} strokeWidth={ICON_STROKE} className="mr-2 inline" aria-hidden />
+              Share invite link
+            </>
+          )}
+          {!copied && !canShare && "Copy invite link"}
         </Button>
       </Card>
+      <Sheet open={showingLink} onClose={() => setShowingLink(false)} title="Invite link">
+        <p className="text-mist">Copying is blocked here. Press and hold the link to copy it.</p>
+        <input
+          readOnly
+          value={inviteLink}
+          aria-label="Invite link"
+          onFocus={(event) => event.target.select()}
+          className={INPUT_CLASS}
+        />
+      </Sheet>
 
       <Card className="grid gap-5">
         <CardTitle>
@@ -89,7 +121,7 @@ export function LobbyView({ room, playerId, categories, busy, onChangeSettings, 
               value={settings.categorySlug}
               onChange={(event) => onChangeSettings({ ...settings, categorySlug: event.target.value })}
               disabled={busy}
-              className={`${INPUT_CLASS} w-auto bg-ink-raised`}
+              className={`${INPUT_CLASS} min-h-11 w-auto bg-ink-raised`}
             >
               {categories.map((c) => (
                 <option key={c.slug} value={c.slug}>

@@ -147,6 +147,8 @@ export function SetupPage() {
                   value={names[0] ?? ""}
                   onChange={(event) => updateName(0, event.target.value)}
                   maxLength={20}
+                  autoCapitalize="words"
+                  autoCorrect="off"
                   aria-label="Player 1 name"
                   className={INPUT_CLASS}
                 />
@@ -170,6 +172,8 @@ export function SetupPage() {
                       onChange={(event) => updateName(index, event.target.value)}
                       placeholder={`Player ${index + 1}`}
                       maxLength={20}
+                      autoCapitalize="words"
+                      autoCorrect="off"
                       aria-label={`Player ${index + 1} name`}
                       className={`${INPUT_CLASS} min-w-0 flex-1`}
                     />

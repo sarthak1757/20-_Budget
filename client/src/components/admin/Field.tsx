@@ -17,6 +17,7 @@ export function Field({ label, value, onChange, error, type = "text", disabled =
       <Label>{label}</Label>
       <input
         type={type}
+        inputMode={type === "number" ? "numeric" : undefined}
         value={value}
         disabled={disabled}
         placeholder={placeholder}

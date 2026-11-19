@@ -50,14 +50,35 @@ export function PlayerColumn({
         {!cantAfford && maxSpendable(player) === 0 && <Label className="text-mist/80">Team complete</Label>}
       </div>
 
+      <TeamSlots team={player.team} requiredRoles={requiredRoles} />
+    </section>
+  );
+}
+
+// The numbered slots, plus the role chips when playing Balanced team.
+// Also used by the phone layout's "your team" row and team sheet.
+export function TeamSlots({ team, requiredRoles = [] }: { team: (PublicItem | null)[]; requiredRoles?: string[] }) {
+  return (
+    <div className="grid gap-3">
       <ol className="grid grid-cols-[minmax(0,1fr)]">
-        {player.team.map((item, index) => (
+        {team.map((item, index) => (
           <Slot key={index} index={index} item={item} />
         ))}
       </ol>
-      {requiredRoles.length > 0 && <RoleChips team={player.team} requiredRoles={requiredRoles} />}
-    </section>
+      {requiredRoles.length > 0 && <RoleChips team={team} requiredRoles={requiredRoles} />}
+    </div>
   );
+}
+
+// How many slots hold an item: "3/5" in the phone layout.
+export function countFilled(team: (PublicItem | null)[]): number {
+  let filled = 0;
+  for (const item of team) {
+    if (item !== null) {
+      filled += 1;
+    }
+  }
+  return filled;
 }
 
 // A numbered hairline row that fills in when an item is bought.
@@ -78,7 +99,7 @@ function Slot({ index, item }: { index: number; item: PublicItem | null }) {
       <span className="min-w-0 flex-1">
         <span className="display-serif block truncate text-lg text-ivory">{item.name}</span>
         <Label className="block truncate text-mist/80">
-          <span className="hidden sm:inline">{item.tag} · </span>${pricePaid(item)}
+          {item.tag} · ${pricePaid(item)}
         </Label>
       </span>
       {item.rating === null ? (

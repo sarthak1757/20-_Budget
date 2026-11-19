@@ -3,7 +3,7 @@ import { pricePaid, type GameResults, type PublicItem, type PublicPlayerState } 
 import { useEffect, type ReactNode } from "react";
 import { buildResultsShareText } from "../lib/shareResults";
 import { copyToClipboard } from "../lib/daily";
-import { playSound } from "../store/soundStore";
+import { buzz, playSound } from "../store/soundStore";
 import { showToast } from "../store/toastStore";
 import { ChromeBlob } from "./brand/ChromeBlob";
 import { ICON_STROKE, Label, PillButton } from "./brand/primitives";
@@ -15,6 +15,9 @@ interface ResultsViewProps {
   actions?: ReactNode;
   // A daily challenge has its own share line, so it hides the generic one.
   hideShare?: boolean;
+  // Online: this device's player, so only the winner's phone buzzes.
+  // Left out on a shared device, where it always buzzes.
+  viewerId?: string | null;
 }
 
 function namesFor(ids: string[], players: PublicPlayerState[]): string {
@@ -47,10 +50,15 @@ export function findBestValue(team: (PublicItem | null)[]): PublicItem | null {
   return best;
 }
 
-export function ResultsView({ players, results, actions, hideShare = false }: ResultsViewProps) {
-  // A short fanfare when the results first appear.
+export function ResultsView({ players, results, actions, hideShare = false, viewerId }: ResultsViewProps) {
+  // A short fanfare when the results first appear, and a buzz for the winner.
+  const viewerWon = viewerId === undefined || (viewerId !== null && results.statsWinnerIds.includes(viewerId));
   useEffect(() => {
     playSound("win");
+    if (viewerWon) {
+      buzz("win");
+    }
+    // Only when the results first appear, not on every update.
   }, []);
   const statsTie = results.statsWinnerIds.length > 1;
   const voteTie = results.voteWinnerIds.length > 1;

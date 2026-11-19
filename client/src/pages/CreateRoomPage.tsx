@@ -1,9 +1,10 @@
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { useNavigate, useParams } from "react-router";
 import { CUSTOM_CATEGORY_SLUG, parseCustomItems, playerNameSchema, type CreateRoomResponse } from "@budget-draft/shared";
 import { CustomListField } from "../components/CustomListField";
 import { UrgentNote } from "../components/brand/primitives";
 import { NameField } from "../components/NameField";
+import { Sheet } from "../components/Sheet";
 import { Button, Card, PageShell } from "../components/ui";
 import { apiRequest } from "../lib/api";
 import { getStoredName, storeName } from "../lib/playerStorage";
@@ -17,6 +18,8 @@ export function CreateRoomPage() {
   const isCustom = categorySlug === CUSTOM_CATEGORY_SLUG;
   const [customText, setCustomText] = useState("");
   const [listErrors, setListErrors] = useState<string[]>([]);
+  const [showingListErrors, setShowingListErrors] = useState(false);
+  const listRef = useRef<HTMLTextAreaElement>(null);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -31,6 +34,9 @@ export function CreateRoomPage() {
       if (!parsedList.ok) {
         setListErrors(parsedList.errors);
         setError("Fix the list first");
+        // The list can be long and the keyboard covers half a phone screen,
+        // so the problems open in a sheet you can't miss.
+        setShowingListErrors(true);
         return;
       }
       setListErrors([]);
@@ -55,7 +61,7 @@ export function CreateRoomPage() {
           <NameField value={name} onChange={setName} />
           <p className="text-sm text-mist">You'll get a 6-letter code to share. You can change the rules in the lobby.</p>
         </Card>
-        {isCustom && <CustomListField value={customText} onChange={setCustomText} errors={listErrors} />}
+        {isCustom && <CustomListField ref={listRef} value={customText} onChange={setCustomText} errors={listErrors} />}
         {error && (
           <p role="alert">
             <UrgentNote>{error}</UrgentNote>
@@ -65,6 +71,27 @@ export function CreateRoomPage() {
           {creating ? "Creating…" : "Create room"}
         </Button>
       </form>
+      <Sheet open={showingListErrors} onClose={() => setShowingListErrors(false)} title="Your list">
+        <p className="display-serif text-4xl text-ivory">
+          {listErrors.length === 1 ? "1 line needs fixing" : `${listErrors.length} lines need fixing`}
+        </p>
+        <ul className="grid gap-2">
+          {listErrors.slice(0, 20).map((message) => (
+            <li key={message}>
+              <UrgentNote>{message}</UrgentNote>
+            </li>
+          ))}
+          {listErrors.length > 20 && <li className="text-sm text-mist">…and {listErrors.length - 20} more</li>}
+        </ul>
+        <Button
+          onClick={() => {
+            setShowingListErrors(false);
+            listRef.current?.focus();
+          }}
+        >
+          Fix the list
+        </Button>
+      </Sheet>
     </PageShell>
   );
 }

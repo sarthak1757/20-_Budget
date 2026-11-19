@@ -59,6 +59,9 @@ export function JoinPage() {
               maxLength={6}
               autoCapitalize="characters"
               autoComplete="off"
+              autoCorrect="off"
+              spellCheck={false}
+              enterKeyHint="next"
               placeholder="ABC123"
               className={`${INPUT_CLASS} display-serif text-5xl tracking-[0.2em] uppercase`}
             />

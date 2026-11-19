@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Navigate, useNavigate } from "react-router";
 import { getCurrentPlayerId, toPublicState, type PlayerState } from "@budget-draft/shared";
 import { GameBoard } from "../components/GameBoard";
 import { HandoffScreen } from "../components/HandoffScreen";
+import { Sheet } from "../components/Sheet";
 import { UrgentNote } from "../components/brand/primitives";
 import { Button, PageShell } from "../components/ui";
 import { VotePanel } from "../components/VotePanel";
@@ -33,6 +35,7 @@ export function LocalGamePage() {
   const playBotTurn = useLocalGameStore((store) => store.playBotTurn);
   // Must run before any early return (React hooks always run in the same order).
   const botIsThinking = useBotTurns(game, playBotTurn);
+  const [confirmingQuit, setConfirmingQuit] = useState(false);
 
   if (!game) {
     return <Navigate to="/" replace />;
@@ -41,17 +44,30 @@ export function LocalGamePage() {
     return <Navigate to="/results" replace />;
   }
 
-  function handleQuit() {
-    if (window.confirm("Quit this game? Progress will be lost.")) {
-      reset();
-      navigate("/");
-    }
+  function quit() {
+    setConfirmingQuit(false);
+    reset();
+    navigate("/");
   }
 
   const quitButton = (
-    <Button variant="ghost" className="py-2 text-sm" onClick={handleQuit}>
-      Quit game
-    </Button>
+    <>
+      <Button variant="ghost" className="py-2 text-sm" onClick={() => setConfirmingQuit(true)}>
+        Quit game
+      </Button>
+      <Sheet open={confirmingQuit} onClose={() => setConfirmingQuit(false)} title="Quit game">
+        <p className="display-serif text-4xl text-ivory">Quit this game?</p>
+        <p className="text-mist">Progress will be lost.</p>
+        <div className="grid grid-cols-2 gap-3">
+          <Button variant="secondary" onClick={() => setConfirmingQuit(false)}>
+            Keep playing
+          </Button>
+          <Button variant="danger" onClick={quit}>
+            Quit
+          </Button>
+        </div>
+      </Sheet>
+    </>
   );
 
   const nextHolder = findPlayer(game.players, whoNeedsDevice(game));
@@ -95,7 +111,7 @@ export function LocalGamePage() {
   if (currentPlayer && botIsThinking) {
     turnLabel = `${currentPlayer.name} is thinking…`;
   } else if (currentPlayer && game.mode === "bot") {
-    turnLabel = game.auction === null ? "Your turn! Buy or pass?" : "Your turn! Bid or pass?";
+    turnLabel = "It's your turn";
   } else if (currentPlayer) {
     turnLabel = `${currentPlayer.name}'s turn`;
   }

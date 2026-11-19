@@ -111,7 +111,7 @@ function PresetButton({ label, active, disabled, onClick }: { label: string; act
       aria-pressed={active}
       disabled={disabled}
       onClick={onClick}
-      className={`label-caps rounded-full px-3 py-1.5 ring-1 transition disabled:opacity-60 ${active ? "bg-gold text-ink ring-gold" : "text-mist ring-mist/50 hover:bg-ink-hover"}`}
+      className={`label-caps min-h-11 rounded-full px-4 py-1.5 ring-1 transition disabled:opacity-60 ${active ? "bg-gold text-ink ring-gold" : "text-mist ring-mist/50 hover:bg-ink-hover"}`}
     >
       {label}
     </button>

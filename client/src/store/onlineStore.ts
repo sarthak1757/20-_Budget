@@ -11,13 +11,20 @@ import type {
 import type { PeekedItem } from "../lib/peek";
 import { forgetRoom, getStoredPlayerId, storeName, storePlayerId } from "../lib/playerStorage";
 import { socket } from "../lib/socket";
-import { dismissToast, showToast } from "./toastStore";
+import { showToast } from "./toastStore";
 
 // How long a reaction floats on screen before it's removed.
 export const REACTION_SHOW_MS = 2500;
 
-// The "connection lost" toast stays up until we're back, so we remember its id.
-let connectionLostToastId: number | null = null;
+// After this long in the background (phone locked, another app), the board
+// is probably out of date: cover it with "Reconnecting…" until we've caught up.
+const STALE_AFTER_MS = 3000;
+// How long a woken-up socket gets to answer before we assume it's dead.
+const RESYNC_TIMEOUT_MS = 4000;
+
+// True between losing the connection and getting it back, for the "Back online" toast.
+let droppedConnection = false;
+let hiddenAt: number | null = null;
 
 export type ConnectionStatus = "idle" | "connecting" | "connected" | "reconnecting";
 
@@ -50,32 +57,83 @@ interface OnlineStore {
 export const useOnlineStore = create<OnlineStore>()((set, get) => {
   // Joins (or re-joins) the room for the current code. Sent on every
   // (re)connect, because the server sees a reconnected socket as brand new.
-  async function sendJoin(): Promise<void> {
+  // Joining again on a live socket is harmless: the server just sends the
+  // latest room, which is how a woken-up phone catches up.
+  // With a timeout, it throws if the server doesn't answer in time.
+  async function sendJoin(timeoutMs?: number): Promise<void> {
     const { code, name } = get();
     if (code === null) {
       return;
     }
     const playerId = getStoredPlayerId(code);
     const payload = playerId === undefined ? { code, playerName: name } : { code, playerName: name, playerId };
-    const response = await socket.emitWithAck("room:join", payload);
+    const response =
+      timeoutMs === undefined
+        ? await socket.emitWithAck("room:join", payload)
+        : await socket.timeout(timeoutMs).emitWithAck("room:join", payload);
     if (response.ok) {
       // Only announce it when coming back from a dropped connection, not on the first join.
-      if (get().connection === "reconnecting") {
-        if (connectionLostToastId !== null) {
-          dismissToast(connectionLostToastId);
-          connectionLostToastId = null;
-        }
+      if (droppedConnection) {
+        droppedConnection = false;
         showToast("Back online", "success");
       }
       storePlayerId(code, response.data.playerId);
       set({ playerId: response.data.playerId, room: response.data.room, joinError: null, connection: "connected" });
     } else {
-      if (connectionLostToastId !== null) {
-        dismissToast(connectionLostToastId);
-        connectionLostToastId = null;
-      }
+      droppedConnection = false;
       set({ joinError: response.error, connection: "connected" });
     }
+  }
+
+  // Throws away the current connection and opens a new one right now,
+  // instead of waiting out Socket.io's growing pause between retries.
+  // The "connect" handler re-joins the room.
+  function reconnectNow(): void {
+    set({ connection: "reconnecting" });
+    socket.disconnect();
+    socket.connect();
+  }
+
+  // The tab is back in front. Phones freeze background tabs, so the socket
+  // may have died without noticing, and the board may be minutes old.
+  async function resync(stale: boolean): Promise<void> {
+    if (get().code === null) {
+      return;
+    }
+    if (!socket.connected) {
+      reconnectNow();
+      return;
+    }
+    if (stale) {
+      set({ connection: "reconnecting" });
+    }
+    try {
+      await sendJoin(RESYNC_TIMEOUT_MS);
+    } catch {
+      // No answer: the socket only looked connected.
+      reconnectNow();
+    }
+  }
+
+  // Guarded so the store can be imported where there's no page (tests).
+  if (typeof document !== "undefined") {
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") {
+        hiddenAt = Date.now();
+        return;
+      }
+      const awayMs = hiddenAt === null ? 0 : Date.now() - hiddenAt;
+      hiddenAt = null;
+      void resync(awayMs >= STALE_AFTER_MS);
+    });
+    // Wi-Fi or mobile data came back.
+    window.addEventListener("online", () => void resync(false));
+    // The browser restored the page from its back/forward cache.
+    window.addEventListener("pageshow", (event) => {
+      if (event.persisted) {
+        void resync(true);
+      }
+    });
   }
 
   // Runs an action and shows its error (if any) without throwing.
@@ -97,10 +155,11 @@ export const useOnlineStore = create<OnlineStore>()((set, get) => {
     void sendJoin();
   });
   socket.on("disconnect", (reason) => {
-    // "io client disconnect" means we left on purpose (Leave button).
+    // "io client disconnect" means we closed it ourselves (Leave, or reconnectNow).
+    // The room page covers the board with "Reconnecting…" while this lasts.
     if (get().code !== null && reason !== "io client disconnect") {
+      droppedConnection = true;
       set({ connection: "reconnecting" });
-      connectionLostToastId = showToast("Connection lost. Reconnecting…", "warning", null);
     }
   });
   // The very first connection failed (server down, wrong URL): say so instead of spinning forever.
@@ -172,10 +231,7 @@ export const useOnlineStore = create<OnlineStore>()((set, get) => {
         forgetRoom(code);
       }
       socket.disconnect();
-      if (connectionLostToastId !== null) {
-        dismissToast(connectionLostToastId);
-        connectionLostToastId = null;
-      }
+      droppedConnection = false;
       set({ code: null, playerId: null, room: null, connection: "idle", joinError: null, reactions: [] });
     },
 

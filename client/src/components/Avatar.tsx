@@ -9,6 +9,7 @@ export function getInitials(name: string): string {
 }
 
 const SIZES = {
+  xs: "size-6 text-[11px]",
   sm: "size-8 text-sm",
   md: "size-10 text-lg",
   lg: "size-20 text-4xl",

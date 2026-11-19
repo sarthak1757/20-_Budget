@@ -44,7 +44,7 @@ interface PillButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export function PillButton({ variant = "primary", className = "", ...rest }: PillButtonProps) {
-  const classes = `inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-body font-medium transition active:scale-[0.98] disabled:cursor-not-allowed disabled:active:scale-100 ${PILL_CLASSES[variant]} ${className}`;
+  const classes = `inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 py-3 font-body font-medium transition active:scale-[0.98] disabled:cursor-not-allowed disabled:active:scale-100 ${PILL_CLASSES[variant]} ${className}`;
   return <button type="button" className={classes} {...rest} />;
 }
 
@@ -63,7 +63,7 @@ export function PillLink({
   return (
     <Link
       to={to}
-      className={`inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-body font-medium transition active:scale-[0.98] ${PILL_CLASSES[variant]} ${className}`}
+      className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 py-3 font-body font-medium transition active:scale-[0.98] ${PILL_CLASSES[variant]} ${className}`}
     >
       {children}
     </Link>
@@ -71,6 +71,7 @@ export function PillLink({
 }
 
 // Text fields are just a hairline underline under ivory text.
+// text-lg (18px): anything under 16px makes iPhones zoom in when you tap the field.
 export const INPUT_CLASS =
   "w-full border-b border-mist/60 bg-transparent py-2 font-body text-lg text-ivory outline-none placeholder:text-mist/50 focus:border-ivory disabled:opacity-50";
 
@@ -89,7 +90,7 @@ function ArrowContent({ children }: { children: ReactNode }) {
   );
 }
 
-const ARROW_CLASSES = "group inline-flex items-center gap-3 text-mist hover:text-ivory";
+const ARROW_CLASSES = "group inline-flex min-h-11 items-center gap-3 text-mist hover:text-ivory";
 
 export function ArrowLink({ to, children, className = "" }: { to: string; children: ReactNode; className?: string }) {
   return (
@@ -117,8 +118,15 @@ export function Panel({ children, className = "" }: { children: ReactNode; class
 // ---- Game pieces ----
 
 // The price in a ivory circle.
-export function PriceBadge({ price, label = "Price", size = "lg" }: { price: number; label?: string; size?: "sm" | "lg" }) {
-  const circle = size === "lg" ? "size-20 text-4xl" : "size-12 text-2xl";
+// "fluid" is 64px on phones and 80px from the md breakpoint up.
+const BADGE_SIZES = {
+  sm: "size-12 text-2xl",
+  lg: "size-20 text-4xl",
+  fluid: "size-16 text-3xl md:size-20 md:text-4xl",
+};
+
+export function PriceBadge({ price, label = "Price", size = "lg" }: { price: number; label?: string; size?: keyof typeof BADGE_SIZES }) {
+  const circle = BADGE_SIZES[size];
   return (
     <span className="inline-flex flex-col items-center gap-1.5">
       <span className={`display-serif grid place-items-center rounded-full bg-gold text-ink ${circle}`}>

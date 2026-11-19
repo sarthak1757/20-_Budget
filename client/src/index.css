@@ -98,6 +98,24 @@
 
 html {
   color-scheme: dark;
+  /* Keyboard focus and anchors scroll clear of the phone's bottom bar. */
+  scroll-padding-bottom: var(--dock-height, 0px);
+}
+
+/* No double-tap-to-zoom delay on anything tappable (pinch zoom still works). */
+a,
+button,
+input,
+select,
+textarea,
+label,
+summary {
+  touch-action: manipulation;
+}
+
+/* Phones tint the tap with a grey box by default; our buttons have their own pressed state. */
+* {
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Tiny uppercase letter-spaced label: nav, tags, "SLOT 1", room code, prices, timer. */
@@ -127,6 +145,8 @@ html {
 
 body {
   @apply min-h-dvh bg-ink font-body text-mist antialiased;
+  /* Room for the game's bottom bar on phones (GameBoard sets the height). */
+  padding-bottom: var(--dock-height, 0px);
   /* A faint gold glow in one corner, so the black isn't flat. */
   background-image: radial-gradient(70rem 36rem at 88% -8%, --alpha(var(--color-gold) / 7%), transparent 70%);
   background-repeat: no-repeat;
@@ -155,7 +175,7 @@ body {
     opacity: 1;
   }
   to {
-    transform: translateY(-55vh) scale(1.1);
+    transform: translateY(-55dvh) scale(1.1);
     opacity: 0;
   }
 }
@@ -176,4 +196,39 @@ body {
   .reaction-float {
     animation-name: reaction-fade;
   }
+}
+
+/* Bottom sheets (Sheet.tsx): slide up on phones, fade in on wide screens. */
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes sheet-fade {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.sheet[open] .sheet-panel {
+  animation: sheet-up 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@media (min-width: 768px) {
+  .sheet[open] .sheet-panel {
+    animation-name: sheet-fade;
+  }
+}
+
+.sheet::backdrop {
+  backdrop-filter: blur(2px);
 }

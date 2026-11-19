@@ -27,31 +27,32 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export function Button({ variant = "primary", className = "", ...rest }: ButtonProps) {
-  const classes = `rounded-full px-6 py-3 font-body font-medium transition active:scale-[0.98] disabled:cursor-not-allowed disabled:active:scale-100 ${variantClasses(variant)} ${className}`;
+  const classes = `min-h-11 rounded-full px-6 py-3 font-body font-medium transition active:scale-[0.98] disabled:cursor-not-allowed disabled:active:scale-100 ${variantClasses(variant)} ${className}`;
   return <button type="button" className={classes} {...rest} />;
 }
 
 export function PageShell({ title, children, backTo }: { title?: string; children: ReactNode; backTo?: string }) {
   return (
     <div className="flex min-h-dvh flex-col">
-      <header className="border-b border-mist/15 bg-ink-raised">
-        <div className="mx-auto flex w-full max-w-6xl items-center gap-5 px-4 py-3 sm:px-8">
+      {/* Padded by the notch / status bar height when installed full-screen. */}
+      <header className="border-b border-mist/15 bg-ink-raised pt-[env(safe-area-inset-top)]">
+        <div className="mx-auto flex w-full max-w-6xl items-center gap-3 px-4 py-1.5 sm:gap-5 sm:px-8 sm:py-2">
           {backTo !== undefined && (
-            <Link to={backTo} className="label-caps text-mist hover:text-ivory">
+            <Link to={backTo} className="label-caps -ml-2 inline-flex min-h-11 items-center px-2 text-mist hover:text-ivory">
               ← Back
             </Link>
           )}
-          <Link to="/" className="display-serif text-2xl text-ivory">
+          <Link to="/" className="display-serif inline-flex min-h-11 items-center text-2xl text-ivory">
             Budget Draft
           </Link>
           <nav className="ml-auto hidden items-center gap-6 sm:flex" aria-label="Main">
-            <Link to="/" className="label-caps text-mist hover:text-ivory">
+            <Link to="/" className="label-caps inline-flex min-h-11 min-w-11 items-center justify-center text-mist hover:text-ivory">
               Play
             </Link>
-            <Link to="/daily" className="label-caps text-mist hover:text-ivory">
+            <Link to="/daily" className="label-caps inline-flex min-h-11 min-w-11 items-center justify-center text-mist hover:text-ivory">
               Daily
             </Link>
-            <Link to="/leaderboard" className="label-caps text-mist hover:text-ivory">
+            <Link to="/leaderboard" className="label-caps inline-flex min-h-11 min-w-11 items-center justify-center text-mist hover:text-ivory">
               Leaderboard
             </Link>
           </nav>
@@ -62,13 +63,13 @@ export function PageShell({ title, children, backTo }: { title?: string; childre
         </div>
       </header>
 
-      <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 pt-8 pb-16 sm:px-8 sm:pt-12">
+      <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 pt-4 pb-16 sm:px-8 sm:pt-12">
         {title !== undefined && <h1 className="display-serif mb-10 text-5xl text-ivory sm:text-7xl">{title}</h1>}
         <main className="flex-1">{children}</main>
       </div>
 
       <footer className="border-t border-mist/15 bg-ink-raised">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-8">
+        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-8">
           <Label>Build the best team with $20</Label>
           <Label className="text-mist/70">No. 20</Label>
         </div>

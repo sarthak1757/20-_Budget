@@ -15,6 +15,10 @@ export function NameField({ value, onChange, label = "Your name" }: NameFieldPro
         onChange={(event) => onChange(event.target.value)}
         maxLength={20}
         autoComplete="nickname"
+        autoCapitalize="words"
+        autoCorrect="off"
+        spellCheck={false}
+        enterKeyHint="done"
         className={INPUT_CLASS}
       />
     </label>

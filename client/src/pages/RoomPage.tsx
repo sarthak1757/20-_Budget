@@ -1,5 +1,5 @@
 import { RotateCcw } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Navigate, useNavigate, useParams } from "react-router";
 import { getCurrentPlayerId, type PublicPlayerState, type RoomSnapshot } from "@budget-draft/shared";
 import { ArrowLink, ICON_STROKE, Label, UrgentNote } from "../components/brand/primitives";
@@ -8,12 +8,14 @@ import { GameBoard } from "../components/GameBoard";
 import { LobbyView } from "../components/LobbyView";
 import { ReactionBar, ReactionLayer } from "../components/Reactions";
 import { ResultsView } from "../components/ResultsView";
+import { ReconnectingOverlay } from "../components/ReconnectingOverlay";
 import { Button, ErrorBox, PageShell, Spinner } from "../components/ui";
 import { VotePanel } from "../components/VotePanel";
 import { fetchCategories } from "../lib/categories";
 import { getStoredName } from "../lib/playerStorage";
 import { useAsync } from "../lib/useAsync";
 import { useOnlineStore } from "../store/onlineStore";
+import { buzz } from "../store/soundStore";
 
 export function RoomPage() {
   const code = (useParams().code ?? "").toUpperCase();
@@ -82,6 +84,7 @@ export function RoomPage() {
         </div>
       )}
       <ReactionLayer reactions={store.reactions} />
+      {store.connection === "reconnecting" && <ReconnectingOverlay />}
     </PageShell>
   );
 }
@@ -122,6 +125,7 @@ function RoomContent({ room, playerId, categories, busy, onLeave }: RoomContentP
         {room.results ? (
           <ResultsView
             players={game.players}
+            viewerId={playerId}
             results={room.results}
             actions={
               <>
@@ -171,20 +175,20 @@ function RoomContent({ room, playerId, categories, busy, onLeave }: RoomContentP
   const isMyTurn = currentId !== null && currentId === playerId;
   let turnLabel = "";
   if (isMyTurn) {
-    turnLabel = game.auction === null ? "Your turn! Buy or pass?" : "Your turn! Bid or pass?";
+    turnLabel = "It's your turn";
   } else if (current) {
     turnLabel = `Waiting for ${current.name}…`;
   }
 
   return (
     <>
+      <TurnAlert isMyTurn={isMyTurn} />
       <GameBoard
         state={game}
         viewerId={playerId}
         canAct={isMyTurn}
         busy={busy}
         turnLabel={turnLabel}
-        timer={<Countdown deadline={game.turnDeadline} totalSeconds={game.settings.turnSeconds} label="Time left" />}
         onMove={store.act}
         peeked={store.peeked}
         onPeek={store.peek}
@@ -196,4 +200,17 @@ function RoomContent({ room, playerId, categories, busy, onLeave }: RoomContentP
       </div>
     </>
   );
+}
+
+// Buzzes the phone when your turn starts, for when it's lying on the table.
+// Renders nothing.
+function TurnAlert({ isMyTurn }: { isMyTurn: boolean }) {
+  const wasMyTurn = useRef(isMyTurn);
+  useEffect(() => {
+    if (isMyTurn && !wasMyTurn.current) {
+      buzz("turn");
+    }
+    wasMyTurn.current = isMyTurn;
+  }, [isMyTurn]);
+  return null;
 }
